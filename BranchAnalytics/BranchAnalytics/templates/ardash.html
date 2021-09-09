@@ -1,0 +1,1727 @@
+<!doctype html>
+{% load static %}
+{% load humanize %}
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Location Analytics</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- inject:css-->
+
+	  <link rel="stylesheet" type="text/css" href="{% static 'assets/d3site/dc.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/bootstrap/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/daterangepicker.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/fontawesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/footable.standalone.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/fullcalendar@5.2.0.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/jquery-jvectormap-2.0.5.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/jquery.mCustomScrollbar.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/leaflet.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/line-awesome.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/magnific-popup.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/MarkerCluster.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/MarkerCluster.Default.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/select2.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/slick.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/star-rating-svg.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/trumbowyg.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/wickedpicker.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/style.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.12.0/clusterize.css">
+
+    <style>
+    #amLineChart {
+      width: 100%;
+      height: 450px;
+    }
+
+    #amBarChart {
+      width: 100%;
+      height: 450px;
+    }
+
+
+    #amProjChart {
+      width: 100%;
+      height: 450px;
+    }
+
+    #amPieChart{
+      width: 100%;
+      height: 400px;
+    }
+    #spark_601{
+      width: 320px;
+       height: 100px;
+       display: inline-block;
+       vertical-align: middle;
+     }
+     #amDiffChart {
+       width: 100%;
+       height: 450px;
+     }
+
+     .context-menu {
+       position: absolute;
+     }
+     .menu {
+       display: flex;
+       flex-direction: column;
+       background-color: #fff;
+       border-radius: 10px;
+       box-shadow: 0 10px 20px rgb(64 64 64 / 5%);
+       padding: 10px 0;
+     }
+     .menu > li > a {
+       font: inherit;
+       border: 0;
+       padding: 10px 30px 10px 15px;
+       width: 100%;
+       display: flex;
+       align-items: center;
+       position: relative;
+       text-decoration: unset;
+       color: #616161;
+       font-weight: normal;
+       transition: 0.3s linear;
+       -webkit-transition: 0.3s linear;
+       -moz-transition: 0.3s linear;
+       -ms-transition: 0.3s linear;
+       -o-transition: 0.3s linear;
+     }
+     .menu > li > a:hover {
+       background:#f1f3f7;
+       color: #ff0000;
+     }
+     .menu > li > a > i {
+       padding-right: 10px;
+     }
+     .menu > li.trash > a:hover {
+       color: red;
+     }
+
+     .centerrow {
+       text-align: center;
+       vertical-align: middle;
+     }
+
+     .tablesize th {
+         position: relative;
+     }
+
+     #resizeMe.hide2 tr > *:nth-child(7) {
+         display: none;
+     }
+
+
+     .resizer {
+         /* Displayed at the right side of column */
+         position: absolute;
+         top: 0;
+         right: 0;
+         width: 5px;
+         cursor: col-resize;
+         user-select: none;
+     }
+
+     .negval{
+       color: red;
+     }
+
+     tr:hover {background-color: rgba(91, 108, 133, .1);}
+
+    </style>
+
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+</head>
+
+<body class="layout-light side-menu overlayScroll">
+
+
+
+    <div class="Branch STK-search"></div>
+
+    <div class="Branch STK-author-actions"></div>
+    <header class="header-top">
+        {% include 'navbar.html' %}
+    </header>
+    <main class="main-content" id ='main_fade'>
+      <aside class="sidebar" id='main_sidebar_id'>
+          <div class="sidebar__menu-group">
+              <ul class="sidebar_nav">
+                  <li class="menu-title">
+                      <span>Group</span>
+                  </li>
+                  <li class="has-child open">
+                      <a href="#" class="active">
+                        <select id='group_filter' name='group_filter'>
+                          <option value='starter' id='group_filter_default'>Select All</option>
+                          {% for g in group_labels %}
+                          <option value='{{g}}'>{{g}}</option>
+                          {% endfor %}
+                        </select>
+                      </a>
+                  </li>
+
+                  <br>
+                  <li class="menu-title">
+                      <span>Branch</span>
+                  </li>
+                  <li class="has-child open">
+                      <a href="#" class="active">
+                        <select id='branch_filter'>
+                          <option value='starter' id='customer_filter_default'>Select All</option>
+                          {% for g in branch_labels %}
+                          <option value='{{g}}'>{{g}}</option>
+                          {% endfor %}
+                        </select>
+                      </a>
+                  </li>
+
+                  <br>
+                  <li class="menu-title">
+                      <span>Customer</span>
+                  </li>
+                  <li class="has-child open">
+                      <a href="#" class="active">
+                        <select id='salesrep_filter'>
+                          <option value='starter' id='salesrep_filter_default'>Select All</option>
+                          {% for g in salesrep_labels %}
+                          <option value='{{g}}'>{{g}}</option>
+                          {% endfor %}
+                        </select>
+                      </a>
+                  </li>
+                  <br>
+                  <li class="menu-title">
+                      <span>Type</span>
+                  </li>
+                  <li class="has-child open">
+                      <a href="#" class="active">
+                        <select id='product_filter'>
+                          <option value='starter' id='product_filter_default'>Select All</option>
+                          {% for g in product_labels %}
+                          <option value='{{g}}'>{{g}}</option>
+                          {% endfor %}
+                        </select>
+                      </a>
+                  </li>
+                  <br>
+                  <li class="menu-title">
+                      <span>Period</span>
+                  </li>
+                  <li class="has-child open">
+                      <a href="#" class="active">
+                        <select id='month_filter'>
+                          <option value='starter' id='month_filter_default'>Select All</option>
+                          {% for g in month_labels %}
+                          <option value='{{g}}'>{{g}}</option>
+                          {% endfor %}
+                        </select>
+                      </a>
+                  </li>
+
+              </ul>
+
+
+          </div>
+      </aside>
+
+        <div class="contents">
+            <div class="container-fluid"><br>
+
+              <div class="row" >
+
+                <div class="col-md-3">
+                  <div class="card border-0" style='background-color:white;'>
+                      <div id = 'spark1'></div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card border-0" style='background-color:white;'>
+                      <div id = 'spark2'></div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card border-0" style='background-color:white;'>
+                      <div id = 'spark3'></div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                      <div id = 'spark4'></div>
+                  </div>
+                </div>
+              </div><br>
+
+
+              <div class="row">
+
+
+                  <div class="col-md-4" >
+                    <div class="card border-0">
+                      <div class="card-header">
+                        <h6>Aging Buckets</h6>
+                        <div class="dropdown dropleft">
+                            <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span data-feather="more-horizontal"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
+                                <a class="dropdown-item" href="javascript:exportBarChart();">Export</a>
+                            </div>
+                        </div>
+                      </div>
+                      <div id ='amBarChart'></div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-5">
+                    <div class="card border-0">
+                      <div class="card-header">
+                        <h6>A/R Increase/Decrease ($1000)</h6>
+                        <div class="dropdown dropleft">
+                            <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span data-feather="more-horizontal"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
+                                <a class="dropdown-item" href="javascript:exportLineChart();">Export</a>
+                            </div>
+                        </div>
+                      </div>
+                      <div id="amLineChart"></div>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="card border-0" style='height:510px;'>
+                    <div class="card-header">
+                      <h6>Current vs Past Due %</h6>
+                      <div class="dropdown dropleft">
+                          <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span data-feather="more-horizontal"></span>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
+                              <a class="dropdown-item" href="javascript:exportLineChart();">Export</a>
+                          </div>
+                      </div>
+                    </div>
+                    <div id="amPieChart"></div>
+                </div>
+              </div>
+
+              </div>
+
+              <br>
+
+
+              <div class="row">
+
+            <div class="col-md-4">
+              <div class="card border-0" style='height:510px;'>
+                <div class="card-header">
+                  <h6>AR Projection</h6>
+                  <div class="dropdown dropleft">
+                      <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span data-feather="more-horizontal"></span>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
+                          <a class="dropdown-item" href="javascript:exportLineChart();">Export</a>
+                      </div>
+                  </div>
+                </div>
+                <div id="amProjChart"></div>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="card border-0" style='height:510px;'>
+              <div class="card-header">
+                <h6>AR Detail</h6>
+                <div class="dropdown dropleft">
+                    <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span data-feather="more-horizontal"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
+                        <a class="dropdown-item" href="javascript:exportTableToExcel();">Export</a>
+                    </div>
+                </div>
+              </div>
+
+
+              <div class="container">
+                  <div class="row" style='padding-top:10px; padding-bottom:10px;'>
+                    <div class="col-12">
+                      <input type="text" id="cluster-search" class = 'form-control' placeholder="Search..." style="float: left; width: 20%;"/>
+                    </div>
+                  </div>
+
+                <div class="row">
+                    <div class="col-12">
+                      <div class="clusterize">
+                        <div id="scrollArea" class="clusterize-scroll" style='max-height: 375px;'>
+                          <table class="table table-bordered tablesize" id='resizeMe'>
+                            <thead>
+                              <tr style='background-color:rgba(204, 204, 204,.2);'>
+                                <th><a href='javascript:sortColumn(0);' style="color:black">Branch</a></th>
+                                <th><a href='javascript:sortColumn(1);' style="color:black">Customer</a></th>
+                                <th><a href='javascript:sortColumn(2);' style="color:black">Date</a></th>
+                                <th><a href='javascript:sortColumn(3);' style="color:black">Item</a></th>
+                                <th><a href='javascript:sortColumn(4);' style="color:black">Type</a></th>
+                                <th><a href='javascript:sortColumn(5);' style="color:black">Aging</a></th>
+                                <th><a href='javascript:sortColumn(6);' style="color:black">Amount</a></th>
+                              </tr>
+                            </thead>
+                          <tbody id="contentArea" class="clusterize-content">
+                            <tr class="clusterize-no-data">
+                              <td>Loading data…</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="row"><br><br><br><br><br><br><div>
+
+    </div>
+
+  </div>
+
+      <footer class="footer-wrapper">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="footer-copyright">
+                          <p><a href="#">Notion Inc</a>
+                          </p>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="footer-menu text-right">
+                          <ul>
+                              <li>
+                                  <a href="#">inNotion</a>
+                              </li>
+                              <li>
+                                  <a href="#">eERP</a>
+                              </li>
+                          </ul>
+                      </div>
+                      <!-- ends: .Footer Menu -->
+                  </div>
+              </div>
+          </div>
+      </footer>
+    </main>
+
+    <div id="contextMenu" class="context-menu" style="display: none">
+        <ul class="menu" >
+            <li class="share"><a href="javascript:userSaveBookmark();"><i class="fa fa-share" aria-hidden="true"></i> Save Bookmark</a></li>
+            <li class="link"><a href="#"><i class="fa fa-link" aria-hidden="true"></i> View Bookmarks</a></li>
+            <li class="copy"><a href="#"><i class="fa fa-copy" aria-hidden="true"></i> Add Comment</a></li>
+            <li class="paste"><a href="#"><i class="fa fa-paste" aria-hidden="true"></i> View Comments</a></li>
+            <li class="download"><a href="#"><i class="fa fa-download" aria-hidden="true"></i> Screenshot</a></li>
+        </ul>
+    </div>
+
+
+    <div id="overlayer">
+        <span class="loader-overlay">
+            <div class="atbd-spin-dots spin-lg">
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+            </div>
+        </span>
+    </div>
+
+
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
+    <!-- inject:js-->
+    <script src="{% static 'assets/vendor_assets/js/jquery/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery/jquery-ui.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/bootstrap/popper.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/moment/moment.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/accordion.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/autoComplete.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/Chart.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/charts.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/daterangepicker.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/drawer.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/dynamicBadge.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/dynamicCheckbox.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/feather.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/footable.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/fullcalendar@5.2.0.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/google-chart.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.filterizr.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.mCustomScrollbar.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.peity.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.star-rating-svg.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/leaflet.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/leaflet.markercluster.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/loader.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/message.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/moment.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/muuri.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/notification.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/popover.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/slick.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/trumbowyg.base64.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/trumbowyg.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/wickedpicker.min.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/drag-drop.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/footable.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/full-calendar.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/googlemap-init.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/icon-loader.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/jvectormap-init.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/leaflet-init.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/main.js' %}"></script>
+
+
+    <script type="text/javascript" src="{% static 'assets/d3site/d3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/crossfilter.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/dc.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/axis.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/margin-mixin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/cap-mixin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/dc.datatables.js' %}"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+    <!-- Resources -->
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/plugins/regression.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/plugins/rangeSelector.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/plugins/sunburst.js"></script>
+    <script src="//www.amcharts.com/lib/4/themes/microchart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.12.0/clusterize.min.js"></script>
+
+ <script>
+
+    //Pie Chart Data
+    var pieData1 =  [{
+     name: "Current",
+     children: [
+       { name: "Current", value: 100 },
+       { name: "Due in 15", value: 60 }
+     ]
+   },
+   {
+     name: "Past Due",
+     children: [
+       { name: "1-30", value: 135 },
+       { name: "31-60", value: 98 },
+       { name: "61-90", value: 98 },
+       { name: "90+", value: 98 },
+     ]
+   }
+];
+
+var pieData2 =  [{
+ name: "Current",
+ children: [
+   { name: "Current", value: 50 },
+   { name: "Due in 15", value: 50 }
+ ]
+},
+{
+ name: "Past Due",
+ children: [
+   { name: "1-30", value: 20 },
+   { name: "31-60", value: 57 },
+   { name: "61-90", value: 50 },
+   { name: "90+", value: 58 },
+ ]
+}
+];
+
+var pieData3 =  [{
+ name: "Current",
+ children: [
+   { name: "Current", value: 50 },
+   { name: "Due in 15", value: 50 }
+ ]
+},
+{
+ name: "Past Due",
+ children: [
+   { name: "1-30", value: 50 },
+   { name: "31-60", value: 80 },
+   { name: "61-90", value: 50 },
+   { name: "90+", value: 12 },
+ ]
+}
+];
+
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    //Line Chart Data
+    var xlabels = {{date_labels|safe}};
+    var xdata = {{date_values|safe}};
+
+    var amLineData = {{amchartData|safe}};
+
+    //Bar Chart Data
+    var clabels = {{clabels|safe}};
+    var cdata = {{cdata|safe}};
+
+    //Table Data
+    var table_data = {{main_data|safe}};
+
+    //Selectors
+    var group_select = ['starter'];
+    var branch_select = ['starter'];
+    var salesrep_select = ['starter'];
+    var product_select = ['starter'];
+    var month_select = ['starter'];
+    var industry_select = ['starter'];
+
+    //Labels
+    var group_labels = {{group_labels|safe}};
+    var branch_labels = {{branch_labels|safe}};
+    var salesrep_labels = {{salesrep_labels|safe}};
+    var product_labels = {{product_labels|safe}};
+    var month_labels = {{month_labels|safe}};
+
+    //Data
+    var responseData = null;
+
+    //Charts
+    var amBarChart = null;
+    var amPieChart = null;
+    var amLineChart = null;
+    var amProjChart = null;
+
+    //SparkCharts
+
+    var spark1 = null;
+    var spark2 = null;
+    var spark3 = null;
+    var spark4 = null;
+
+    var pieCounter = 1;
+
+    function clearAllSelections(){
+      $('#group_filter').val('starter');
+      $('#group_filter').trigger('change');
+      $('#branch_filter').val('starter');
+      $('#branch_filter').trigger('change');
+      $('#salesrep_filter').val('starter');
+      $('#salesrep_filter').trigger('change');
+      $('#month_filter').val('starter');
+      $('#month_filter').trigger('change');
+      industry_select = ['starter'];
+    };
+
+    function clearAllandRefresh(){
+      $('#group_filter').val('starter');
+      $('#group_filter').trigger('change');
+      $('#branch_filter').val('starter');
+      $('#branch_filter').trigger('change');
+      $('#salesrep_filter').val('starter');
+      $('#salesrep_filter').trigger('change');
+      $('#month_filter').val('starter');
+      $('#month_filter').trigger('change');
+      $('#product_filter').val('starter');
+      $('#product_filter').trigger('change');
+      industry_select = ['starter'];
+
+      updateDataAll();
+      redrawCanvas();
+      rebuildCharts();
+      updateLabels();
+      updateFilters2();
+    };
+
+
+    function redrawCanvas (){
+      $('#chart1').remove(); // this is my <canvas> element
+      $('#maink1').append('<canvas id="chart1"></canvas>');
+  };
+
+  function generateChartData() {
+    var chartData = [];
+    var firstDate = new Date();
+    firstDate.setDate( firstDate.getDate() - 650 );
+    var visits = -40;
+    var b = 0.6;
+    for ( var i = 0; i < 650; i++ ) {
+      var newDate = new Date( firstDate );
+      newDate.setDate( newDate.getDate() + i );
+      if(i > 80){
+          b = 0.5;
+      }
+      visits += Math.round((Math.random()<b?1:-1)*Math.random()*10);
+      chartData.push( {
+        date: newDate,
+        visits: visits
+      } );
+    }
+    return chartData;
+  }
+
+
+  function getPieData(){
+      if (pieCounter == 1){
+        pieCounter = pieCounter + 1;
+        return pieData1;
+      } else if (pieCounter == 2){
+        pieCounter = pieCounter + 1;
+        return pieData2;
+      } else {
+        pieCounter = 1;
+        return pieData3;
+      }
+  }
+
+
+  function dataReplace(){
+    $('#main_data_table').dataTable().fnClearTable();
+    if (table_data.length == 0){
+    } else {
+    $('#main_data_table').dataTable().fnAddData(table_data);
+   }
+  }
+
+  function rebuildCharts(){
+    //drawChart2(clabels,cdata);
+    dataReplace();
+  };
+
+  function updateLabels(){
+  };
+
+  function updateFilters2(){
+  };
+
+  function updateDataAll(){
+
+    $.ajax({
+        url: '{% url "gather_data_ar" %}',
+        data: {
+
+          //Filters
+          'group_select': group_select,
+          'branch_select': branch_select,
+          'salesrep_select':salesrep_select,
+          'product_select':product_select,
+          'month_select':month_select,
+
+          //Chart Options
+          'industry_select': industry_select
+        },
+
+        dataType: 'json',
+          success: function (data) {
+              if (data.is_taken) {
+
+                  //linechart
+                  xlabels = data.date_labels
+                  xdata = data.date_values
+
+                  //barchart
+                  clabels = data.clabels
+                  cdata = data.cdata
+
+                  table_data = data.main_data
+
+                  //select labels
+                  responseData = data
+
+                  redrawCanvas();
+                  rebuildCharts();
+                  updateLabels();
+                  updateFilters2();
+                  amBarChart.data = data.amBarChartData;
+                  amPieChart.data = getPieData();
+                  amLineChart.data = generateChartData();
+                  RebuildClusterize();
+
+                  spark1.updateSeries([
+                    {data: generateSparkData(600)}
+                  ]);
+                  spark2.updateSeries([
+                    {data: generateSparkData(500)}
+                  ]);
+                  spark3.updateSeries([
+                    {data: generateSparkData(400)}
+                  ]);
+                  spark4.updateSeries([
+                    {data: generateSparkData(300)}
+                  ]);
+              }
+          }
+    });
+};
+
+
+$(document).ready(function(){
+  // Initialize select2
+  $("#group_filter").select2();
+  $("#branch_filter").select2();
+  $("#salesrep_filter").select2();
+  $("#product_filter").select2();
+  $("#month_filter").select2();
+});
+
+
+//Listeners
+$("#group_filter").change(function () {
+  group_select = $("#group_filter").val();
+  updateDataAll();
+});
+
+$("#branch_filter").change(function () {
+  branch_select = $("#branch_filter").val();
+  updateDataAll();
+});
+
+
+$("#salesrep_filter").change(function () {
+  salesrep_select = $("#salesrep_filter").val();
+  updateDataAll();
+});
+
+$("#product_filter").change(function () {
+  product_select = $("#product_filter").val();
+  updateDataAll();
+});
+
+$("#month_filter").change(function () {
+  month_select = $("#month_filter").val();
+  updateDataAll();
+});
+
+
+    //amLineChart
+    am4core.ready(function() {
+    am4core.useTheme(am4themes_animated);
+    var chart = am4core.create("amLineChart", am4charts.XYChart);
+    chart.colors.list = [
+    am4core.color("#eb0000"),
+    am4core.color("#4f86ab")
+    ]
+    chart.data = generateChartData();
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.startLocation = 0.5;
+    dateAxis.endLocation = 0.5;
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "visits";
+    series.dataFields.dateX = "date";
+    series.strokeWidth = 3;
+    series.tooltipText = "{valueY.value}";
+    series.fillOpacity = 0.1;
+    var range = valueAxis.createSeriesRange(series);
+    range.value = 0;
+    range.endValue = -1000;
+    range.contents.stroke = chart.colors.getIndex(1);
+    range.contents.fill = range.contents.stroke;
+    range.contents.strokeOpacity = 0.7;
+    range.contents.fillOpacity = 0.1;
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.xAxis = dateAxis;
+    series.tooltip.getFillFromObject = false;
+    series.tooltip.adapter.add("x", (x, target)=>{
+        if(series.tooltip.tooltipDataItem.valueY < 0){
+            series.tooltip.background.fill = chart.colors.getIndex(1);
+        }
+        else{
+            series.tooltip.background.fill = chart.colors.getIndex(0);
+        }
+        return x;
+    })
+    amLineChart = chart;
+    });
+
+
+
+    //amBarChart
+    am4core.ready(function() {
+    am4core.useTheme(am4themes_animated);
+    var chart = am4core.create("amBarChart", am4charts.XYChart);
+    chart.colors.list = [
+    am4core.color("#325082"),
+    am4core.color("#97aebd"),
+    am4core.color("#ff0000"),
+    ];
+    //chart.scrollbarX = new am4core.Scrollbar();
+    chart.data = {{amBarChartData|safe}};
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "industry";
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance = 30;
+    categoryAxis.renderer.labels.template.horizontalCenter = "right";
+    categoryAxis.renderer.labels.template.verticalCenter = "middle";
+    categoryAxis.renderer.labels.template.rotation = 270;
+    categoryAxis.tooltip.disabled = true;
+    categoryAxis.renderer.minHeight = 110;
+    categoryAxis.fontSize = '14'
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.minWidth = 50;
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.sequencedInterpolation = true;
+    series.dataFields.valueY = "visits";
+    series.dataFields.categoryX = "industry";
+    series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+    series.columns.template.strokeWidth = 0;
+    series.tooltip.pointerOrientation = "vertical";
+    series.columns.template.column.cornerRadiusTopLeft = 10;
+    series.columns.template.column.cornerRadiusTopRight = 10;
+    series.columns.template.column.fillOpacity = 0.8;
+    categoryAxis.sortBySeries = series;
+    var hoverState = series.columns.template.column.states.create("hover");
+    hoverState.properties.cornerRadiusTopLeft = 0;
+    hoverState.properties.cornerRadiusTopRight = 0;
+    hoverState.properties.fillOpacity = 1;
+    series.columns.template.adapter.add("fill", function(fill, target) {
+    return chart.colors.getIndex(target.dataItem.index);
+    });
+    chart.cursor = new am4charts.XYCursor();
+    chart.exporting.filePrefix = "barChart";
+    amBarChart = chart;
+    });
+
+
+      //amPieChart
+      am4core.ready(function() {
+      am4core.useTheme(am4themes_animated);
+      var chart = am4core.create("amPieChart", am4plugins_sunburst.Sunburst);
+      chart.padding(0, 0, 0, 0);
+      chart.radius = am4core.percent(92);
+      chart.data = pieData1;
+      chart.colors.list = [
+      am4core.color("#97aebd"),
+      am4core.color("#fc0303"),
+      ];
+      chart.fontSize = 11;
+      chart.innerRadius = am4core.percent(37);
+      chart.dataFields.value = "value";
+      chart.dataFields.name = "name";
+      chart.dataFields.children = "children";
+      var level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries();
+      chart.seriesTemplates.setKey("0", level0SeriesTemplate)
+      level0SeriesTemplate.labels.template.truncate = true;
+      level0SeriesTemplate.labels.template.hideOversized = true;
+      level0SeriesTemplate.showOnInit = false;
+      level0SeriesTemplate.usePercentHack = false;
+      level0SeriesTemplate.radius = am4core.percent(100);
+      level0SeriesTemplate.innerRadius = am4core.percent(0);
+      let selectedState = level0SeriesTemplate.states.create("selected");
+      selectedState.properties.opacity = 0.7;
+      level0SeriesTemplate.defaultState.properties.radius = am4core.percent(100);
+      var currentlySelected;
+      level0SeriesTemplate.slices.template.events.on("over", function(event) {
+        if(event.target.dataItem.sunburstDataItem.children){
+         event.target.cursorOverStyle = am4core.MouseCursorStyle.pointer;
+        }
+      })
+      level0SeriesTemplate.slices.template.events.on("hit", function(event) {
+        zoomOutButton.show();
+        var hitSlice = event.target;
+        if (hitSlice.dataItem.sunburstDataItem.children) {
+          var series = event.target.dataItem.component;
+          if (!series.dummyData) {
+            series.tooltip.disabled = true;
+            hitSlice.dataItem.label.radius = (hitSlice.radius - hitSlice.pixelInnerRadius) - 7;
+            hitSlice.dataItem.label.bent = true;
+            hitSlice.dataItem.label.rotation = -180;
+
+            currentlySelected = hitSlice;
+            series.dummyData = true;
+            series.setState("selected");
+            hitSlice.dataItem.sunburstDataItem.series.show();
+            series.slices.each(function(slice) {
+              if (slice != event.target) {
+                slice.dataItem.hide();
+              }
+            })
+          }
+          else {
+            drillUp(hitSlice);
+          }
+        }
+      })
+      level0SeriesTemplate.labels.template.adapter.add("rotation", function(rotation, target) {
+        target.maxWidth = target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10;
+        target.maxHeight = Math.abs(target.dataItem.slice.arc * (target.dataItem.slice.innerRadius + target.dataItem.slice.radius) / 2 * am4core.math.RADIANS);
+        return rotation;
+      })
+      var level1SeriesTemplate = level0SeriesTemplate.clone();
+      level1SeriesTemplate.hidden = true;
+      level1SeriesTemplate.innerRadius = am4core.percent(30);
+      chart.seriesTemplates.setKey("1", level1SeriesTemplate)
+      level1SeriesTemplate.fillOpacity = 0.75;
+      var level2SeriesTemplate = level0SeriesTemplate.clone();
+      level2SeriesTemplate.hidden = true;
+      level2SeriesTemplate.innerRadius = am4core.percent(20);
+      chart.seriesTemplates.setKey("2", level2SeriesTemplate)
+      var zoomOutButton = chart.seriesContainer.createChild(am4core.ZoomOutButton);
+      zoomOutButton.visible = false;
+      zoomOutButton.horizontalCenter = "middle";
+      zoomOutButton.verticalCenter = "middle";
+      zoomOutButton.events.on("hit", function() {
+        drillUp(currentlySelected)
+      })
+      function drillUp(slice) {
+        collapse(slice);
+        var series = slice.dataItem.component;
+        series.tooltip.disabled = false;
+        series.dummyData = false;
+        series.setState("default");
+
+        series.slices.each(function(slice) {
+          if (slice != event.target) {
+            slice.dataItem.show();
+          }
+        })
+        if (series.parentDataItem.seriesDataItem) {
+          currentlySelected = series.parentDataItem.seriesDataItem.slice;
+        }
+        else {
+          zoomOutButton.hide();
+        }
+      }
+      function collapse(slice) {
+        slice.dataItem.label.bent = false;
+        slice.dataItem.label.radius = 10;
+        if (slice.dataItem.sunburstDataItem.children) {
+          slice.dataItem.sunburstDataItem.children.each(function(child) {
+            child.seriesDataItem.component.setState("hidden");
+            collapse(child.seriesDataItem.slice);
+          })
+        }
+      }
+      chart.exporting.filePrefix = "pieChart";
+      amPieChart = chart;
+      });
+
+
+      Apex.grid = {
+          padding: {
+              right: 15,
+              left: 15,
+              bottom: 5
+          }
+      }
+
+      Apex.dataLabels = {
+          enabled: false
+      }
+
+      var randomizeArray = function (arg) {
+          var array = arg.slice();
+          var currentIndex = array.length, temporaryValue, randomIndex;
+
+          while (0 !== currentIndex) {
+
+              randomIndex = Math.floor(Math.random() * currentIndex);
+              currentIndex -= 1;
+
+              temporaryValue = array[currentIndex];
+              array[currentIndex] = array[randomIndex];
+              array[randomIndex] = temporaryValue;
+          }
+
+          return array;
+      }
+
+      // data for the sparklines that appear below header area
+      var sparklineData = [47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46];
+
+      function randomIntFromInterval(min, max) { // min and max included
+        return Math.floor(Math.random() * (max - min + 1) + min)
+      }
+
+      function generateSparkData(int){
+        var spark_data = [];
+
+        for (i=0; i < 26; i++){
+          spark_data.push(randomIntFromInterval(int,1000))
+        }
+        return spark_data
+      }
+
+      // the default colorPalette for this dashboard
+      //var colorPalette = ['#01BFD6', '#5564BE', '#F7A600', '#EDCD24', '#F74F58'];
+      var colorPalette = ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0']
+
+
+      var colors = ['#325082'];
+      var dataColors = $("#spark1").data('colors');
+      if (dataColors) {
+          colors = dataColors.split(",");
+      }
+      var spark1 = {
+          chart: {
+              type: 'area',
+              height: 160,
+              sparkline: {
+                  enabled: true
+              },
+          },
+          stroke: {
+              width: 2,
+              curve: 'smooth'
+          },
+          fill: {
+              opacity: 0.2,
+          },
+          series: [{
+              name: 'UBold Sales ',
+              data: generateSparkData(700)
+          }],
+          yaxis: {
+              min: 0
+          },
+          colors: colors,
+          title: {
+              text: '$424,652',
+              offsetX: 10,
+              style: {
+                  fontSize: '22px'
+              }
+          },
+          subtitle: {
+              text: 'Open Amount',
+              offsetX: 10,
+              offsetY: 35,
+              style: {
+                  fontSize: '13px'
+              }
+          }
+      }
+
+      spark1 = new ApexCharts(document.querySelector("#spark1"), spark1)
+      spark1.render();
+
+      var colors = ['#97aebd'];
+      var dataColors = $("#spark2").data('colors');
+      if (dataColors) {
+          colors = dataColors.split(",");
+      }
+      var spark2 = {
+          chart: {
+              type: 'area',
+              height: 160,
+              sparkline: {
+                  enabled: true
+              },
+          },
+          stroke: {
+              width: 2,
+              curve: 'smooth'
+          },
+          fill: {
+              opacity: 0.2,
+          },
+          series: [{
+              name: 'UBold Expenses ',
+              data: generateSparkData(600)
+          }],
+          yaxis: {
+              min: 0
+          },
+          colors: colors,
+          title: {
+              text: '$235,312',
+              offsetX: 10,
+              style: {
+                  fontSize: '22px'
+              }
+          },
+          subtitle: {
+              text: 'Current',
+              offsetX: 10,
+              offsetY: 35,
+              style: {
+                  fontSize: '13px'
+              }
+          }
+      }
+
+      spark2 = new ApexCharts(document.querySelector("#spark2"), spark2)
+      spark2.render();
+
+      // Sparkline 2
+      var colors = ['#ff0000'];
+      var dataColors = $("#spark3").data('colors');
+      if (dataColors) {
+          colors = dataColors.split(",");
+      }
+      var spark3 = {
+          chart: {
+              type: 'area',
+              height: 160,
+              sparkline: {
+                  enabled: true
+              },
+          },
+          stroke: {
+              width: 2,
+              curve: 'smooth'
+          },
+          fill: {
+              opacity: 0.2,
+          },
+          series: [{
+              name: 'Past Due',
+              data: generateSparkData(500)
+          }],
+          xaxis: {
+              crosshairs: {
+                  width: 1
+              },
+          },
+          yaxis: {
+              min: 0
+          },
+          colors: colors,
+          title: {
+              text: '$135,965',
+              offsetX: 10,
+              style: {
+                  fontSize: '22px'
+              }
+          },
+          subtitle: {
+              text: 'Past Due',
+              offsetX: 10,
+              offsetY: 35,
+              style: {
+                  fontSize: '13px'
+              }
+          }
+      }
+
+      spark3 = new ApexCharts(document.querySelector("#spark3"), spark3)
+      spark3.render();
+
+      var colors = ['#5c5c5c'];
+      var dataColors = $("#spark4").data('colors');
+      if (dataColors) {
+          colors = dataColors.split(",");
+      }
+      var spark4 = {
+          chart: {
+              type: 'area',
+              height: 160,
+              sparkline: {
+                  enabled: true
+              },
+          },
+          stroke: {
+              width: 2,
+              curve: 'smooth'
+          },
+          fill: {
+              opacity: 0.2,
+          },
+          series: [{
+              name: 'Days to Pay:',
+              data: generateSparkData(400)
+          }],
+          xaxis: {
+              crosshairs: {
+                  width: 1
+              },
+          },
+          yaxis: {
+              min: 0
+          },
+          colors: colors,
+          title: {
+              text: '48',
+              offsetX: 10,
+              style: {
+                  fontSize: '22px'
+              }
+          },
+          subtitle: {
+              text: 'Avg Days to Pay',
+              offsetX: 10,
+              offsetY: 35,
+              style: {
+                  fontSize: '13px'
+              }
+          }
+      }
+
+      spark4 = new ApexCharts(document.querySelector("#spark4"), spark4)
+      spark4.render();
+
+      var options = {
+        series: [{
+        name: 'Sales',
+        data: [400, 300, 1000, 900, 2009, 1900, 2200, 900, 1200, 700, 1900, 500, 1300, 900, 1700, 200, 700, 500]
+      }],
+        chart: {
+        height: 450,
+        type: 'line',
+      },
+      forecastDataPoints: {
+        count: 7
+      },
+      stroke: {
+        width: 5,
+        curve: 'smooth'
+      },
+      xaxis: {
+        type: 'datetime',
+        categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000', '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001', '3/11/2001','4/11/2001' ,'5/11/2001' ,'6/11/2001'],
+        tickAmount: 10,
+        labels: {
+          formatter: function(value, timestamp, opts) {
+            return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+          }
+        }
+      },
+      fill: {
+        colors: ['#e81a1a', '#e81a1a'],
+        type: 'solid',
+        opacity: 1,
+      },
+
+      yaxis: {
+        min: 0,
+        max: 2600
+      }
+      };
+
+      amProjChart = new ApexCharts(document.querySelector("#amProjChart"), options);
+      amProjChart.render();
+
+
+</script>
+
+<script>
+
+  //Context Menu
+   document.onclick = hideMenu;
+   document.oncontextmenu = rightClick;
+
+    function hideMenu() {
+        document.getElementById("contextMenu").style.display = "none"
+        $("#main_fade").fadeTo("fast", 1);
+    }
+
+    function rightClick(e) {
+    $("#main_fade").fadeTo("slow", 0.4);
+
+
+        e.preventDefault();
+
+        if (document.getElementById("contextMenu") .style.display == "block"){
+            hideMenu();
+
+        }else{
+            var menu = document.getElementById("contextMenu")
+            menu.style.display = 'block';
+            menu.style.left = e.pageX + "px";
+            menu.style.top = e.pageY + "px";
+        }
+
+  }
+
+function slugify(text)
+{
+  return text.toString()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
+function userSaveBookmark(){
+  console.log('Called');
+  $.ajax({
+      url: '{% url "save_bookmark" %}',
+      data: {
+
+        //Filters
+        'group_select': group_select,
+        'branch_select': branch_select,
+        'salesrep_select':salesrep_select,
+        'product_select':product_select,
+        'month_select':month_select,
+        'page': 'ar',
+
+        //Chart Options
+        'industry_select': industry_select
+      },
+
+      dataType: 'json',
+        success: function (data) {
+            if (data.success == 1) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Saved',
+                text: 'Bookmark Saved Successfully',
+                confirmButtonColor: '#00c247',
+              });
+            } else {
+              Swal.fire({
+                icon: 'danger',
+                title: 'Failed',
+                text: 'Bookmark Save Failed',
+                confirmButtonColor: '#db291d',
+              });
+            }
+        }
+  })
+};
+
+
+var all_pre_filters = null;
+
+
+$(document).ready(function() {
+
+    //PreFilters
+    var pre_filters = {{pre_filter|safe}};
+    all_pre_filters = pre_filters;
+
+    var has_prefilters = pre_filters[0].has_prefilters;
+
+    if (has_prefilters == 1){
+
+      var pre_group_select = pre_filters[1].group_select;
+      var pre_branch_select = pre_filters[2].branch_select;
+      var pre_salesrep_select = pre_filters[3].salesrep_select;
+      var pre_product_select = pre_filters[4].product_select;
+      var pre_month_select = pre_filters[5].month_select;
+      var pre_industry_select = pre_filters[6].industry_select;
+
+      group_select = pre_group_select;
+      branch_select = pre_branch_select;
+      salesrep_select = pre_salesrep_select;
+      product_select = pre_product_select;
+      month_select = pre_month_select;
+      industry_select = pre_industry_select;
+      updateDataAll();
+      console.log('Has Pre Filters');
+    };
+
+});
+
+</script>
+
+<script type="text/javascript">
+
+//Full Javascript Table
+//Main Table
+// Query the table
+const table = document.getElementById('resizeMe');
+
+// Query all headers
+cols = table.querySelectorAll('th');
+
+// Loop over them
+[].forEach.call(cols, function(col) {
+    // Create a resizer element
+    const resizer = document.createElement('div');
+    resizer.classList.add('resizer');
+
+    // Set the height
+    resizer.style.height = `${table.offsetHeight}px`;
+
+    // Add a resizer element to the column
+    col.appendChild(resizer);
+
+    // Will be implemented in the next section
+    createResizableColumn(col, resizer);
+});
+
+function createResizableColumn (col, resizer) {
+    // Track the current position of mouse
+    let x = 0;
+    let w = 0;
+
+    const mouseDownHandler = function(e) {
+        // Get the current mouse position
+        x = e.clientX;
+
+        // Calculate the current width of column
+        const styles = window.getComputedStyle(col);
+        w = parseInt(styles.width, 10);
+
+        // Attach listeners for document's events
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', mouseUpHandler);
+    };
+
+    const mouseMoveHandler = function(e) {
+        // Determine how far the mouse has been moved
+        const dx = e.clientX - x;
+
+        // Update the width of column
+        col.style.width = `${w + dx}px`;
+    };
+
+    // When user releases the mouse, remove the existing event listeners
+    const mouseUpHandler = function() {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    resizer.addEventListener('mousedown', mouseDownHandler);
+};
+
+  //Clusterize
+  var rows = [],
+  search = document.getElementById('cluster-search');
+
+  //Load Table Obj Into Clusterize
+  for(var i = 0; i <= table_data.length; i++){
+    var markup = null;
+    var init_c = 0;
+
+    try {
+      // Loop through each elemments inside each array
+      for (data of table_data[i]){
+        //Check to see if its the first row
+        if (init_c == 0){
+          //Conditional Formatting
+          if (data == '60+' || data == '1-60'){
+            markup = '<td class = "negval">' + data + '</td>'
+            init_c = 1;
+          } else {
+            markup = '<td>' + data + '</td>'
+            init_c = 1;
+          }
+          //Not first row
+        } else {
+          //Conditional Formatting
+          if (data == '60+' || data == '1-60'){
+            markup = markup + '<td class = "negval">' + data + '</td>'
+          } else {
+            markup = markup + '<td>' + data + '</td>'
+          }
+        }
+      }
+      rows.push({
+        values: table_data[i],
+        markup: '<tr>' + markup + '</tr>',
+        active: true
+      });
+
+     } catch(err) {
+      //pass
+     }
+   };
+
+
+  /*Fetch suitable rows*/
+  var filterRows = function(rows) {
+    var results = [];
+    for(var i = 0, ii = rows.length; i < ii; i++) {
+      if(rows[i].active) results.push(rows[i].markup)
+    }
+    return results;
+  }
+
+
+  var clusterize = new Clusterize({
+    rows: filterRows(rows),
+    scrollId: 'scrollArea',
+    contentId: 'contentArea'
+  });
+
+  /*Multi-column search */
+  var onSearch = function() {
+    for(var i = 0, ii = rows.length; i < ii; i++) {
+      var suitable = false;
+      for(var j = 0, jj = rows[i].values.length; j < jj; j++) {
+        if(rows[i].values[j].toString().toUpperCase().indexOf(search.value.toUpperCase())+1)
+          suitable = true;
+      }
+      rows[i].active = suitable;
+    }
+    clusterize.update(filterRows(rows));
+  }
+  search.oninput = onSearch;
+
+
+
+  var active_sort = 0;
+  var desc_order = 0;
+
+
+function sortColumn(col_no){
+
+    //Are we sorting on active sorted? If so just flip method.
+    if (col_no == active_sort){
+
+      if (desc_order == 0){
+        desc_order = 1;
+        table_data = table_data.sort(function(a, b) {
+          if (typeof b[col_no] == 'number'){
+            return b[col_no] - a[col_no];
+          } else {
+            if (b[col_no].substring(0,b[col_no].length) < a[col_no].substring(0,a[col_no].length)) return -1;
+            if (b[col_no].substring(0,b[col_no].length) > a[col_no].substring(0,a[col_no].length)) return 1;
+            return 0;
+          }
+        })
+
+      } else {
+        desc_order = 0;
+        table_data = table_data.sort(function(a, b) {
+          if (typeof b[col_no] == 'number'){
+            return a[col_no] - b[col_no];
+          } else {
+            if (b[col_no].substring(0,b[col_no].length) > a[col_no].substring(0,a[col_no].length)) return -1;
+            if (b[col_no].substring(0,b[col_no].length) < a[col_no].substring(0,a[col_no].length)) return 1;
+            return 0;
+          }
+        })
+      }
+
+    //Selecting a different column, default sort is asc
+    } else {
+      desc_order = 0;
+      active_sort = col_no;
+
+      table_data = table_data.sort(function(a, b) {
+        if (typeof b[col_no] == 'number'){
+          return b[col_no] - a[col_no];
+        } else {
+          if (b[col_no].substring(0,b[col_no].length) > a[col_no].substring(0,a[col_no].length)) return -1;
+          if (b[col_no].substring(0,b[col_no].length) < a[col_no].substring(0,a[col_no].length)) return 1;
+          return 0;
+        }
+      })
+    }
+
+  RebuildClusterize();
+}
+
+
+function RebuildClusterize(){
+
+  clusterize.clear();
+  rows = []
+  //Load Table Obj Into Clusterize
+  for(var i = 0; i <= table_data.length; i++){
+    var markup = null;
+    var init_c = 0;
+    try {
+      for (data of table_data[i]){
+        if (init_c == 0){
+          if (data == '60+' || data == '1-60'){
+            markup = '<td class = "negval">' + data + '</td>'
+            init_c = 1;
+          } else {
+            markup = '<td>' + data + '</td>'
+            init_c = 1;
+          }
+        } else {
+          if (data == '60+' || data == '1-60'){
+            markup = markup + '<td class="negval">' + data + '</td>'
+          } else {
+            markup = markup + '<td>' + data + '</td>'
+          }
+
+        }
+      }
+      rows.push({
+        values: table_data[i],
+        markup: '<tr>' + markup + '</tr>',
+        active: true
+      });
+
+     } catch(err) {
+      //pass
+     }
+   };
+
+   clusterize.update(filterRows(rows));
+}
+
+
+function exportTableToExcel(){
+    filename = 'dataexport'
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById('resizeMe');
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    filename = filename?filename+'.xls':'excel_data.xlsx';
+    downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+        downloadLink.download = filename;
+        downloadLink.click();
+    }
+}
+
+
+</script>
+
+
+
+
+</body>
+
+</html>
