@@ -121,14 +121,6 @@ class IndexView(TemplateView):
         return render(request, self.template_name, context)
 
 
-class DataView2(TemplateView):
-    template_name = 'customersn.html'
-
-    def get(self,request):
-        context = {}
-        return render(request, self.template_name, context)
-
-
 class GatherDataView(TemplateView):
 
     def get(self,request):
@@ -567,127 +559,6 @@ class ARDash(TemplateView):
         return render(request, self.template_name, context)
 
 
-class ARDashBookmark(TemplateView):
-    template_name = 'ardash.html'
-
-    def get(self,request, **kwargs):
-
-        context = {}
-        bookmark_id = self.kwargs['bookmark_id']
-        bookmark_obj = UserBookmarks.objects.filter(bookmark_id = bookmark_id).first()
-
-        if bookmark_obj:
-            context['pre_filter'] = [
-            {'has_prefilters': 1},
-            {'group_select': bookmark_obj.group_select},
-            {'branch_select': bookmark_obj.branch_select},
-            {'salesrep_select': bookmark_obj.salesrep_select},
-            {'product_select': bookmark_obj.product_select},
-            {'month_select': bookmark_obj.month_select},
-            {'industry_select': bookmark_obj.industry_select}
-            ]
-
-            #lookup_id = bookmark_obj.group_select + bookmark_obj.branch_select + bookmark_obj.salesrep_select + bookmark_obj.product_select + bookmark_obj.month_select + bookmark_obj.industry_select
-
-        else:
-            context['pre_filter'] = [{'has_prefilters': 0}]
-
-
-        #Get Industry Options for Select Menu
-        cursor = connection.cursor()
-        cursor.execute('''SELECT aging, SUM(PRICE) FROM MAIN_DATA GROUP BY aging ''')
-        row = cursor.fetchall()
-        industry_labels = []
-        for r in row:
-            industry_labels.append(r[0])
-        context['industry_labels'] = industry_labels
-
-        #Get Group Options for Select Menu
-        cursor.execute('''SELECT group_name, SUM(1) FROM MAIN_DATA GROUP BY group_name''')
-        row = cursor.fetchall()
-        group_labels = []
-        for r in row:
-            group_labels.append(r[0])
-        context['group_labels'] = group_labels
-
-        #Get Sales Rep Labels
-        cursor.execute('''SELECT salesrep, SUM(1) FROM MAIN_DATA GROUP BY salesrep''')
-        row = cursor.fetchall()
-        salesrep_labels = []
-        for r in row:
-            salesrep_labels.append(r[0])
-        context['salesrep_labels'] = salesrep_labels
-
-        #Get Branch Options for Select Menu
-        cursor.execute('''SELECT branch, SUM(PRICE) FROM MAIN_DATA GROUP BY branch ''')
-        row = cursor.fetchall()
-        branch_labels = []
-        for r in row:
-            branch_labels.append(r[0])
-        context['branch_labels'] = branch_labels
-
-        #Get Product Options for Select Menu
-        cursor.execute('''SELECT products, SUM(PRICE) FROM MAIN_DATA GROUP BY products ''')
-        row = cursor.fetchall()
-        product_labels = []
-        for r in row:
-            product_labels.append(r[0])
-        context['product_labels'] = product_labels
-
-        #Get Month Options for Select Menu
-        cursor.execute('''SELECT DISTINCT month FROM MAIN_DATA ORDER BY CAST(month as INTEGER)''')
-        row = cursor.fetchall()
-        month_labels = []
-        for r in row:
-            month_labels.append(r[0])
-        context['month_labels'] = month_labels
-
-
-        #Get Date/Amt Aggregation
-        cursor.execute('''SELECT date, SUM(PRICE) as PRICE FROM MAIN_DATA GROUP BY date''')
-        row = cursor.fetchall()
-        date_label = []
-        date_values = []
-        amChartData = []
-        for r in row:
-            amChartData.append({'date': r[0].strftime('%m/%d/%Y'), 'visits': r[1]})
-            date_label.append(r[0].strftime('%m/%d/%Y'))
-            date_values.append(r[1])
-        context['date_labels'] = date_label
-        context['date_values'] = date_values
-
-
-        #Get Industry Bar Chart Data
-        cursor.execute('''SELECT aging, SUM(PRICE) as PRICE FROM MAIN_DATA GROUP BY aging HAVING ''')
-        row = cursor.fetchall()
-
-        clabels = []
-        cdata = []
-        amBarChartData = []
-
-        for r in row:
-            if r[0]:
-                amBarChartData.append({'industry': r[0], 'visits': r[1]})
-                clabels.append(r[0])
-                cdata.append(int(r[1]))
-
-        context['clabels'] = clabels
-        context['cdata'] = cdata
-        context['amchartData'] = amChartData
-        context['amBarChartData'] = amBarChartData
-
-        main_data = []
-        cursor.execute('''SELECT group_name, branch, industry, products, salesrep, customer, SUM(PRICE) as PRICE FROM MAIN_DATA GROUP BY group_name, branch, industry, products, salesrep, customer LIMIT 100''')
-        row = cursor.fetchall()
-
-        for r in row:
-            main_data.append([r[0], r[1], r[2], r[3], r[4], r[5], r[6]])
-
-        context['main_data'] = main_data
-
-        return render(request, self.template_name, context)
-
-
 class SaveBookmark(TemplateView):
 
     def get(self,request):
@@ -907,3 +778,171 @@ class GatherDataViewAR(TemplateView):
         cache.set(lookup_id, data, 60*60*24)
 
         return JsonResponse(data)
+
+
+class ReportView(TemplateView):
+    template_name = 'ReportView.html'
+
+    def get(self,request):
+        context = {}
+        lookup_id = 'base_main_data_ar_table'
+        cache_get = cache.get(lookup_id)
+
+
+        if cache_get:
+            print('Cache Found, loading')
+            context = cache_get
+            return render(request, self.template_name, context)
+        else:
+            print('Cache not found, quering context')
+
+        context['pre_filter'] = [{'has_prefilters': 0}]
+
+        #Get Industry Options for Select Menu
+        cursor = connection.cursor()
+        cursor.execute('''SELECT aging, SUM(Amount) FROM MAIN_DATA_AR GROUP BY aging ''')
+        row = cursor.fetchall()
+        industry_labels = []
+        for r in row:
+            industry_labels.append(r[0])
+        context['industry_labels'] = industry_labels
+
+        #Get Group Options for Select Menu
+        cursor.execute('''SELECT group_name, SUM(1) FROM MAIN_DATA GROUP BY group_name''')
+        row = cursor.fetchall()
+        group_labels = []
+        for r in row:
+            group_labels.append(r[0])
+        context['group_labels'] = group_labels
+
+        #Get Sales Rep Labels
+        cursor.execute('''SELECT salesrep, SUM(1) FROM MAIN_DATA GROUP BY salesrep''')
+        row = cursor.fetchall()
+        salesrep_labels = []
+        for r in row:
+            salesrep_labels.append(r[0])
+        context['salesrep_labels'] = salesrep_labels
+
+        #Get Branch Options for Select Menu
+        cursor.execute('''SELECT branch, SUM(PRICE) FROM MAIN_DATA GROUP BY branch ''')
+        row = cursor.fetchall()
+        branch_labels = []
+        for r in row:
+            branch_labels.append(r[0])
+        context['branch_labels'] = branch_labels
+
+        #Get Product Options for Select Menu
+        cursor.execute('''SELECT products, SUM(PRICE) FROM MAIN_DATA GROUP BY products ''')
+        row = cursor.fetchall()
+        product_labels = []
+        for r in row:
+            product_labels.append(r[0])
+        context['product_labels'] = product_labels
+
+        #Get Month Options for Select Menu
+        cursor.execute('''SELECT DISTINCT month FROM MAIN_DATA ORDER BY CAST(month as INTEGER)''')
+        row = cursor.fetchall()
+        month_labels = []
+        for r in row:
+            month_labels.append(r[0])
+        context['month_labels'] = month_labels
+
+
+
+        main_data = []
+        cursor.execute('''SELECT branch, customer, date, item, type, aging, SUM(amount) as PRICE FROM MAIN_DATA_AR GROUP BY branch, customer, date, item, type, aging''')
+        row = cursor.fetchall()
+
+        for r in row:
+            main_data.append([r[0], r[1], r[2].strftime('%m/%d/%Y'), r[3], r[4], r[5], r[6]])
+
+        context['main_data'] = main_data
+
+        cache.set(lookup_id, context, 60*60*24)
+
+
+        return render(request, self.template_name, context)
+
+
+class ScatterView(TemplateView):
+    template_name = 'scatter.html'
+
+    def get(self,request):
+        context = {}
+        lookup_id = 'base_main_data_ar_scatter'
+        cache_get = cache.get(lookup_id)
+
+
+        if cache_get:
+            print('Cache Found, loading')
+            context = cache_get
+            return render(request, self.template_name, context)
+        else:
+            print('Cache not found, quering context')
+
+        context['pre_filter'] = [{'has_prefilters': 0}]
+
+        #Get Industry Options for Select Menu
+        cursor = connection.cursor()
+        cursor.execute('''SELECT aging, SUM(Amount) FROM MAIN_DATA_AR GROUP BY aging ''')
+        row = cursor.fetchall()
+        industry_labels = []
+        for r in row:
+            industry_labels.append(r[0])
+        context['industry_labels'] = industry_labels
+
+        #Get Group Options for Select Menu
+        cursor.execute('''SELECT group_name, SUM(1) FROM MAIN_DATA GROUP BY group_name''')
+        row = cursor.fetchall()
+        group_labels = []
+        for r in row:
+            group_labels.append(r[0])
+        context['group_labels'] = group_labels
+
+        #Get Sales Rep Labels
+        cursor.execute('''SELECT salesrep, SUM(1) FROM MAIN_DATA GROUP BY salesrep''')
+        row = cursor.fetchall()
+        salesrep_labels = []
+        for r in row:
+            salesrep_labels.append(r[0])
+        context['salesrep_labels'] = salesrep_labels
+
+        #Get Branch Options for Select Menu
+        cursor.execute('''SELECT branch, SUM(PRICE) FROM MAIN_DATA GROUP BY branch ''')
+        row = cursor.fetchall()
+        branch_labels = []
+        for r in row:
+            branch_labels.append(r[0])
+        context['branch_labels'] = branch_labels
+
+        #Get Product Options for Select Menu
+        cursor.execute('''SELECT products, SUM(PRICE) FROM MAIN_DATA GROUP BY products ''')
+        row = cursor.fetchall()
+        product_labels = []
+        for r in row:
+            product_labels.append(r[0])
+        context['product_labels'] = product_labels
+
+        #Get Month Options for Select Menu
+        cursor.execute('''SELECT DISTINCT month FROM MAIN_DATA ORDER BY CAST(month as INTEGER)''')
+        row = cursor.fetchall()
+        month_labels = []
+        for r in row:
+            month_labels.append(r[0])
+        context['month_labels'] = month_labels
+
+
+
+        main_data = []
+        cursor.execute('''SELECT branch, customer, date, item, type, aging, SUM(amount) as PRICE FROM MAIN_DATA_AR GROUP BY branch, customer, date, item, type, aging''')
+        row = cursor.fetchall()
+
+        for r in row:
+            main_data.append([r[0], r[1], r[2].strftime('%m/%d/%Y'), r[3], r[4], r[5], r[6]])
+
+        context['main_data'] = main_data
+
+        cache.set(lookup_id, context, 60*60*24)
+
+
+        return render(request, self.template_name, context)

@@ -256,137 +256,33 @@
         <div class="contents">
             <div class="container-fluid"><br>
 
-              <div class="row" >
-
-                <div class="col-md-3">
-                  <div class="card border-0" style='background-color:white;'>
-                      <div id = 'spark1'></div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="card border-0" style='background-color:white;'>
-                      <div id = 'spark2'></div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="card border-0" style='background-color:white;'>
-                      <div id = 'spark3'></div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                      <div id = 'spark4'></div>
-                  </div>
-                </div>
-              </div><br>
+          <div class="row">
 
 
-              <div class="row">
-
-
-                  <div class="col-md-4" >
-                    <div class="card border-0">
-                      <div class="card-header">
-                        <h6>Aging Buckets</h6>
-                        <div class="dropdown dropleft">
-                            <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span data-feather="more-horizontal"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
-                                <a class="dropdown-item" href="javascript:exportBarChart();">Export</a>
-                            </div>
-                        </div>
-                      </div>
-                      <div id ='amBarChart'></div>
-                    </div>
-                  </div>
-
-
-                  <div class="col-md-5">
-                    <div class="card border-0">
-                      <div class="card-header">
-                        <h6>A/R Increase/Decrease ($1000)</h6>
-                        <div class="dropdown dropleft">
-                            <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span data-feather="more-horizontal"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
-                                <a class="dropdown-item" href="javascript:exportLineChart();">Export</a>
-                            </div>
-                        </div>
-                      </div>
-                      <div id="amLineChart"></div>
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <div class="card border-0" style='height:510px;'>
-                    <div class="card-header">
-                      <h6>Current vs Past Due %</h6>
-                      <div class="dropdown dropleft">
-                          <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <span data-feather="more-horizontal"></span>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
-                              <a class="dropdown-item" href="javascript:exportLineChart();">Export</a>
-                          </div>
-                      </div>
-                    </div>
-                    <div id="amPieChart"></div>
-                </div>
-              </div>
-
-              </div>
-
-              <br>
-
-
-              <div class="row">
-
-            <div class="col-md-4">
-              <div class="card border-0" style='height:510px;'>
-                <div class="card-header">
-                  <h6>AR Projection</h6>
-                  <div class="dropdown dropleft">
-                      <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span data-feather="more-horizontal"></span>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
-                          <a class="dropdown-item" href="javascript:exportLineChart();">Export</a>
-                      </div>
-                  </div>
-                </div>
-                <div id="amProjChart"></div>
-            </div>
-          </div>
-
-          <div class="col-md-8">
-            <div class="card border-0" style='height:510px;'>
+          <div class="col-md-12" >
+            <div class="card border-0" style='height:800px;'>
               <div class="card-header">
-                <h6>AR Detail</h6>
+                <h6>AR - Full Interactive Report</h6>
                 <div class="dropdown dropleft">
                     <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span data-feather="more-horizontal"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
                         <a class="dropdown-item" href="javascript:exportTableToExcel();">Export</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'report_view' %}">View Full Report</a>
                     </div>
                 </div>
               </div>
 
-
-              <div class="container">
-                  <div class="row" style='padding-top:10px; padding-bottom:10px;'>
-                    <div class="col-12">
-                      <input type="text" id="cluster-search" class = 'form-control' placeholder="Search..." style="float: left; width: 20%;"/>
-                    </div>
+                <div class="row" style='padding-top:10px; padding-bottom:10px; padding-left:25px; padding-right:25px;'>
+                  <div class="col-12">
+                    <input type="text" id="cluster-search" class = 'form-control' placeholder="Search..." style="float: left; width: 20%;"/>
                   </div>
+                </div>
 
                 <div class="row">
-                    <div class="col-12">
-                      <div class="clusterize">
-                        <div id="scrollArea" class="clusterize-scroll" style='max-height: 375px;'>
+                    <div class="col-12" >
+                      <div class="clusterize" style='padding-left:25px; padding-right:25px;'>
+                        <div id="scrollArea" class="clusterize-scroll" style='max-height: 650px;'>
                           <table class="table table-bordered tablesize" id='resizeMe'>
                             <thead>
                               <tr style='background-color:rgba(204, 204, 204,.2);'>
@@ -409,15 +305,15 @@
                   </div>
                 </div>
               </div>
-            </div>
 
+          </div>
 
           </div>
         </div>
 
 
 
-      </div>
+
 
       <div class="row"><br><br><br><br><br><br><div>
 
@@ -425,31 +321,31 @@
 
   </div>
 
-  <footer class="footer-wrapper">
-      <div class="container-fluid">
-          <div class="row">
-              <div class="col-md-6">
-                  <div class="footer-copyright">
-                      <p><a href="#">Created by Josh Floyd</a>
-                      </p>
+      <footer class="footer-wrapper">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="footer-copyright">
+                          <p><a href="#">Notion Inc</a>
+                          </p>
+                      </div>
                   </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="footer-menu text-right">
-                      <ul>
-                          <li>
-                              <a href="#">About</a>
-                          </li>
-                          <li>
-                              <a href="#">Contact</a>
-                          </li>
-                      </ul>
+                  <div class="col-md-6">
+                      <div class="footer-menu text-right">
+                          <ul>
+                              <li>
+                                  <a href="#">inNotion</a>
+                              </li>
+                              <li>
+                                  <a href="#">eERP</a>
+                              </li>
+                          </ul>
+                      </div>
+                      <!-- ends: .Footer Menu -->
                   </div>
-                  <!-- ends: .Footer Menu -->
               </div>
           </div>
-      </div>
-  </footer>
+      </footer>
     </main>
 
     <div id="contextMenu" class="context-menu" style="display: none">
@@ -612,16 +508,6 @@ var pieData3 =  [{
 
 <script type="text/javascript">
 
-    //Line Chart Data
-    var xlabels = {{date_labels|safe}};
-    var xdata = {{date_values|safe}};
-
-    var amLineData = {{amchartData|safe}};
-
-    //Bar Chart Data
-    var clabels = {{clabels|safe}};
-    var cdata = {{cdata|safe}};
-
     //Table Data
     var table_data = {{main_data|safe}};
 
@@ -643,20 +529,6 @@ var pieData3 =  [{
     //Data
     var responseData = null;
 
-    //Charts
-    var amBarChart = null;
-    var amPieChart = null;
-    var amLineChart = null;
-    var amProjChart = null;
-
-    //SparkCharts
-
-    var spark1 = null;
-    var spark2 = null;
-    var spark3 = null;
-    var spark4 = null;
-
-    var pieCounter = 1;
 
     function clearAllSelections(){
       $('#group_filter').val('starter');
@@ -691,60 +563,6 @@ var pieData3 =  [{
     };
 
 
-    function redrawCanvas (){
-      $('#chart1').remove(); // this is my <canvas> element
-      $('#maink1').append('<canvas id="chart1"></canvas>');
-  };
-
-  function generateChartData() {
-    var chartData = [];
-    var firstDate = new Date();
-    firstDate.setDate( firstDate.getDate() - 650 );
-    var visits = -40;
-    var b = 0.6;
-    for ( var i = 0; i < 650; i++ ) {
-      var newDate = new Date( firstDate );
-      newDate.setDate( newDate.getDate() + i );
-      if(i > 80){
-          b = 0.5;
-      }
-      visits += Math.round((Math.random()<b?1:-1)*Math.random()*10);
-      chartData.push( {
-        date: newDate,
-        visits: visits
-      } );
-    }
-    return chartData;
-  }
-
-
-  function getPieData(){
-      if (pieCounter == 1){
-        pieCounter = pieCounter + 1;
-        return pieData1;
-      } else if (pieCounter == 2){
-        pieCounter = pieCounter + 1;
-        return pieData2;
-      } else {
-        pieCounter = 1;
-        return pieData3;
-      }
-  }
-
-
-  function dataReplace(){
-    $('#main_data_table').dataTable().fnClearTable();
-    if (table_data.length == 0){
-    } else {
-    $('#main_data_table').dataTable().fnAddData(table_data);
-   }
-  }
-
-  function rebuildCharts(){
-    //drawChart2(clabels,cdata);
-    dataReplace();
-  };
-
   function updateLabels(){
   };
 
@@ -772,44 +590,16 @@ var pieData3 =  [{
           success: function (data) {
               if (data.is_taken) {
 
-                  //linechart
-                  xlabels = data.date_labels
-                  xdata = data.date_values
-
-                  //barchart
-                  clabels = data.clabels
-                  cdata = data.cdata
-
                   table_data = data.main_data
 
                   //select labels
                   responseData = data
 
-                  redrawCanvas();
-                  rebuildCharts();
                   updateLabels();
                   updateFilters2();
-                  amBarChart.data = data.amBarChartData;
-                  amPieChart.data = getPieData();
-                  amLineChart.data = generateChartData();
+
                   RebuildClusterize();
 
-                  amProjChart.updateSeries([
-                    {data: generateARProjData()}
-                  ]);
-
-                  spark1.updateSeries([
-                    {data: generateSparkData(600)}
-                  ]);
-                  spark2.updateSeries([
-                    {data: generateSparkData(500)}
-                  ]);
-                  spark3.updateSeries([
-                    {data: generateSparkData(400)}
-                  ]);
-                  spark4.updateSeries([
-                    {data: generateSparkData(300)}
-                  ]);
               }
           }
     });
@@ -852,515 +642,6 @@ $("#month_filter").change(function () {
   month_select = $("#month_filter").val();
   updateDataAll();
 });
-
-
-    //amLineChart
-    am4core.ready(function() {
-    am4core.useTheme(am4themes_animated);
-    var chart = am4core.create("amLineChart", am4charts.XYChart);
-    chart.colors.list = [
-    am4core.color("#eb0000"),
-    am4core.color("#4f86ab")
-    ]
-    chart.data = generateChartData();
-    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.startLocation = 0.5;
-    dateAxis.endLocation = 0.5;
-    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    var series = chart.series.push(new am4charts.LineSeries());
-    series.dataFields.valueY = "visits";
-    series.dataFields.dateX = "date";
-    series.strokeWidth = 3;
-    series.tooltipText = "{valueY.value}";
-    series.fillOpacity = 0.1;
-    var range = valueAxis.createSeriesRange(series);
-    range.value = 0;
-    range.endValue = -1000;
-    range.contents.stroke = chart.colors.getIndex(1);
-    range.contents.fill = range.contents.stroke;
-    range.contents.strokeOpacity = 0.7;
-    range.contents.fillOpacity = 0.1;
-    chart.cursor = new am4charts.XYCursor();
-    chart.cursor.xAxis = dateAxis;
-    series.tooltip.getFillFromObject = false;
-    series.tooltip.adapter.add("x", (x, target)=>{
-        if(series.tooltip.tooltipDataItem.valueY < 0){
-            series.tooltip.background.fill = chart.colors.getIndex(1);
-        }
-        else{
-            series.tooltip.background.fill = chart.colors.getIndex(0);
-        }
-        return x;
-    })
-    amLineChart = chart;
-    });
-
-
-
-    //amBarChart
-    am4core.ready(function() {
-    am4core.useTheme(am4themes_animated);
-    var chart = am4core.create("amBarChart", am4charts.XYChart);
-    chart.colors.list = [
-    am4core.color("#325082"),
-    am4core.color("#97aebd"),
-    am4core.color("#ff0000"),
-    ];
-    //chart.scrollbarX = new am4core.Scrollbar();
-    chart.data = {{amBarChartData|safe}};
-    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.dataFields.category = "industry";
-    categoryAxis.renderer.grid.template.location = 0;
-    categoryAxis.renderer.minGridDistance = 30;
-    categoryAxis.renderer.labels.template.horizontalCenter = "right";
-    categoryAxis.renderer.labels.template.verticalCenter = "middle";
-    categoryAxis.renderer.labels.template.rotation = 270;
-    categoryAxis.tooltip.disabled = true;
-    categoryAxis.renderer.minHeight = 110;
-    categoryAxis.fontSize = '14'
-    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.renderer.minWidth = 50;
-    var series = chart.series.push(new am4charts.ColumnSeries());
-    series.sequencedInterpolation = true;
-    series.dataFields.valueY = "visits";
-    series.dataFields.categoryX = "industry";
-    series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
-    series.columns.template.strokeWidth = 0;
-    series.tooltip.pointerOrientation = "vertical";
-    series.columns.template.column.cornerRadiusTopLeft = 10;
-    series.columns.template.column.cornerRadiusTopRight = 10;
-    series.columns.template.column.fillOpacity = 0.8;
-    categoryAxis.sortBySeries = series;
-    var hoverState = series.columns.template.column.states.create("hover");
-    hoverState.properties.cornerRadiusTopLeft = 0;
-    hoverState.properties.cornerRadiusTopRight = 0;
-    hoverState.properties.fillOpacity = 1;
-    series.columns.template.adapter.add("fill", function(fill, target) {
-    return chart.colors.getIndex(target.dataItem.index);
-    });
-    chart.cursor = new am4charts.XYCursor();
-    chart.exporting.filePrefix = "barChart";
-    amBarChart = chart;
-    });
-
-
-      //amPieChart
-      am4core.ready(function() {
-      am4core.useTheme(am4themes_animated);
-      var chart = am4core.create("amPieChart", am4plugins_sunburst.Sunburst);
-      chart.padding(0, 0, 0, 0);
-      chart.radius = am4core.percent(92);
-      chart.data = pieData1;
-      chart.colors.list = [
-      am4core.color("#97aebd"),
-      am4core.color("#fc0303"),
-      ];
-      chart.fontSize = 11;
-      chart.innerRadius = am4core.percent(37);
-      chart.dataFields.value = "value";
-      chart.dataFields.name = "name";
-      chart.dataFields.children = "children";
-      var level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries();
-      chart.seriesTemplates.setKey("0", level0SeriesTemplate)
-      level0SeriesTemplate.labels.template.truncate = true;
-      level0SeriesTemplate.labels.template.hideOversized = true;
-      level0SeriesTemplate.showOnInit = false;
-      level0SeriesTemplate.usePercentHack = false;
-      level0SeriesTemplate.radius = am4core.percent(100);
-      level0SeriesTemplate.innerRadius = am4core.percent(0);
-      let selectedState = level0SeriesTemplate.states.create("selected");
-      selectedState.properties.opacity = 0.7;
-      level0SeriesTemplate.defaultState.properties.radius = am4core.percent(100);
-      var currentlySelected;
-      level0SeriesTemplate.slices.template.events.on("over", function(event) {
-        if(event.target.dataItem.sunburstDataItem.children){
-         event.target.cursorOverStyle = am4core.MouseCursorStyle.pointer;
-        }
-      })
-      level0SeriesTemplate.slices.template.events.on("hit", function(event) {
-        zoomOutButton.show();
-        var hitSlice = event.target;
-        if (hitSlice.dataItem.sunburstDataItem.children) {
-          var series = event.target.dataItem.component;
-          if (!series.dummyData) {
-            series.tooltip.disabled = true;
-            hitSlice.dataItem.label.radius = (hitSlice.radius - hitSlice.pixelInnerRadius) - 7;
-            hitSlice.dataItem.label.bent = true;
-            hitSlice.dataItem.label.rotation = -180;
-
-            currentlySelected = hitSlice;
-            series.dummyData = true;
-            series.setState("selected");
-            hitSlice.dataItem.sunburstDataItem.series.show();
-            series.slices.each(function(slice) {
-              if (slice != event.target) {
-                slice.dataItem.hide();
-              }
-            })
-          }
-          else {
-            drillUp(hitSlice);
-          }
-        }
-      })
-      level0SeriesTemplate.labels.template.adapter.add("rotation", function(rotation, target) {
-        target.maxWidth = target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10;
-        target.maxHeight = Math.abs(target.dataItem.slice.arc * (target.dataItem.slice.innerRadius + target.dataItem.slice.radius) / 2 * am4core.math.RADIANS);
-        return rotation;
-      })
-      var level1SeriesTemplate = level0SeriesTemplate.clone();
-      level1SeriesTemplate.hidden = true;
-      level1SeriesTemplate.innerRadius = am4core.percent(30);
-      chart.seriesTemplates.setKey("1", level1SeriesTemplate)
-      level1SeriesTemplate.fillOpacity = 0.75;
-      var level2SeriesTemplate = level0SeriesTemplate.clone();
-      level2SeriesTemplate.hidden = true;
-      level2SeriesTemplate.innerRadius = am4core.percent(20);
-      chart.seriesTemplates.setKey("2", level2SeriesTemplate)
-      var zoomOutButton = chart.seriesContainer.createChild(am4core.ZoomOutButton);
-      zoomOutButton.visible = false;
-      zoomOutButton.horizontalCenter = "middle";
-      zoomOutButton.verticalCenter = "middle";
-      zoomOutButton.events.on("hit", function() {
-        drillUp(currentlySelected)
-      })
-      function drillUp(slice) {
-        collapse(slice);
-        var series = slice.dataItem.component;
-        series.tooltip.disabled = false;
-        series.dummyData = false;
-        series.setState("default");
-
-        series.slices.each(function(slice) {
-          if (slice != event.target) {
-            slice.dataItem.show();
-          }
-        })
-        if (series.parentDataItem.seriesDataItem) {
-          currentlySelected = series.parentDataItem.seriesDataItem.slice;
-        }
-        else {
-          zoomOutButton.hide();
-        }
-      }
-      function collapse(slice) {
-        slice.dataItem.label.bent = false;
-        slice.dataItem.label.radius = 10;
-        if (slice.dataItem.sunburstDataItem.children) {
-          slice.dataItem.sunburstDataItem.children.each(function(child) {
-            child.seriesDataItem.component.setState("hidden");
-            collapse(child.seriesDataItem.slice);
-          })
-        }
-      }
-      chart.exporting.filePrefix = "pieChart";
-      amPieChart = chart;
-      });
-
-
-      Apex.grid = {
-          padding: {
-              right: 15,
-              left: 15,
-              bottom: 5
-          }
-      }
-
-      Apex.dataLabels = {
-          enabled: false
-      }
-
-      var randomizeArray = function (arg) {
-          var array = arg.slice();
-          var currentIndex = array.length, temporaryValue, randomIndex;
-
-          while (0 !== currentIndex) {
-
-              randomIndex = Math.floor(Math.random() * currentIndex);
-              currentIndex -= 1;
-
-              temporaryValue = array[currentIndex];
-              array[currentIndex] = array[randomIndex];
-              array[randomIndex] = temporaryValue;
-          }
-
-          return array;
-      }
-
-      // data for the sparklines that appear below header area
-      var sparklineData = [47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46];
-
-      function randomIntFromInterval(min, max) { // min and max included
-        return Math.floor(Math.random() * (max - min + 1) + min)
-      }
-
-      function generateSparkData(int){
-        var spark_data = [];
-
-        for (i=0; i < 26; i++){
-          spark_data.push(randomIntFromInterval(int,1000))
-        }
-        return spark_data
-      }
-
-      // the default colorPalette for this dashboard
-      //var colorPalette = ['#01BFD6', '#5564BE', '#F7A600', '#EDCD24', '#F74F58'];
-      var colorPalette = ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0']
-
-
-      var colors = ['#325082'];
-      var dataColors = $("#spark1").data('colors');
-      if (dataColors) {
-          colors = dataColors.split(",");
-      }
-      var spark1 = {
-          chart: {
-              type: 'area',
-              height: 160,
-              sparkline: {
-                  enabled: true
-              },
-          },
-          stroke: {
-              width: 2,
-              curve: 'smooth'
-          },
-          fill: {
-              opacity: 0.2,
-          },
-          series: [{
-              name: 'UBold Sales ',
-              data: generateSparkData(700)
-          }],
-          yaxis: {
-              min: 0
-          },
-          colors: colors,
-          title: {
-              text: '$424,652',
-              offsetX: 10,
-              style: {
-                  fontSize: '22px'
-              }
-          },
-          subtitle: {
-              text: 'Open Amount',
-              offsetX: 10,
-              offsetY: 35,
-              style: {
-                  fontSize: '13px'
-              }
-          }
-      }
-
-      spark1 = new ApexCharts(document.querySelector("#spark1"), spark1)
-      spark1.render();
-
-      var colors = ['#97aebd'];
-      var dataColors = $("#spark2").data('colors');
-      if (dataColors) {
-          colors = dataColors.split(",");
-      }
-      var spark2 = {
-          chart: {
-              type: 'area',
-              height: 160,
-              sparkline: {
-                  enabled: true
-              },
-          },
-          stroke: {
-              width: 2,
-              curve: 'smooth'
-          },
-          fill: {
-              opacity: 0.2,
-          },
-          series: [{
-              name: 'UBold Expenses ',
-              data: generateSparkData(600)
-          }],
-          yaxis: {
-              min: 0
-          },
-          colors: colors,
-          title: {
-              text: '$235,312',
-              offsetX: 10,
-              style: {
-                  fontSize: '22px'
-              }
-          },
-          subtitle: {
-              text: 'Current',
-              offsetX: 10,
-              offsetY: 35,
-              style: {
-                  fontSize: '13px'
-              }
-          }
-      }
-
-      spark2 = new ApexCharts(document.querySelector("#spark2"), spark2)
-      spark2.render();
-
-      // Sparkline 2
-      var colors = ['#ff0000'];
-      var dataColors = $("#spark3").data('colors');
-      if (dataColors) {
-          colors = dataColors.split(",");
-      }
-      var spark3 = {
-          chart: {
-              type: 'area',
-              height: 160,
-              sparkline: {
-                  enabled: true
-              },
-          },
-          stroke: {
-              width: 2,
-              curve: 'smooth'
-          },
-          fill: {
-              opacity: 0.2,
-          },
-          series: [{
-              name: 'Past Due',
-              data: generateSparkData(500)
-          }],
-          xaxis: {
-              crosshairs: {
-                  width: 1
-              },
-          },
-          yaxis: {
-              min: 0
-          },
-          colors: colors,
-          title: {
-              text: '$135,965',
-              offsetX: 10,
-              style: {
-                  fontSize: '22px'
-              }
-          },
-          subtitle: {
-              text: 'Past Due',
-              offsetX: 10,
-              offsetY: 35,
-              style: {
-                  fontSize: '13px'
-              }
-          }
-      }
-
-      spark3 = new ApexCharts(document.querySelector("#spark3"), spark3)
-      spark3.render();
-
-      var colors = ['#5c5c5c'];
-      var dataColors = $("#spark4").data('colors');
-      if (dataColors) {
-          colors = dataColors.split(",");
-      }
-      var spark4 = {
-          chart: {
-              type: 'area',
-              height: 160,
-              sparkline: {
-                  enabled: true
-              },
-          },
-          stroke: {
-              width: 2,
-              curve: 'smooth'
-          },
-          fill: {
-              opacity: 0.2,
-          },
-          series: [{
-              name: 'Days to Pay:',
-              data: generateSparkData(400)
-          }],
-          xaxis: {
-              crosshairs: {
-                  width: 1
-              },
-          },
-          yaxis: {
-              min: 0
-          },
-          colors: colors,
-          title: {
-              text: '48',
-              offsetX: 10,
-              style: {
-                  fontSize: '22px'
-              }
-          },
-          subtitle: {
-              text: 'Avg Days to Pay',
-              offsetX: 10,
-              offsetY: 35,
-              style: {
-                  fontSize: '13px'
-              }
-          }
-      }
-
-      spark4 = new ApexCharts(document.querySelector("#spark4"), spark4)
-      spark4.render();
-
-      function generateARProjData(){
-        var spark_data = [];
-
-        for (i=0; i < 19; i++){
-          spark_data.push(randomIntFromInterval(650,2400))
-        }
-        return spark_data
-      }
-
-      var options = {
-        series: [{
-        name: 'Sales',
-        data: generateARProjData()
-      }],
-        chart: {
-        height: 450,
-        type: 'line',
-      },
-      forecastDataPoints: {
-        count: 7
-      },
-      stroke: {
-        width: 5,
-        curve: 'smooth'
-      },
-      xaxis: {
-        type: 'datetime',
-        categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000', '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001', '3/11/2001','4/11/2001' ,'5/11/2001' ,'6/11/2001'],
-        tickAmount: 10,
-        labels: {
-          formatter: function(value, timestamp, opts) {
-            return opts.dateFormatter(new Date(timestamp), 'dd MMM')
-          }
-        }
-      },
-      fill: {
-        colors: ['#e81a1a', '#e81a1a'],
-        type: 'solid',
-        opacity: 1,
-      },
-
-      yaxis: {
-        min: 0,
-        max: 2600
-      }
-      };
-
-      amProjChart = new ApexCharts(document.querySelector("#amProjChart"), options);
-      amProjChart.render();
-
 
 </script>
 

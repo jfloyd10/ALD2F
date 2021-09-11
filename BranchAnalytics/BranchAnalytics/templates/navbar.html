@@ -4,42 +4,69 @@
     <div class="navbar-left">
         <a href="" class="sidebar-toggle">
             <img class="svg" src="{% static 'img/svg/bars.svg' %}" alt="img"></a>
-        <a class="navbar-brand" href="#"><img class="svg dark" src="https://www.motionindustries.com/assets/images/logos/Motion_Logo_NEW_RGB.png" alt="svg"><img class="light" src="https://www.motionindustries.com/assets/images/logos/Motion_Logo_NEW_RGB.png}" alt="img"></a>
+        <a class="navbar-brand" href="{% url 'index' %}"><img class="svg dark" src="{% static 'img/jfloyd6.png' %}" alt="svg"><img class="light" src="https://www.motionindustries.com/assets/images/logos/Motion_Logo_NEW_RGB.png}" alt="img"></a>
+
         <form action="/" class="search-form">
-            <span data-feather="search"></span>
-            <input class="form-control mr-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+          <div class="strikingDash-top-menu position-relative">
+              <ul>
+                  <li class="has-subMenu">
+                      <a href="#" class="{% if request.resolver_match.view_name != 'report_view' %}active{% endif %}">Dashboards</a>
+                      <ul class="subMenu">
+                        <li>
+                            <a class="{% if request.resolver_match.view_name == 'index' %}active{% endif %}" href="{% url 'index' %}">Static - Overview</a>
+                        </li>
+                          <li>
+                              <a class="{% if request.resolver_match.view_name == 'bidash' %}active{% endif %}" href="{% url 'bidash' %}">Interactive - Sales</a>
+                          </li>
+
+                          <li>
+                              <a class="{% if request.resolver_match.view_name == 'ardash' %}active{% endif %}" href="{% url 'ardash' %}">Interactive - A/R</a>
+                      </ul>
+                  </li>
+                  <li class="has-subMenu">
+                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Reports</a>
+                      <ul class="subMenu">
+                          <li class="l_sidebar">
+                              <a href="{% url 'report_view' %}">AR Detail</a>
+                          </li>
+
+                      </ul>
+                  </li>
+              </ul>
+          </div>
+
         </form>
+
         <div class="top-menu">
 
             <div class="strikingDash-top-menu position-relative">
-                <ul>
-                    <li class="has-subMenu">
-                        <a href="#" class="active">Dashboards</a>
-                        <ul class="subMenu">
+              <ul>
+
+                  <li class="has-subMenu">
+                      <a href="#" class="active">Dashboards</a>
+                      <ul class="subMenu">
+                        <li>
+                            <a class="{% if request.resolver_match.view_name == 'index' %}active{% endif %}" href="{% url 'index' %}">Static - Overview</a>
+                        </li>
                           <li>
-                              <a class="active" href="{% url 'index' %}">Overview</a>
+                              <a class="{% if request.resolver_match.view_name == 'bidash' %}active{% endif %}" href="{% url 'bidash' %}">Interactive - Sales</a>
                           </li>
-                            <li>
-                                <a class="" href="{% url 'bidash' %}">Sales Dashboard</a>
-                            </li>
 
-                            <li>
-                                <a class="" href="{% url 'ardash' %}">A/R Dashboard</a>
-                        </ul>
-                    </li>
-                    <li class="has-subMenu">
-                        <a href="#" class="">Reports</a>
-                        <ul class="subMenu">
-                            <li class="l_sidebar">
-                                <a href="#">Industries</a>
-                            </li>
-                            <li class="l_sidebar">
-                                <a href="#">Products</a>
-                            </li>
+                          <li>
+                              <a class="{% if request.resolver_match.view_name == 'ardash' %}active{% endif %}" href="{% url 'ardash' %}">Interactive - A/R</a>
+                      </ul>
+                  </li>
+                  <li class="has-subMenu">
+                      <a href="#" class="">Reports</a>
+                      <ul class="subMenu">
+                          <li class="l_sidebar">
+                              <a href="{% url 'report_view' %}">AR Detail</a>
+                          </li>
 
-                        </ul>
-                    </li>
-                </ul>
+                      </ul>
+                  </li>
+              </ul>
+
             </div>
 
         </div>
@@ -48,39 +75,29 @@
 
     <div class="navbar-right">
         <ul class="navbar-right__menu">
-            <li class="nav-search d-none">
-                <a href="#" class="search-toggle">
-                    <i class="la la-search"></i>
-                    <i class="la la-times"></i>
-                </a>
-                <form action="/" class="search-form-topMenu">
-                    <span class="search-icon" data-feather="search"></span>
-                    <input class="form-control mr-sm-2 box-shadow-none" type="search" placeholder="Location A" aria-label="Search">
-                </form>
-            </li>
 
             <li class="nav-notification">
                 <div class="dropdown-custom">
                     <a href="javascript:;" class="nav-item-toggle">
                         <span data-feather="bell"></span></a>
                     <div class="dropdown-wrapper">
-                        <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ml-1">1</span></h2>
+                        <h2 class="dropdown-wrapper__title">Alerts <span class="badge-circle badge-warning ml-1">1</span></h2>
                         <ul>
                             <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
                                 <div class="nav-notification__type nav-notification__type--primary">
                                     <span data-feather="inbox"></span>
                                 </div>
                                 <div class="nav-notification__details">
+                                    <a>
                                     <p>
-                                        <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Link</a>
                                         <span>You have 5 AP Exceptions</span>
                                     </p>
                                     <p>
+                                        <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">View</a>
                                         <span class="time-posted">5 hours ago</span>
                                     </p>
                                 </div>
                             </li>
-
 
                         </ul>
                         <a href="" class="dropdown-wrapper__more">See all notifications</a>
@@ -92,19 +109,6 @@
                 <div class="dropdown-custom">
                     <a href="javascript:;" class="nav-item-toggle">
                         <span data-feather="settings"></span></a>
-                    <div class="dropdown-wrapper dropdown-wrapper--large">
-                        <ul class="list-settings">
-                            <li class="d-flex">
-                                <div class="mr-3"><img src="{% static 'img/mail.png' %}" alt=""></div>
-                                <div class="flex-grow-1">
-                                    <h6>
-                                        <a href="" class="stretched-link">All Settings</a>
-                                    </h6>
-                                    <p>Settings Here </p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </li>
             <!-- ends: .nav-settings -->
@@ -112,15 +116,15 @@
             <!-- ends: .nav-flag-select -->
             <li class="nav-author">
                 <div class="dropdown-custom">
-                    <a href="javascript:;" class="nav-item-toggle"><img  src="data:image/png;base64,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" alt="" class="rounded-circle"></a>
+                    <a href="javascript:;" class="nav-item-toggle"><img  src="{% static 'img/jficon.png' %}" alt="" class="rounded-circle"></a>
                     <div class="dropdown-wrapper">
                         <div class="nav-author__info">
                             <div class="author-img">
-                                <img src="data:image/png;base64,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" alt="" class="rounded-circle">
+                                <img src="{% static 'img/jficon.png' %}" alt="" class="rounded-circle">
                             </div>
                             <div>
-                                <h6>Joshua Floyd</h6>
-                                <span>B.I Data Analyst</span>
+                                <h6>Josh Floyd</h6>
+                                <span>Creator</span>
                             </div>
                         </div>
                         <div class="nav-author__options">
@@ -144,13 +148,7 @@
             <!-- ends: .nav-author -->
         </ul>
         <!-- ends: .navbar-right__menu -->
-        <div class="navbar-right__mobileAction d-md-none">
-            <a href="#" class="btn-search">
-                <span data-feather="search"></span>
-                <span data-feather="x"></span></a>
-            <a href="#" class="btn-author-action">
-                <span data-feather="more-vertical"></span></a>
-        </div>
+
     </div>
     <!-- ends: .navbar-right -->
 </nav>

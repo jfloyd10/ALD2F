@@ -26,15 +26,21 @@ admin.site.index_title = "Analytics"
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    path('data2', views.DataView2.as_view(), name='data2'),
+
+    #Dashboards
     path('bidash/', views.BIDash.as_view(), name='bidash'),
     path('ardash/', views.ARDash.as_view(), name='ardash'),
-    path('ardash/<int:bookmark_id>/', views.ARDashBookmark.as_view(), name='ardash-bm'),
+    path('scatter/', views.ScatterView.as_view(), name='scatter'),
 
+    #Reports
+    path('report/', views.ReportView.as_view(), name='report_view'),
+
+    #Apis
     path('api/data', views.GatherDataView.as_view(), name='gather_data'),
     path('api/dataar', views.GatherDataViewAR.as_view(), name='gather_data_ar'),
-
     path('api/save_bookmark', views.SaveBookmark.as_view(), name='save_bookmark'),
+
+    #External Apps
     path('db/', include('db.urls', namespace='db')),
     path('users/', include('accounts.urls', namespace='users')),
     path('admin/', admin.site.urls),
