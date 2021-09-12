@@ -1,0 +1,401 @@
+YEAR,PERIOD,GROUP_NAME,BRANCH,ACCOUNT,AMOUNT
+2020,1,Midwest,IA147,Sales,14209
+2020,1,Midwest,IA147,COGS,9946
+2020,1,Midwest,IA147,Salaries,497
+2020,1,Midwest,IA147,Commissions,398
+2020,1,Midwest,IA147,Other OPEX,1989
+2020,2,Midwest,IA147,Sales,65067
+2020,2,Midwest,IA147,COGS,45547
+2020,2,Midwest,IA147,Salaries,2277
+2020,2,Midwest,IA147,Commissions,1822
+2020,2,Midwest,IA147,Other OPEX,9109
+2020,3,Midwest,IA147,Sales,11509
+2020,3,Midwest,IA147,COGS,8056
+2020,3,Midwest,IA147,Salaries,403
+2020,3,Midwest,IA147,Commissions,322
+2020,3,Midwest,IA147,Other OPEX,1611
+2020,4,Midwest,IA147,Sales,32802
+2020,4,Midwest,IA147,COGS,22961
+2020,4,Midwest,IA147,Salaries,1148
+2020,4,Midwest,IA147,Commissions,918
+2020,4,Midwest,IA147,Other OPEX,4592
+2020,5,Midwest,IA147,Sales,64380
+2020,5,Midwest,IA147,COGS,45066
+2020,5,Midwest,IA147,Salaries,2253
+2020,5,Midwest,IA147,Commissions,1803
+2020,5,Midwest,IA147,Other OPEX,9013
+2020,6,Midwest,IA147,Sales,5282
+2020,6,Midwest,IA147,COGS,3697
+2020,6,Midwest,IA147,Salaries,185
+2020,6,Midwest,IA147,Commissions,148
+2020,6,Midwest,IA147,Other OPEX,739
+2020,7,Midwest,IA147,Sales,58554
+2020,7,Midwest,IA147,COGS,40988
+2020,7,Midwest,IA147,Salaries,2049
+2020,7,Midwest,IA147,Commissions,1640
+2020,7,Midwest,IA147,Other OPEX,8198
+2020,8,Midwest,IA147,Sales,16181
+2020,8,Midwest,IA147,COGS,11327
+2020,8,Midwest,IA147,Salaries,566
+2020,8,Midwest,IA147,Commissions,453
+2020,8,Midwest,IA147,Other OPEX,2265
+2020,9,Midwest,IA147,Sales,62817
+2020,9,Midwest,IA147,COGS,43972
+2020,9,Midwest,IA147,Salaries,2199
+2020,9,Midwest,IA147,Commissions,1759
+2020,9,Midwest,IA147,Other OPEX,8794
+2020,10,Midwest,IA147,Sales,76177
+2020,10,Midwest,IA147,COGS,53324
+2020,10,Midwest,IA147,Salaries,2666
+2020,10,Midwest,IA147,Commissions,2133
+2020,10,Midwest,IA147,Other OPEX,10665
+2020,11,Midwest,IA147,Sales,22119
+2020,11,Midwest,IA147,COGS,15483
+2020,11,Midwest,IA147,Salaries,774
+2020,11,Midwest,IA147,Commissions,619
+2020,11,Midwest,IA147,Other OPEX,3097
+2020,12,Midwest,IA147,Sales,80434
+2020,12,Midwest,IA147,COGS,56304
+2020,12,Midwest,IA147,Salaries,2815
+2020,12,Midwest,IA147,Commissions,2252
+2020,12,Midwest,IA147,Other OPEX,11261
+2021,1,Midwest,IA147,Sales,13062
+2021,1,Midwest,IA147,COGS,9143
+2021,1,Midwest,IA147,Salaries,457
+2021,1,Midwest,IA147,Commissions,366
+2021,1,Midwest,IA147,Other OPEX,1829
+2021,2,Midwest,IA147,Sales,50844
+2021,2,Midwest,IA147,COGS,35591
+2021,2,Midwest,IA147,Salaries,1780
+2021,2,Midwest,IA147,Commissions,1424
+2021,2,Midwest,IA147,Other OPEX,7118
+2021,3,Midwest,IA147,Sales,20697
+2021,3,Midwest,IA147,COGS,14488
+2021,3,Midwest,IA147,Salaries,724
+2021,3,Midwest,IA147,Commissions,580
+2021,3,Midwest,IA147,Other OPEX,2898
+2021,4,Midwest,IA147,Sales,26191
+2021,4,Midwest,IA147,COGS,18334
+2021,4,Midwest,IA147,Salaries,917
+2021,4,Midwest,IA147,Commissions,733
+2021,4,Midwest,IA147,Other OPEX,3667
+2021,5,Midwest,IA147,Sales,56305
+2021,5,Midwest,IA147,COGS,39414
+2021,5,Midwest,IA147,Salaries,1971
+2021,5,Midwest,IA147,Commissions,1577
+2021,5,Midwest,IA147,Other OPEX,7883
+2021,6,Midwest,IA147,Sales,53491
+2021,6,Midwest,IA147,COGS,37444
+2021,6,Midwest,IA147,Salaries,1872
+2021,6,Midwest,IA147,Commissions,1498
+2021,6,Midwest,IA147,Other OPEX,7489
+2021,7,Midwest,IA147,Sales,57315
+2021,7,Midwest,IA147,COGS,40121
+2021,7,Midwest,IA147,Salaries,2006
+2021,7,Midwest,IA147,Commissions,1605
+2021,7,Midwest,IA147,Other OPEX,8024
+2021,8,Midwest,IA147,Sales,60618
+2021,8,Midwest,IA147,COGS,42433
+2021,8,Midwest,IA147,Salaries,2122
+2021,8,Midwest,IA147,Commissions,1697
+2021,8,Midwest,IA147,Other OPEX,8487
+2020,1,Northeast,CT103,Sales,7150
+2020,1,Northeast,CT103,COGS,5005
+2020,1,Northeast,CT103,Salaries,250
+2020,1,Northeast,CT103,Commissions,200
+2020,1,Northeast,CT103,Other OPEX,1001
+2020,2,Northeast,CT103,Sales,89337
+2020,2,Northeast,CT103,COGS,62536
+2020,2,Northeast,CT103,Salaries,3127
+2020,2,Northeast,CT103,Commissions,2501
+2020,2,Northeast,CT103,Other OPEX,12507
+2020,3,Northeast,CT103,Sales,5633
+2020,3,Northeast,CT103,COGS,3943
+2020,3,Northeast,CT103,Salaries,197
+2020,3,Northeast,CT103,Commissions,158
+2020,3,Northeast,CT103,Other OPEX,789
+2020,4,Northeast,CT103,Sales,39096
+2020,4,Northeast,CT103,COGS,27367
+2020,4,Northeast,CT103,Salaries,1368
+2020,4,Northeast,CT103,Commissions,1095
+2020,4,Northeast,CT103,Other OPEX,5473
+2020,5,Northeast,CT103,Sales,60774
+2020,5,Northeast,CT103,COGS,42542
+2020,5,Northeast,CT103,Salaries,2127
+2020,5,Northeast,CT103,Commissions,1702
+2020,5,Northeast,CT103,Other OPEX,8508
+2020,6,Northeast,CT103,Sales,7425
+2020,6,Northeast,CT103,COGS,5198
+2020,6,Northeast,CT103,Salaries,260
+2020,6,Northeast,CT103,Commissions,208
+2020,6,Northeast,CT103,Other OPEX,1040
+2020,7,Northeast,CT103,Sales,50418
+2020,7,Northeast,CT103,COGS,35293
+2020,7,Northeast,CT103,Salaries,1765
+2020,7,Northeast,CT103,Commissions,1412
+2020,7,Northeast,CT103,Other OPEX,7059
+2020,8,Northeast,CT103,Sales,61866
+2020,8,Northeast,CT103,COGS,43306
+2020,8,Northeast,CT103,Salaries,2165
+2020,8,Northeast,CT103,Commissions,1732
+2020,8,Northeast,CT103,Other OPEX,8661
+2020,9,Northeast,CT103,Sales,61039
+2020,9,Northeast,CT103,COGS,42727
+2020,9,Northeast,CT103,Salaries,2136
+2020,9,Northeast,CT103,Commissions,1709
+2020,9,Northeast,CT103,Other OPEX,8545
+2020,10,Northeast,CT103,Sales,86349
+2020,10,Northeast,CT103,COGS,60444
+2020,10,Northeast,CT103,Salaries,3022
+2020,10,Northeast,CT103,Commissions,2418
+2020,10,Northeast,CT103,Other OPEX,12089
+2020,11,Northeast,CT103,Sales,92307
+2020,11,Northeast,CT103,COGS,64615
+2020,11,Northeast,CT103,Salaries,3231
+2020,11,Northeast,CT103,Commissions,2585
+2020,11,Northeast,CT103,Other OPEX,12923
+2020,12,Northeast,CT103,Sales,64074
+2020,12,Northeast,CT103,COGS,44852
+2020,12,Northeast,CT103,Salaries,2243
+2020,12,Northeast,CT103,Commissions,1794
+2020,12,Northeast,CT103,Other OPEX,8970
+2021,1,Northeast,CT103,Sales,6262
+2021,1,Northeast,CT103,COGS,4383
+2021,1,Northeast,CT103,Salaries,219
+2021,1,Northeast,CT103,Commissions,175
+2021,1,Northeast,CT103,Other OPEX,877
+2021,2,Northeast,CT103,Sales,17003
+2021,2,Northeast,CT103,COGS,11902
+2021,2,Northeast,CT103,Salaries,595
+2021,2,Northeast,CT103,Commissions,476
+2021,2,Northeast,CT103,Other OPEX,2380
+2021,3,Northeast,CT103,Sales,18511
+2021,3,Northeast,CT103,COGS,12958
+2021,3,Northeast,CT103,Salaries,648
+2021,3,Northeast,CT103,Commissions,518
+2021,3,Northeast,CT103,Other OPEX,2592
+2021,4,Northeast,CT103,Sales,89127
+2021,4,Northeast,CT103,COGS,62389
+2021,4,Northeast,CT103,Salaries,3119
+2021,4,Northeast,CT103,Commissions,2496
+2021,4,Northeast,CT103,Other OPEX,12478
+2021,5,Northeast,CT103,Sales,62731
+2021,5,Northeast,CT103,COGS,43912
+2021,5,Northeast,CT103,Salaries,2196
+2021,5,Northeast,CT103,Commissions,1756
+2021,5,Northeast,CT103,Other OPEX,8782
+2021,6,Northeast,CT103,Sales,59504
+2021,6,Northeast,CT103,COGS,41653
+2021,6,Northeast,CT103,Salaries,2083
+2021,6,Northeast,CT103,Commissions,1666
+2021,6,Northeast,CT103,Other OPEX,8331
+2021,7,Northeast,CT103,Sales,54033
+2021,7,Northeast,CT103,COGS,37823
+2021,7,Northeast,CT103,Salaries,1891
+2021,7,Northeast,CT103,Commissions,1513
+2021,7,Northeast,CT103,Other OPEX,7565
+2021,8,Northeast,CT103,Sales,78323
+2021,8,Northeast,CT103,COGS,54826
+2021,8,Northeast,CT103,Salaries,2741
+2021,8,Northeast,CT103,Commissions,2193
+2021,8,Northeast,CT103,Other OPEX,10965
+2020,1,South,AL1,Sales,53988
+2020,1,South,AL1,COGS,37792
+2020,1,South,AL1,Salaries,1890
+2020,1,South,AL1,Commissions,1512
+2020,1,South,AL1,Other OPEX,7558
+2020,2,South,AL1,Sales,72083
+2020,2,South,AL1,COGS,50458
+2020,2,South,AL1,Salaries,2523
+2020,2,South,AL1,Commissions,2018
+2020,2,South,AL1,Other OPEX,10092
+2020,3,South,AL1,Sales,26642
+2020,3,South,AL1,COGS,18649
+2020,3,South,AL1,Salaries,932
+2020,3,South,AL1,Commissions,746
+2020,3,South,AL1,Other OPEX,3730
+2020,4,South,AL1,Sales,45135
+2020,4,South,AL1,COGS,31595
+2020,4,South,AL1,Salaries,1580
+2020,4,South,AL1,Commissions,1264
+2020,4,South,AL1,Other OPEX,6319
+2020,5,South,AL1,Sales,76030
+2020,5,South,AL1,COGS,53221
+2020,5,South,AL1,Salaries,2661
+2020,5,South,AL1,Commissions,2129
+2020,5,South,AL1,Other OPEX,10644
+2020,6,South,AL1,Sales,69280
+2020,6,South,AL1,COGS,48496
+2020,6,South,AL1,Salaries,2425
+2020,6,South,AL1,Commissions,1940
+2020,6,South,AL1,Other OPEX,9699
+2020,7,South,AL1,Sales,58042
+2020,7,South,AL1,COGS,40629
+2020,7,South,AL1,Salaries,2031
+2020,7,South,AL1,Commissions,1625
+2020,7,South,AL1,Other OPEX,8126
+2020,8,South,AL1,Sales,51798
+2020,8,South,AL1,COGS,36259
+2020,8,South,AL1,Salaries,1813
+2020,8,South,AL1,Commissions,1450
+2020,8,South,AL1,Other OPEX,7252
+2020,9,South,AL1,Sales,51444
+2020,9,South,AL1,COGS,36011
+2020,9,South,AL1,Salaries,1801
+2020,9,South,AL1,Commissions,1440
+2020,9,South,AL1,Other OPEX,7202
+2020,10,South,AL1,Sales,89608
+2020,10,South,AL1,COGS,62726
+2020,10,South,AL1,Salaries,3136
+2020,10,South,AL1,Commissions,2509
+2020,10,South,AL1,Other OPEX,12545
+2020,11,South,AL1,Sales,74674
+2020,11,South,AL1,COGS,52272
+2020,11,South,AL1,Salaries,2614
+2020,11,South,AL1,Commissions,2091
+2020,11,South,AL1,Other OPEX,10454
+2020,12,South,AL1,Sales,26947
+2020,12,South,AL1,COGS,18863
+2020,12,South,AL1,Salaries,943
+2020,12,South,AL1,Commissions,755
+2020,12,South,AL1,Other OPEX,3773
+2021,1,South,AL1,Sales,50321
+2021,1,South,AL1,COGS,35225
+2021,1,South,AL1,Salaries,1761
+2021,1,South,AL1,Commissions,1409
+2021,1,South,AL1,Other OPEX,7045
+2021,2,South,AL1,Sales,32999
+2021,2,South,AL1,COGS,23099
+2021,2,South,AL1,Salaries,1155
+2021,2,South,AL1,Commissions,924
+2021,2,South,AL1,Other OPEX,4620
+2021,3,South,AL1,Sales,89770
+2021,3,South,AL1,COGS,62839
+2021,3,South,AL1,Salaries,3142
+2021,3,South,AL1,Commissions,2514
+2021,3,South,AL1,Other OPEX,12568
+2021,4,South,AL1,Sales,51744
+2021,4,South,AL1,COGS,36221
+2021,4,South,AL1,Salaries,1811
+2021,4,South,AL1,Commissions,1449
+2021,4,South,AL1,Other OPEX,7244
+2021,5,South,AL1,Sales,37965
+2021,5,South,AL1,COGS,26576
+2021,5,South,AL1,Salaries,1329
+2021,5,South,AL1,Commissions,1063
+2021,5,South,AL1,Other OPEX,5315
+2021,6,South,AL1,Sales,27340
+2021,6,South,AL1,COGS,19138
+2021,6,South,AL1,Salaries,957
+2021,6,South,AL1,Commissions,766
+2021,6,South,AL1,Other OPEX,3828
+2021,7,South,AL1,Sales,96471
+2021,7,South,AL1,COGS,67530
+2021,7,South,AL1,Salaries,3376
+2021,7,South,AL1,Commissions,2701
+2021,7,South,AL1,Other OPEX,13506
+2021,8,South,AL1,Sales,45249
+2021,8,South,AL1,COGS,31674
+2021,8,South,AL1,Salaries,1584
+2021,8,South,AL1,Commissions,1267
+2021,8,South,AL1,Other OPEX,6335
+2020,1,West,AZ10,Sales,45694
+2020,1,West,AZ10,COGS,31986
+2020,1,West,AZ10,Salaries,1599
+2020,1,West,AZ10,Commissions,1279
+2020,1,West,AZ10,Other OPEX,6397
+2020,2,West,AZ10,Sales,49558
+2020,2,West,AZ10,COGS,34691
+2020,2,West,AZ10,Salaries,1735
+2020,2,West,AZ10,Commissions,1388
+2020,2,West,AZ10,Other OPEX,6938
+2020,3,West,AZ10,Sales,47496
+2020,3,West,AZ10,COGS,33247
+2020,3,West,AZ10,Salaries,1662
+2020,3,West,AZ10,Commissions,1330
+2020,3,West,AZ10,Other OPEX,6649
+2020,4,West,AZ10,Sales,23043
+2020,4,West,AZ10,COGS,16130
+2020,4,West,AZ10,Salaries,807
+2020,4,West,AZ10,Commissions,645
+2020,4,West,AZ10,Other OPEX,3226
+2020,5,West,AZ10,Sales,91545
+2020,5,West,AZ10,COGS,64082
+2020,5,West,AZ10,Salaries,3204
+2020,5,West,AZ10,Commissions,2563
+2020,5,West,AZ10,Other OPEX,12816
+2020,6,West,AZ10,Sales,33653
+2020,6,West,AZ10,COGS,23557
+2020,6,West,AZ10,Salaries,1178
+2020,6,West,AZ10,Commissions,942
+2020,6,West,AZ10,Other OPEX,4711
+2020,7,West,AZ10,Sales,80898
+2020,7,West,AZ10,COGS,56629
+2020,7,West,AZ10,Salaries,2831
+2020,7,West,AZ10,Commissions,2265
+2020,7,West,AZ10,Other OPEX,11326
+2020,8,West,AZ10,Sales,66213
+2020,8,West,AZ10,COGS,46349
+2020,8,West,AZ10,Salaries,2317
+2020,8,West,AZ10,Commissions,1854
+2020,8,West,AZ10,Other OPEX,9270
+2020,9,West,AZ10,Sales,57490
+2020,9,West,AZ10,COGS,40243
+2020,9,West,AZ10,Salaries,2012
+2020,9,West,AZ10,Commissions,1610
+2020,9,West,AZ10,Other OPEX,8049
+2020,10,West,AZ10,Sales,54325
+2020,10,West,AZ10,COGS,38028
+2020,10,West,AZ10,Salaries,1901
+2020,10,West,AZ10,Commissions,1521
+2020,10,West,AZ10,Other OPEX,7606
+2020,11,West,AZ10,Sales,28452
+2020,11,West,AZ10,COGS,19916
+2020,11,West,AZ10,Salaries,996
+2020,11,West,AZ10,Commissions,797
+2020,11,West,AZ10,Other OPEX,3983
+2020,12,West,AZ10,Sales,56425
+2020,12,West,AZ10,COGS,39498
+2020,12,West,AZ10,Salaries,1975
+2020,12,West,AZ10,Commissions,1580
+2020,12,West,AZ10,Other OPEX,7900
+2021,1,West,AZ10,Sales,97677
+2021,1,West,AZ10,COGS,68374
+2021,1,West,AZ10,Salaries,3419
+2021,1,West,AZ10,Commissions,2735
+2021,1,West,AZ10,Other OPEX,13675
+2021,2,West,AZ10,Sales,83971
+2021,2,West,AZ10,COGS,58780
+2021,2,West,AZ10,Salaries,2939
+2021,2,West,AZ10,Commissions,2351
+2021,2,West,AZ10,Other OPEX,11756
+2021,3,West,AZ10,Sales,93695
+2021,3,West,AZ10,COGS,65587
+2021,3,West,AZ10,Salaries,3279
+2021,3,West,AZ10,Commissions,2623
+2021,3,West,AZ10,Other OPEX,13117
+2021,4,West,AZ10,Sales,16668
+2021,4,West,AZ10,COGS,11668
+2021,4,West,AZ10,Salaries,583
+2021,4,West,AZ10,Commissions,467
+2021,4,West,AZ10,Other OPEX,2334
+2021,5,West,AZ10,Sales,61916
+2021,5,West,AZ10,COGS,43341
+2021,5,West,AZ10,Salaries,2167
+2021,5,West,AZ10,Commissions,1734
+2021,5,West,AZ10,Other OPEX,8668
+2021,6,West,AZ10,Sales,57170
+2021,6,West,AZ10,COGS,40019
+2021,6,West,AZ10,Salaries,2001
+2021,6,West,AZ10,Commissions,1601
+2021,6,West,AZ10,Other OPEX,8004
+2021,7,West,AZ10,Sales,29664
+2021,7,West,AZ10,COGS,20765
+2021,7,West,AZ10,Salaries,1038
+2021,7,West,AZ10,Commissions,831
+2021,7,West,AZ10,Other OPEX,4153
+2021,8,West,AZ10,Sales,13798
+2021,8,West,AZ10,COGS,9659
+2021,8,West,AZ10,Salaries,483
+2021,8,West,AZ10,Commissions,386
+2021,8,West,AZ10,Other OPEX,1932

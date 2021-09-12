@@ -10,7 +10,7 @@
           <div class="strikingDash-top-menu position-relative">
               <ul>
                   <li class="has-subMenu">
-                      <a href="#" class="{% if request.resolver_match.view_name != 'report_view' %}active{% endif %}">Dashboards</a>
+                      <a href="#" class="{% if request.resolver_match.view_name != 'report_view' and request.resolver_match.view_name != 'financial_reports' and request.resolver_match.view_name != 'profit_loss' %}active{% endif %}">Dashboards</a>
                       <ul class="subMenu">
                         <li>
                             <a class="{% if request.resolver_match.view_name == 'index' %}active{% endif %}" href="{% url 'index' %}">Static - Overview</a>
@@ -24,12 +24,17 @@
                       </ul>
                   </li>
                   <li class="has-subMenu">
-                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Reports</a>
+                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view' or request.resolver_match.view_name == 'financial_reports' or request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Reports</a>
                       <ul class="subMenu">
                           <li class="l_sidebar">
-                              <a href="{% url 'report_view' %}">AR Detail</a>
+                              <a href="{% url 'report_view' %}" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Interactive - Table</a>
                           </li>
-
+                          <li class="l_sidebar">
+                              <a href="{% url 'financial_reports' %}" class="{% if request.resolver_match.view_name == 'financial_reports' %}active{% endif %}">Sales Report</a>
+                          </li>
+                          <li class="l_sidebar">
+                              <a href="{% url 'profit_loss' %}" class="{% if request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Income Statement</a>
+                          </li>
                       </ul>
                   </li>
               </ul>
@@ -57,12 +62,17 @@
                       </ul>
                   </li>
                   <li class="has-subMenu">
-                      <a href="#" class="">Reports</a>
+                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view' or request.resolver_match.view_name == 'financial_reports' or request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Reports</a>
                       <ul class="subMenu">
                           <li class="l_sidebar">
-                              <a href="{% url 'report_view' %}">AR Detail</a>
+                              <a href="{% url 'report_view' %}" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Interactive - Table</a>
                           </li>
-
+                          <li class="l_sidebar">
+                              <a href="{% url 'financial_reports' %}" class="{% if request.resolver_match.view_name == 'financial_reports' %}active{% endif %}">Sales Report</a>
+                          </li>
+                          <li class="l_sidebar">
+                              <a href="{% url 'profit_loss' %}" class="{% if request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Income Statement</a>
+                          </li>
                       </ul>
                   </li>
               </ul>

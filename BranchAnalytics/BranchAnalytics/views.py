@@ -946,3 +946,495 @@ class ScatterView(TemplateView):
 
 
         return render(request, self.template_name, context)
+
+
+class FinancialReports(TemplateView):
+    template_name = 'financialreports.html'
+
+    def get(self,request):
+        context = {}
+        lookup_id = 'base_main_data_financials'
+        cache_get = cache.get(lookup_id)
+
+
+        if cache_get:
+            print('Cache Found, loading')
+            context = cache_get
+            return render(request, self.template_name, context)
+        else:
+            print('Cache not found, quering context')
+
+        context['pre_filter'] = [{'has_prefilters': 0}]
+
+        #Get Industry Options for Select Menu
+        cursor = connection.cursor()
+        cursor.execute('''SELECT aging, SUM(Amount) FROM MAIN_DATA_AR GROUP BY aging ''')
+        row = cursor.fetchall()
+        industry_labels = []
+        for r in row:
+            industry_labels.append(r[0])
+        context['industry_labels'] = industry_labels
+
+        #Get Group Options for Select Menu
+        cursor.execute('''SELECT group_name, SUM(1) FROM MAIN_DATA GROUP BY group_name''')
+        row = cursor.fetchall()
+        group_labels = []
+        for r in row:
+            group_labels.append(r[0])
+        context['group_labels'] = group_labels
+
+        #Get Sales Rep Labels
+        cursor.execute('''SELECT salesrep, SUM(1) FROM MAIN_DATA GROUP BY salesrep''')
+        row = cursor.fetchall()
+        salesrep_labels = []
+        for r in row:
+            salesrep_labels.append(r[0])
+        context['salesrep_labels'] = salesrep_labels
+
+        #Get Branch Options for Select Menu
+        cursor.execute('''SELECT branch, SUM(PRICE) FROM MAIN_DATA GROUP BY branch ''')
+        row = cursor.fetchall()
+        branch_labels = []
+        for r in row:
+            branch_labels.append(r[0])
+        context['branch_labels'] = branch_labels
+
+        #Get Product Options for Select Menu
+        cursor.execute('''SELECT products, SUM(PRICE) FROM MAIN_DATA GROUP BY products ''')
+        row = cursor.fetchall()
+        product_labels = []
+        for r in row:
+            product_labels.append(r[0])
+        context['product_labels'] = product_labels
+
+        #Get Month Options for Select Menu
+        cursor.execute('''SELECT DISTINCT month FROM MAIN_DATA ORDER BY CAST(month as INTEGER)''')
+        row = cursor.fetchall()
+        month_labels = []
+        for r in row:
+            month_labels.append(r[0])
+        context['month_labels'] = month_labels
+
+
+
+        main_data = []
+        cursor.execute('''SELECT branch, customer, date, item, type, aging, SUM(amount) as PRICE FROM MAIN_DATA_AR GROUP BY branch, customer, date, item, type, aging''')
+        row = cursor.fetchall()
+
+        for r in row:
+            main_data.append([r[0], r[1], r[2].strftime('%m/%d/%Y'), r[3], r[4], r[5], r[6]])
+
+        context['main_data'] = main_data
+
+        cache.set(lookup_id, context, 60*60*24)
+
+
+        return render(request, self.template_name, context)
+
+
+class PLView(TemplateView):
+    template_name = 'profit_loss.html'
+
+    def get(self,request):
+        context = {}
+        lookup_id = 'base_main_data_gl'
+        cache_get = cache.get(lookup_id)
+
+
+        if cache_get:
+            print('Cache Found, loading')
+            context = cache_get
+            return render(request, self.template_name, context)
+        else:
+            print('Cache not found, quering context')
+
+        context['pre_filter'] = [{'has_prefilters': 0}]
+
+        #Get Industry Options for Select Menu
+        cursor = connection.cursor()
+
+        #Get Group Options for Select Menu
+        cursor.execute('''SELECT group_name, SUM(1) FROM LEDGER GROUP BY group_name''')
+        row = cursor.fetchall()
+        group_labels = []
+        for r in row:
+            group_labels.append(r[0])
+        context['group_labels'] = group_labels
+
+        #Get Branch Options for Select Menu
+        cursor.execute('''SELECT branch, SUM(Amount) FROM LEDGER GROUP BY branch ''')
+        row = cursor.fetchall()
+        branch_labels = []
+        for r in row:
+            branch_labels.append(r[0])
+        context['branch_labels'] = branch_labels
+
+        #Get Month Options for Select Menu
+        cursor.execute('''SELECT DISTINCT period FROM LEDGER ORDER BY CAST(period as INTEGER)''')
+        row = cursor.fetchall()
+        month_labels = []
+        for r in row:
+            month_labels.append(r[0])
+        context['month_labels'] = month_labels
+
+
+        main_data = []
+        cursor.execute('''SELECT
+        L.branch,
+        L.group_name,
+        L.year,
+        L.period,
+        L.account,
+        S.sort_order,
+        SUM(L.amount) as Amount
+
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        GROUP BY
+        L.branch,
+        L.group_name,
+        L.year,
+        L.period,
+        L.account,
+        S.sort_order
+
+        ORDER BY
+        S.sort_order
+
+
+        ''')
+        row = cursor.fetchall()
+
+        for r in row:
+            main_data.append([r[0], r[1], r[2], r[3], r[4], r[5]])
+
+        context['main_data'] = main_data
+
+        pl_table = []
+        cursor.execute('''SELECT
+        L.account,
+        S.sort_order,
+        SUM(L.amount) as amount
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        GROUP BY
+        L.account,
+        S.sort_order
+
+        ORDER BY
+        S.sort_order
+
+        ''')
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_table.append([r[0], r[1], r[2]])
+
+        context['pl_table'] = pl_table
+
+        pl_table_l1 = []
+        cursor.execute('''SELECT
+        L.account,
+        S.sort_order,
+        SUM(L.amount) as amount
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE s.account_level = 1
+
+        GROUP BY
+        L.account,
+        S.sort_order
+
+        ORDER BY
+        S.sort_order
+
+        ''')
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_table_l1.append([r[0], r[1], r[2]])
+
+        context['pl_line1'] = pl_table_l1
+
+        pl_table_l2 = []
+        cursor.execute('''SELECT
+        L.account,
+        S.sort_order,
+        SUM(L.amount) as amount
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE s.account_level = 2
+
+        GROUP BY
+        L.account,
+        S.sort_order
+
+        ORDER BY
+        S.sort_order
+
+        ''')
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_table_l2.append([r[0], r[1], r[2]])
+
+        context['pl_line2'] = pl_table_l2
+
+        #Gross Profit
+        pl_gross_profit = []
+        cursor.execute('''SELECT
+        SUM(
+        CASE
+            WHEN L.account = "Sales" Then L.amount
+            ELSE L.amount*-1
+        END) as amount
+
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE s.account_level = 1
+
+
+        ''')
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_gross_profit.append(r[0])
+
+        context['pl_gross_profit'] = pl_gross_profit[0]
+
+
+        #Net Income
+        pl_net_profit = []
+        cursor.execute('''SELECT
+        SUM(
+        CASE
+            WHEN L.account = "Sales" Then L.amount
+            ELSE L.amount*-1
+        END) as amount
+
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        ''')
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_net_profit.append(r[0])
+
+        context['pl_net_profit'] = pl_net_profit[0]
+
+
+        cache.set(lookup_id, context, 60*60*24)
+
+
+        return render(request, self.template_name, context)
+
+
+class GatherDataViewGL(TemplateView):
+
+    def get(self,request):
+        cursor = connection.cursor()
+        data = {}
+        group_name = request.GET.get('group_select', None)
+        branch_select = request.GET.get('branch_select', None)
+        month_select = request.GET.get('month_select', None)
+
+
+        group_name = process_sql(group_name, 'group_name')
+        branch_select = process_sql(branch_select, 'branch')
+        month_select = process_sql(month_select, 'month')
+
+        print(group_name)
+        print(branch_select)
+        print(month_select)
+
+        lookup_id = group_name + branch_select + month_select + 'gl'
+        cache_get = cache.get(lookup_id)
+
+        if cache_get:
+            print('Cache Found, loading')
+            data = cache_get
+            return JsonResponse(data)
+        else:
+            print('Cache not found, quering context')
+
+
+        main_data = []
+        cursor.execute("""
+        SELECT
+        L.group_name,
+        L.year,
+        L.period,
+        L.account,
+        L.branch,
+        SUM(L.amount) as amount
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE 1=1
+        {}
+        {}
+        {}
+
+        GROUP BY
+        L.group_name,
+        L.year,
+        L.period,
+        L.account,
+        L.branch
+
+        """.format(group_name, branch_select, month_select))
+        row = cursor.fetchall()
+
+        for r in row:
+            main_data.append([r[0], r[1], r[2], r[3], r[4], r[5]])
+
+        data['main_data'] = main_data
+
+        pl_table = []
+        cursor.execute('''SELECT account, SUM(amount) as amount FROM LEDGER GROUP BY account''')
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_table.append([r[0], r[1]])
+
+        data['pl_table'] = pl_table
+
+        pl_table_l1 = []
+        cursor.execute('''SELECT
+        L.account,
+        S.sort_order,
+        SUM(L.amount) as amount
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE s.account_level = 1
+        {}
+        {}
+        {}
+
+        GROUP BY
+        L.account,
+        S.sort_order
+
+        ORDER BY
+        S.sort_order
+
+        '''.format(group_name, branch_select, month_select))
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_table_l1.append([r[0], r[1], r[2]])
+
+        data['pl_line1'] = pl_table_l1
+
+        pl_table_l2 = []
+        cursor.execute('''SELECT
+        L.account,
+        S.sort_order,
+        SUM(L.amount) as amount
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE s.account_level = 2
+        {}
+        {}
+        {}
+
+
+        GROUP BY
+        L.account,
+        S.sort_order
+
+        ORDER BY
+        S.sort_order
+
+        '''.format(group_name, branch_select, month_select))
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_table_l2.append([r[0], r[1], r[2]])
+
+        data['pl_line2'] = pl_table_l2
+
+        #Gross Profit
+        pl_gross_profit = []
+        cursor.execute('''SELECT
+        SUM(
+        CASE
+            WHEN L.account = "Sales" Then L.amount
+            ELSE L.amount*-1
+        END) as amount
+
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE s.account_level = 1
+        {}
+        {}
+        {}
+
+
+        '''.format(group_name, branch_select, month_select))
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_gross_profit.append(r[0])
+
+        data['pl_gross_profit'] = pl_gross_profit[0]
+
+
+        #Net Income
+        pl_net_profit = []
+        cursor.execute('''SELECT
+        SUM(
+        CASE
+            WHEN L.account = "Sales" Then L.amount
+            ELSE L.amount*-1
+        END) as amount
+
+        FROM LEDGER as L
+        LEFT JOIN ACCOUNT_SORT as S
+        ON L.account = S.account
+
+        WHERE 1=1
+        {}
+        {}
+        {}
+
+        '''.format(group_name, branch_select, month_select))
+
+        row = cursor.fetchall()
+
+        for r in row:
+            pl_net_profit.append(r[0])
+
+        data['pl_net_profit'] = pl_net_profit[0]
+
+        data['is_taken'] = [1,1]
+        cache.set(lookup_id, data, 60*60*24)
+
+        return JsonResponse(data)

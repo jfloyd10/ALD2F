@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Count
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
-from .models import MainData,MainDataAR
+from .models import MainData,MainDataAR, LedgerData
 import csv
 from datetime import datetime
 
@@ -78,6 +78,32 @@ class DBLoadAR(TemplateView):
 
         return render(request, self.template_name, context)
 
+
+class DBLoadLedger(TemplateView):
+
+    def get(self,request):
+        context = {}
+        print('Loading Data')
+
+        with open("PLGenerated.csv") as f:
+            reader = csv.reader(f)
+            i = 0
+            for row in reader:
+                if i == 0:
+                    i = 1
+                else:
+                    new_obj = LedgerData.objects.create(
+                        year=row[0],
+                        period=row[1],
+                        group_name=row[2],
+                        branch=row[3],
+                        account=row[4],
+                        amount=row[5]
+                        )
+
+                    new_obj.save()
+
+        return render(request, self.template_name, context)
 
 class DBClear(TemplateView):
 

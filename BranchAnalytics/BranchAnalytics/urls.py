@@ -34,10 +34,13 @@ urlpatterns = [
 
     #Reports
     path('report/', views.ReportView.as_view(), name='report_view'),
+    path('financials/', views.FinancialReports.as_view(), name='financial_reports'),
+    path('p&l/', views.PLView.as_view(), name='profit_loss'),
 
     #Apis
     path('api/data', views.GatherDataView.as_view(), name='gather_data'),
     path('api/dataar', views.GatherDataViewAR.as_view(), name='gather_data_ar'),
+    path('api/datagl', views.GatherDataViewGL.as_view(), name='gather_data_gl'),
     path('api/save_bookmark', views.SaveBookmark.as_view(), name='save_bookmark'),
 
     #External Apps

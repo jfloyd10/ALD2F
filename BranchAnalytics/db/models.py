@@ -97,3 +97,42 @@ class MainDataAR(models.Model):
         db_table = "MAIN_DATA_AR"
         verbose_name = 'MAIN_DATA_AR'
         verbose_name_plural = 'MAIN_DATA_AR'
+
+
+class LedgerData(models.Model):
+
+
+    data_id = models.AutoField(primary_key=True)
+    group_name = models.CharField(max_length=100, blank=True, null=True)
+    year = models.CharField(max_length=100, blank=True, null=True)
+    period = models.CharField(max_length=100, blank=True, null=True)
+    branch = models.CharField(max_length=100, blank=True, null=True)
+    account = models.CharField(max_length=100, blank=True, null=True)
+    amount = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return ('{}'.format(self.data_id))
+
+    class Meta:
+        db_table = "LEDGER"
+        verbose_name = 'LEDGER'
+        verbose_name_plural = 'LEDGER'
+
+
+class AccountSortOrder(models.Model):
+    sort_id = models.AutoField(primary_key=True)
+    account = models.CharField(max_length=100, blank=True, null=True)
+    sort_order = models.CharField(max_length=100, blank=True, null=True)
+    subtotal_follow = models.CharField(max_length=100, blank=True, null=True)
+    subtotal = models.CharField(max_length=100, blank=True, null=True)
+    account_level = models.CharField(max_length=100, blank=True, null=True)
+
+
+    def __str__(self):
+        return ('{} - {}'.format(self.account, self.sort_order))
+
+    class Meta:
+        db_table = "ACCOUNT_SORT"
+        verbose_name = 'ACCOUNT_SORT'
+        verbose_name_plural = 'ACCOUNT_SORT'

@@ -206,34 +206,6 @@
 
                   <br>
                   <li class="menu-title">
-                      <span>Customer</span>
-                  </li>
-                  <li class="has-child open">
-                      <a href="#" class="active">
-                        <select id='salesrep_filter'>
-                          <option value='starter' id='salesrep_filter_default'>Select All</option>
-                          {% for g in salesrep_labels %}
-                          <option value='{{g}}'>{{g}}</option>
-                          {% endfor %}
-                        </select>
-                      </a>
-                  </li>
-                  <br>
-                  <li class="menu-title">
-                      <span>Type</span>
-                  </li>
-                  <li class="has-child open">
-                      <a href="#" class="active">
-                        <select id='product_filter'>
-                          <option value='starter' id='product_filter_default'>Select All</option>
-                          {% for g in product_labels %}
-                          <option value='{{g}}'>{{g}}</option>
-                          {% endfor %}
-                        </select>
-                      </a>
-                  </li>
-                  <br>
-                  <li class="menu-title">
                       <span>Period</span>
                   </li>
                   <li class="has-child open">
@@ -256,54 +228,237 @@
         <div class="contents">
             <div class="container-fluid"><br>
 
-          <div class="row">
-
-
-          <div class="col-md-12" >
-            <div class="card border-0" style='height:800px;'>
-              <div class="card-header">
-                <h6>AR - Full Interactive Report</h6>
-                <div class="dropdown dropleft">
-                    <a href="#" role="button" id="topPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span data-feather="more-horizontal"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="topPage">
-                        <a class="dropdown-item" href="javascript:exportTableToExcel();">Export</a>
-                    </div>
-                </div>
-              </div>
-
-                <div class="row" style='padding-top:10px; padding-bottom:10px; padding-left:25px; padding-right:25px;'>
-                  <div class="col-12">
-                    <input type="text" id="cluster-search" class = 'form-control' placeholder="Search..." style="float: left; width: 20%;"/>
-                  </div>
-                </div>
 
                 <div class="row">
-                    <div class="col-12" >
-                      <div class="clusterize" style='padding-left:25px; padding-right:25px;'>
-                        <div id="scrollArea" class="clusterize-scroll" style='max-height: 650px;'>
-                          <table class="table table-bordered tablesize" id='resizeMe'>
-                            <thead>
-                              <tr style='background-color:rgba(204, 204, 204,.2);'>
-                                <th><a href='javascript:sortColumn(0);' style="color:black">Branch</a></th>
-                                <th><a href='javascript:sortColumn(1);' style="color:black">Customer</a></th>
-                                <th><a href='javascript:sortColumn(2);' style="color:black">Date</a></th>
-                                <th><a href='javascript:sortColumn(3);' style="color:black">Item</a></th>
-                                <th><a href='javascript:sortColumn(4);' style="color:black">Type</a></th>
-                                <th><a href='javascript:sortColumn(5);' style="color:black">Aging</a></th>
-                                <th><a href='javascript:sortColumn(6);' style="color:black">Amount</a></th>
-                              </tr>
-                            </thead>
-                          <tbody id="contentArea" class="clusterize-content">
-                            <tr class="clusterize-no-data">
-                              <td>Loading data…</td>
-                            </tr>
-                          </tbody>
-                        </table>
+
+                  <div class="col-xxl-12 mb-25">
+
+                      <div class="card border-0">
+                          <div class="card-header">
+                              <h6>Sales Report</h6>
+                              <div class="card-extra">
+                                  <div class="card-tab btn-group atbd-button-group mr-3 nav nav-tabs">
+                                      <a class="btn btn-xs btn-white active border" id="f_today-tab" data-toggle="tab" href="#st_matrics-today" role="tab" area-controls="st_matrics" aria-selected="true">Group</a>
+                                      <a class="btn btn-xs btn-white border" id="f_year-tab" data-toggle="tab" href="#st_matrics-year" role="tab" area-controls="st_matrics" aria-selected="false">Region</a>
+                                      <a class="btn btn-xs btn-white border" id="f_year-tab" data-toggle="tab" href="#st_matrics-year" role="tab" area-controls="st_matrics" aria-selected="false">Branch</a>
+                                  </div>
+                                  <div class="dropdown dropleft">
+                                      <a href="#" role="button" id="Today" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <span data-feather="more-horizontal"></span>
+                                      </a>
+                                      <div class="dropdown-menu" aria-labelledby="Today">
+                                          <a class="dropdown-item" href="#">Action</a>
+                                          <div class="dropdown-divider"></div>
+                                          <a class="dropdown-item" href="{% url 'report_view' %}">View Full Report</a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="card-body p-0">
+                              <div class="tab-content">
+                                  <div class="tab-pane fade active show" id="st_matrics-today" role="" aria-labelledby="st_matrics-tab">
+                                      <div class="table-responsive">
+                                          <table class="table table-bordered table-social">
+                                              <thead>
+                                                  <tr>
+                                                      <th scope="col"></th>
+                                                      <th scope="col" colspan="4" style='align-center; text-align:center'>August</th>
+                                                      <th scope="col" colspan="4" style='align-center; text-align:center'>YTD</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                  <tr>
+                                                      <td>Line</td>
+                                                      <td>2021</td>
+                                                      <td>2020</td>
+                                                      <td>Var</td>
+                                                      <td>%Quota</td>
+                                                      <td>2021</td>
+                                                      <td>2020</td>
+                                                      <td>% Var</td>
+                                                      <td>%Quota</td>
+                                                  </tr>
+                                                  {% for t in pl_line1 %}
+
+                                                  <tr>
+
+                                                      <td>
+                                                          {{t.0}}
+                                                      </td>
+                                                      <td>${{t.2|intcomma}}</td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                  </tr>
+
+                                                  {% endfor %}
+
+                                                  <tr>
+
+                                                      <td>
+                                                          <a href=""><b>Gross Profit</b></a>
+                                                      </td>
+                                                      <td>${{pl_gross_profit|intcomma}}</td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                  </tr>
+
+                                                  {% for t in pl_line2 %}
+
+                                                  <tr>
+
+                                                      <td>
+                                                          {{t.0}}
+                                                      </td>
+                                                      <td>${{t.2|intcomma}}</td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                  </tr>
+
+                                                  {% endfor %}
+
+                                                  <tr>
+
+                                                      <td>
+                                                          <a href=""><b>Net Income</b></a>
+                                                      </td>
+                                                      <td>${{pl_net_profit|intcomma}}</td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                      <td></td>
+                                                  </tr>
+
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+
+                                  <div class="tab-pane fade" id="st_matrics-year" role="tabpanel" aria-labelledby="st_matrics-tab">
+                                      <div class="table-responsive">
+                                        <table class="table table-bordered table-social">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"></th>
+                                                    <th scope="col" colspan="3" style='align-center; text-align:center'>2021</th>
+                                                    <th scope="col" colspan="3" style='align-center; text-align:center'>2020</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Line</td>
+                                                    <td>Actuals</td>
+                                                    <td>$ Var</td>
+                                                    <td>% Var</td>
+                                                    <td>Actuals</td>
+                                                    <td>$ Var</td>
+                                                    <td>% Var</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Sales
+                                                    </td>
+                                                    <td>311,458</td>
+                                                    <td>4,552</td>
+                                                    <td>21.4%</td>
+                                                    <td>2,458</td>
+                                                    <td>$3,584</td>
+                                                    <td>18.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        COGS
+                                                    </td>
+                                                    <td>311,458</td>
+                                                    <td>4,552</td>
+                                                    <td>21.4%</td>
+                                                    <td>2,458</td>
+                                                    <td>$3,584</td>
+                                                    <td>18.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href=""><b>Gross Profit</b></a>
+                                                    </td>
+                                                    <td>311,458</td>
+                                                    <td>4,552</td>
+                                                    <td>21.4%</td>
+                                                    <td>2,458</td>
+                                                    <td>$3,584</td>
+                                                    <td>18.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Salaries
+                                                    </td>
+                                                    <td>311,458</td>
+                                                    <td>4,552</td>
+                                                    <td>21.4%</td>
+                                                    <td>2,458</td>
+                                                    <td>$3,584</td>
+                                                    <td>18.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Commissions
+                                                    </td>
+                                                    <td>311,458</td>
+                                                    <td>4,552</td>
+                                                    <td>21.4%</td>
+                                                    <td>2,458</td>
+                                                    <td>$3,584</td>
+                                                    <td>18.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Other OPEX
+                                                    </td>
+                                                    <td>311,458</td>
+                                                    <td>4,552</td>
+                                                    <td>21.4%</td>
+                                                    <td>2,458</td>
+                                                    <td>$3,584</td>
+                                                    <td>18.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href=""><b>Net Income</b></a>
+                                                    </td>
+                                                    <td><b>311,458</b></td>
+                                                    <td><b>4,552</b></td>
+                                                    <td><b>21.4%</b></td>
+                                                    <td><b>2,458</b></td>
+                                                    <td><b>$3,584</b></td>
+                                                    <td><b>18.5%</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
+
                   </div>
-                </div>
+
+
               </div>
 
           </div>
@@ -444,86 +599,21 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.12.0/clusterize.min.js"></script>
 
- <script>
-
-    //Pie Chart Data
-    var pieData1 =  [{
-     name: "Current",
-     children: [
-       { name: "Current", value: 100 },
-       { name: "Due in 15", value: 60 }
-     ]
-   },
-   {
-     name: "Past Due",
-     children: [
-       { name: "1-30", value: 135 },
-       { name: "31-60", value: 98 },
-       { name: "61-90", value: 98 },
-       { name: "90+", value: 98 },
-     ]
-   }
-];
-
-var pieData2 =  [{
- name: "Current",
- children: [
-   { name: "Current", value: 50 },
-   { name: "Due in 15", value: 50 }
- ]
-},
-{
- name: "Past Due",
- children: [
-   { name: "1-30", value: 20 },
-   { name: "31-60", value: 57 },
-   { name: "61-90", value: 50 },
-   { name: "90+", value: 58 },
- ]
-}
-];
-
-var pieData3 =  [{
- name: "Current",
- children: [
-   { name: "Current", value: 50 },
-   { name: "Due in 15", value: 50 }
- ]
-},
-{
- name: "Past Due",
- children: [
-   { name: "1-30", value: 50 },
-   { name: "31-60", value: 80 },
-   { name: "61-90", value: 50 },
-   { name: "90+", value: 12 },
- ]
-}
-];
-
-
-
-</script>
 
 
 <script type="text/javascript">
 
     //Table Data
-    var table_data = {{main_data|safe}};
+    var table_data = {{pl_table|safe}};
 
     //Selectors
     var group_select = ['starter'];
     var branch_select = ['starter'];
-    var salesrep_select = ['starter'];
-    var product_select = ['starter'];
     var month_select = ['starter'];
-    var industry_select = ['starter'];
 
     //Labels
     var group_labels = {{group_labels|safe}};
     var branch_labels = {{branch_labels|safe}};
-    var salesrep_labels = {{salesrep_labels|safe}};
-    var product_labels = {{product_labels|safe}};
     var month_labels = {{month_labels|safe}};
 
     //Data
@@ -535,11 +625,8 @@ var pieData3 =  [{
       $('#group_filter').trigger('change');
       $('#branch_filter').val('starter');
       $('#branch_filter').trigger('change');
-      $('#salesrep_filter').val('starter');
-      $('#salesrep_filter').trigger('change');
       $('#month_filter').val('starter');
       $('#month_filter').trigger('change');
-      industry_select = ['starter'];
     };
 
     function clearAllandRefresh(){
@@ -547,12 +634,8 @@ var pieData3 =  [{
       $('#group_filter').trigger('change');
       $('#branch_filter').val('starter');
       $('#branch_filter').trigger('change');
-      $('#salesrep_filter').val('starter');
-      $('#salesrep_filter').trigger('change');
       $('#month_filter').val('starter');
       $('#month_filter').trigger('change');
-      $('#product_filter').val('starter');
-      $('#product_filter').trigger('change');
       industry_select = ['starter'];
 
       updateDataAll();
@@ -572,18 +655,14 @@ var pieData3 =  [{
   function updateDataAll(){
 
     $.ajax({
-        url: '{% url "gather_data_ar" %}',
+        url: '{% url "gather_data_gl" %}',
         data: {
 
           //Filters
           'group_select': group_select,
           'branch_select': branch_select,
-          'salesrep_select':salesrep_select,
-          'product_select':product_select,
           'month_select':month_select,
 
-          //Chart Options
-          'industry_select': industry_select
         },
 
         dataType: 'json',
@@ -594,11 +673,8 @@ var pieData3 =  [{
 
                   //select labels
                   responseData = data
-
                   updateLabels();
                   updateFilters2();
-
-                  RebuildClusterize();
 
               }
           }
@@ -610,8 +686,6 @@ $(document).ready(function(){
   // Initialize select2
   $("#group_filter").select2();
   $("#branch_filter").select2();
-  $("#salesrep_filter").select2();
-  $("#product_filter").select2();
   $("#month_filter").select2();
 });
 
@@ -624,17 +698,6 @@ $("#group_filter").change(function () {
 
 $("#branch_filter").change(function () {
   branch_select = $("#branch_filter").val();
-  updateDataAll();
-});
-
-
-$("#salesrep_filter").change(function () {
-  salesrep_select = $("#salesrep_filter").val();
-  updateDataAll();
-});
-
-$("#product_filter").change(function () {
-  product_select = $("#product_filter").val();
   updateDataAll();
 });
 
@@ -693,13 +756,9 @@ function userSaveBookmark(){
         //Filters
         'group_select': group_select,
         'branch_select': branch_select,
-        'salesrep_select':salesrep_select,
-        'product_select':product_select,
         'month_select':month_select,
-        'page': 'ar',
+        'page': 'ledger',
 
-        //Chart Options
-        'industry_select': industry_select
       },
 
       dataType: 'json',
@@ -725,293 +784,6 @@ function userSaveBookmark(){
 
 
 var all_pre_filters = null;
-
-
-$(document).ready(function() {
-
-    //PreFilters
-    var pre_filters = {{pre_filter|safe}};
-    all_pre_filters = pre_filters;
-
-    var has_prefilters = pre_filters[0].has_prefilters;
-
-    if (has_prefilters == 1){
-
-      var pre_group_select = pre_filters[1].group_select;
-      var pre_branch_select = pre_filters[2].branch_select;
-      var pre_salesrep_select = pre_filters[3].salesrep_select;
-      var pre_product_select = pre_filters[4].product_select;
-      var pre_month_select = pre_filters[5].month_select;
-      var pre_industry_select = pre_filters[6].industry_select;
-
-      group_select = pre_group_select;
-      branch_select = pre_branch_select;
-      salesrep_select = pre_salesrep_select;
-      product_select = pre_product_select;
-      month_select = pre_month_select;
-      industry_select = pre_industry_select;
-      updateDataAll();
-      console.log('Has Pre Filters');
-    };
-
-});
-
-</script>
-
-<script type="text/javascript">
-
-//Full Javascript Table
-//Main Table
-// Query the table
-const table = document.getElementById('resizeMe');
-
-// Query all headers
-cols = table.querySelectorAll('th');
-
-// Loop over them
-[].forEach.call(cols, function(col) {
-    // Create a resizer element
-    const resizer = document.createElement('div');
-    resizer.classList.add('resizer');
-
-    // Set the height
-    resizer.style.height = `${table.offsetHeight}px`;
-
-    // Add a resizer element to the column
-    col.appendChild(resizer);
-
-    // Will be implemented in the next section
-    createResizableColumn(col, resizer);
-});
-
-function createResizableColumn (col, resizer) {
-    // Track the current position of mouse
-    let x = 0;
-    let w = 0;
-
-    const mouseDownHandler = function(e) {
-        // Get the current mouse position
-        x = e.clientX;
-
-        // Calculate the current width of column
-        const styles = window.getComputedStyle(col);
-        w = parseInt(styles.width, 10);
-
-        // Attach listeners for document's events
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
-    };
-
-    const mouseMoveHandler = function(e) {
-        // Determine how far the mouse has been moved
-        const dx = e.clientX - x;
-
-        // Update the width of column
-        col.style.width = `${w + dx}px`;
-    };
-
-    // When user releases the mouse, remove the existing event listeners
-    const mouseUpHandler = function() {
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-    };
-
-    resizer.addEventListener('mousedown', mouseDownHandler);
-};
-
-  //Clusterize
-  var rows = [],
-  search = document.getElementById('cluster-search');
-
-  //Load Table Obj Into Clusterize
-  for(var i = 0; i <= table_data.length; i++){
-    var markup = null;
-    var init_c = 0;
-
-    try {
-      // Loop through each elemments inside each array
-      for (data of table_data[i]){
-        //Check to see if its the first row
-        if (init_c == 0){
-          //Conditional Formatting
-          if (data == '60+' || data == '1-60'){
-            markup = '<td class = "negval">' + data + '</td>'
-            init_c = 1;
-          } else {
-            markup = '<td>' + data + '</td>'
-            init_c = 1;
-          }
-          //Not first row
-        } else {
-          //Conditional Formatting
-          if (data == '60+' || data == '1-60'){
-            markup = markup + '<td class = "negval">' + data + '</td>'
-          } else {
-            markup = markup + '<td>' + data + '</td>'
-          }
-        }
-      }
-      rows.push({
-        values: table_data[i],
-        markup: '<tr>' + markup + '</tr>',
-        active: true
-      });
-
-     } catch(err) {
-      //pass
-     }
-   };
-
-
-  /*Fetch suitable rows*/
-  var filterRows = function(rows) {
-    var results = [];
-    for(var i = 0, ii = rows.length; i < ii; i++) {
-      if(rows[i].active) results.push(rows[i].markup)
-    }
-    return results;
-  }
-
-
-  var clusterize = new Clusterize({
-    rows: filterRows(rows),
-    scrollId: 'scrollArea',
-    contentId: 'contentArea'
-  });
-
-  /*Multi-column search */
-  var onSearch = function() {
-    for(var i = 0, ii = rows.length; i < ii; i++) {
-      var suitable = false;
-      for(var j = 0, jj = rows[i].values.length; j < jj; j++) {
-        if(rows[i].values[j].toString().toUpperCase().indexOf(search.value.toUpperCase())+1)
-          suitable = true;
-      }
-      rows[i].active = suitable;
-    }
-    clusterize.update(filterRows(rows));
-  }
-  search.oninput = onSearch;
-
-
-
-  var active_sort = 0;
-  var desc_order = 0;
-
-
-function sortColumn(col_no){
-
-    //Are we sorting on active sorted? If so just flip method.
-    if (col_no == active_sort){
-
-      if (desc_order == 0){
-        desc_order = 1;
-        table_data = table_data.sort(function(a, b) {
-          if (typeof b[col_no] == 'number'){
-            return b[col_no] - a[col_no];
-          } else {
-            if (b[col_no].substring(0,b[col_no].length) < a[col_no].substring(0,a[col_no].length)) return -1;
-            if (b[col_no].substring(0,b[col_no].length) > a[col_no].substring(0,a[col_no].length)) return 1;
-            return 0;
-          }
-        })
-
-      } else {
-        desc_order = 0;
-        table_data = table_data.sort(function(a, b) {
-          if (typeof b[col_no] == 'number'){
-            return a[col_no] - b[col_no];
-          } else {
-            if (b[col_no].substring(0,b[col_no].length) > a[col_no].substring(0,a[col_no].length)) return -1;
-            if (b[col_no].substring(0,b[col_no].length) < a[col_no].substring(0,a[col_no].length)) return 1;
-            return 0;
-          }
-        })
-      }
-
-    //Selecting a different column, default sort is asc
-    } else {
-      desc_order = 0;
-      active_sort = col_no;
-
-      table_data = table_data.sort(function(a, b) {
-        if (typeof b[col_no] == 'number'){
-          return b[col_no] - a[col_no];
-        } else {
-          if (b[col_no].substring(0,b[col_no].length) > a[col_no].substring(0,a[col_no].length)) return -1;
-          if (b[col_no].substring(0,b[col_no].length) < a[col_no].substring(0,a[col_no].length)) return 1;
-          return 0;
-        }
-      })
-    }
-
-  RebuildClusterize();
-}
-
-
-function RebuildClusterize(){
-
-  clusterize.clear();
-  rows = []
-  //Load Table Obj Into Clusterize
-  for(var i = 0; i <= table_data.length; i++){
-    var markup = null;
-    var init_c = 0;
-    try {
-      for (data of table_data[i]){
-        if (init_c == 0){
-          if (data == '60+' || data == '1-60'){
-            markup = '<td class = "negval">' + data + '</td>'
-            init_c = 1;
-          } else {
-            markup = '<td>' + data + '</td>'
-            init_c = 1;
-          }
-        } else {
-          if (data == '60+' || data == '1-60'){
-            markup = markup + '<td class="negval">' + data + '</td>'
-          } else {
-            markup = markup + '<td>' + data + '</td>'
-          }
-
-        }
-      }
-      rows.push({
-        values: table_data[i],
-        markup: '<tr>' + markup + '</tr>',
-        active: true
-      });
-
-     } catch(err) {
-      //pass
-     }
-   };
-
-   clusterize.update(filterRows(rows));
-}
-
-
-function exportTableToExcel(){
-    filename = 'dataexport'
-    var downloadLink;
-    var dataType = 'application/vnd.ms-excel';
-    var tableSelect = document.getElementById('resizeMe');
-    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-    filename = filename?filename+'.xls':'excel_data.xlsx';
-    downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    if(navigator.msSaveOrOpenBlob){
-        var blob = new Blob(['\ufeff', tableHTML], {
-            type: dataType
-        });
-        navigator.msSaveOrOpenBlob( blob, filename);
-    }else{
-        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-        downloadLink.download = filename;
-        downloadLink.click();
-    }
-}
-
 
 </script>
 
