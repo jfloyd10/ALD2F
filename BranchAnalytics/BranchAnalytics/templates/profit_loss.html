@@ -262,88 +262,98 @@
                                               <thead>
                                                   <tr>
                                                       <th scope="col"></th>
-                                                      <th scope="col" colspan="4" style='align-center; text-align:center'>August</th>
-                                                      <th scope="col" colspan="4" style='align-center; text-align:center'>YTD</th>
+                                                      <th scope="col" colspan="5" style='align-center; text-align:center'>August</th>
+                                                      <th scope="col" colspan="5" style='align-center; text-align:center'>YTD</th>
                                                   </tr>
                                               </thead>
-                                              <tbody>
+                                              <tbody id = 'main_table_body'>
                                                   <tr>
                                                       <td>Line</td>
                                                       <td>2021</td>
                                                       <td>2020</td>
-                                                      <td>Var</td>
+                                                      <td>$ Var</td>
+                                                      <td>% Var</td>
                                                       <td>%Quota</td>
                                                       <td>2021</td>
                                                       <td>2020</td>
+                                                      <td>$ Var</td>
                                                       <td>% Var</td>
                                                       <td>%Quota</td>
                                                   </tr>
                                                   {% for t in pl_line1 %}
 
-                                                  <tr>
+                                                  <tr id = "{{t.3}}">
 
-                                                      <td>
+                                                      <td id = "{{t.3}}1-1">
                                                           {{t.0}}
                                                       </td>
-                                                      <td>${{t.2|intcomma}}</td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
+                                                      <td id = "{{t.3}}1-2">${{t.6|intcomma}}</td>
+                                                      <td id = "{{t.3}}1-3">${{t.7|intcomma}}</td>
+                                                      <td id = "{{t.3}}1-4">${{t.9|intcomma}}</td>
+                                                      <td id = "{{t.3}}1-5">{{t.11}}%</td>
+                                                      <td id = "{{t.3}}1-6">100%</td>
+                                                      <td id = "{{t.3}}1-7">${{t.4|intcomma}}</td>
+                                                      <td id = "{{t.3}}1-8">${{t.5|intcomma}}</td>
+                                                      <td id = "{{t.3}}1-9">${{t.8|intcomma}}</td>
+                                                      <td id = "{{t.3}}1-10">{{t.10}}%</td>
+                                                      <td id = "{{t.3}}1-11">100%</td>
                                                   </tr>
 
                                                   {% endfor %}
 
-                                                  <tr>
+                                                  <tr id = '3pl'>
 
-                                                      <td>
+                                                      <td id = "3pl3-1">
                                                           <a href=""><b>Gross Profit</b></a>
                                                       </td>
-                                                      <td>${{pl_gross_profit|intcomma}}</td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
+                                                      <td id = "3pl1-2"><b>${{pl_gross_profit.2|intcomma}}</b></td>
+                                                      <td id = "3pl1-3"><b>${{pl_gross_profit.3|intcomma}}</b></td>
+                                                      <td id = "3pl1-4"><b>${{pl_gross_profit.5|intcomma}}</b></td>
+                                                      <td id = "3pl1-5"><b>{{pl_gross_profit.7}}%</b></td>
+                                                      <td id = "3pl1-6"><b>100%</b></td>
+                                                      <td id = "3pl1-7"><b>${{pl_gross_profit.0|intcomma}}</b></td>
+                                                      <td id = "3pl1-8"><b>${{pl_gross_profit.1|intcomma}}</b></td>
+                                                      <td id = "3pl1-9"><b>${{pl_gross_profit.4|intcomma}}</b></td>
+                                                      <td id = "3pl1-10"><b>{{pl_gross_profit.6}}%</b></td>
+                                                      <td id = "3pl1-11"><b>100%</b></td>
                                                   </tr>
 
                                                   {% for t in pl_line2 %}
 
-                                                  <tr>
+                                                  <tr id = "{{t.3}}">
 
-                                                      <td>
-                                                          {{t.0}}
-                                                      </td>
-                                                      <td>${{t.2|intcomma}}</td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
+                                                    <td id = "{{t.3}}1-1">
+                                                        {{t.0}}
+                                                    </td>
+                                                    <td id = "{{t.3}}1-2">${{t.6|intcomma}}</td>
+                                                    <td id = "{{t.3}}1-3">${{t.7|intcomma}}</td>
+                                                    <td id = "{{t.3}}1-4">${{t.9|intcomma}}</td>
+                                                    <td id = "{{t.3}}1-5">{{t.11}}%</td>
+                                                    <td id = "{{t.3}}1-6">100%</td>
+                                                    <td id = "{{t.3}}1-7">${{t.4|intcomma}}</td>
+                                                    <td id = "{{t.3}}1-8">${{t.5|intcomma}}</td>
+                                                    <td id = "{{t.3}}1-9">${{t.8|intcomma}}</td>
+                                                    <td id = "{{t.3}}1-10">{{t.10}}%</td>
+                                                    <td id = "{{t.3}}1-11">100%</td>
                                                   </tr>
 
                                                   {% endfor %}
 
-                                                  <tr>
+                                                  <tr id = '7pl'>
 
-                                                      <td>
+                                                      <td id = "7pl1-1">
                                                           <a href=""><b>Net Income</b></a>
                                                       </td>
-                                                      <td>${{pl_net_profit|intcomma}}</td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td></td>
+                                                      <td id = "7pl1-2"><b>${{pl_net_profit.2|intcomma}}</b></td>
+                                                      <td id = "7pl1-3"><b>${{pl_net_profit.3|intcomma}}</b></td>
+                                                      <td id = "7pl1-4"><b>${{pl_net_profit.5|intcomma}}</b></td>
+                                                      <td id = "7pl1-5"><b>{{pl_net_profit.7}}%</b></td>
+                                                      <td id = "7pl1-6"><b>100%</b></td>
+                                                      <td id = "7pl1-7"><b>${{pl_net_profit.0|intcomma}}</b></td>
+                                                      <td id = "7pl1-8"><b>${{pl_net_profit.1|intcomma}}</b></td>
+                                                      <td id = "7pl1-9"><b>${{pl_net_profit.4|intcomma}}</b></td>
+                                                      <td id = "7pl1-10"><b>{{pl_net_profit.6}}%</b></td>
+                                                      <td id = "7pl1-11"><b>100%</b></td>
                                                   </tr>
 
                                               </tbody>
@@ -605,6 +615,8 @@
 
     //Table Data
     var table_data = {{pl_table|safe}};
+    var pl_line1 = {{pl_line1|safe}};
+    var pl_line2 = {{pl_line2|safe}};
 
     //Selectors
     var group_select = ['starter'];
@@ -675,6 +687,13 @@
                   responseData = data
                   updateLabels();
                   updateFilters2();
+
+                  pl_line1 = data.pl_line1;
+                  pl_line2 = data.pl_line2;
+                  pl_gross_profit = data.pl_gross_profit;
+                  pl_net_profit = data.pl_net_profit;
+
+                  updateTable();
 
               }
           }
@@ -784,6 +803,108 @@ function userSaveBookmark(){
 
 
 var all_pre_filters = null;
+
+var formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0
+});
+
+function updateTable(){
+
+  var sales = pl_line1[0];
+  var cogs = pl_line1[1];
+
+  var salaries = pl_line2[0];
+  var commissions = pl_line2[1];
+  var other_opex = pl_line2[2];
+
+  document.getElementById('1pl1-2').innerHTML = formatter.format(sales[6]);
+  document.getElementById('1pl1-3').innerHTML = formatter.format(sales[7]);
+  document.getElementById('1pl1-4').innerHTML = formatter.format(sales[9]);
+  document.getElementById('1pl1-5').innerHTML = formatter.format(sales[11]);
+  document.getElementById('1pl1-7').innerHTML = formatter.format(sales[4]);
+  document.getElementById('1pl1-8').innerHTML = formatter.format(sales[5]);
+  document.getElementById('1pl1-9').innerHTML = formatter.format(sales[8]);
+  document.getElementById('1pl1-10').innerHTML = formatter.format(sales[10]);
+
+  document.getElementById('2pl1-2').innerHTML = formatter.format(cogs[6]);
+  document.getElementById('2pl1-3').innerHTML = formatter.format(cogs[7]);
+  document.getElementById('2pl1-4').innerHTML = formatter.format(cogs[9]);
+  document.getElementById('2pl1-5').innerHTML = formatter.format(cogs[11]);
+  document.getElementById('2pl1-7').innerHTML = formatter.format(cogs[4]);
+  document.getElementById('2pl1-8').innerHTML = formatter.format(cogs[5]);
+  document.getElementById('2pl1-9').innerHTML = formatter.format(cogs[8]);
+  document.getElementById('2pl1-10').innerHTML = formatter.format(cogs[10]);
+
+  document.getElementById('4pl1-2').innerHTML = formatter.format(salaries[6]);
+  document.getElementById('4pl1-3').innerHTML = formatter.format(salaries[7]);
+  document.getElementById('4pl1-4').innerHTML = formatter.format(salaries[9]);
+  document.getElementById('4pl1-5').innerHTML = formatter.format(salaries[11]);
+  document.getElementById('4pl1-7').innerHTML = formatter.format(salaries[4]);
+  document.getElementById('4pl1-8').innerHTML = formatter.format(salaries[5]);
+  document.getElementById('4pl1-9').innerHTML = formatter.format(salaries[8]);
+  document.getElementById('4pl1-10').innerHTML = formatter.format(salaries[10]);
+
+  document.getElementById('5pl1-2').innerHTML = formatter.format(commissions[6]);
+  document.getElementById('5pl1-3').innerHTML = formatter.format(commissions[7]);
+  document.getElementById('5pl1-4').innerHTML = formatter.format(commissions[9]);
+  document.getElementById('5pl1-5').innerHTML = formatter.format(commissions[11]);
+  document.getElementById('5pl1-7').innerHTML = formatter.format(commissions[4]);
+  document.getElementById('5pl1-8').innerHTML = formatter.format(commissions[5]);
+  document.getElementById('5pl1-9').innerHTML = formatter.format(commissions[8]);
+  document.getElementById('5pl1-10').innerHTML = formatter.format(commissions[10]);
+
+  document.getElementById('6pl1-2').innerHTML = formatter.format(other_opex[6]);
+  document.getElementById('6pl1-3').innerHTML = formatter.format(other_opex[7]);
+  document.getElementById('6pl1-4').innerHTML = formatter.format(other_opex[9]);
+  document.getElementById('6pl1-5').innerHTML = formatter.format(other_opex[11]);
+  document.getElementById('6pl1-7').innerHTML = formatter.format(other_opex[4]);
+  document.getElementById('6pl1-8').innerHTML = formatter.format(other_opex[5]);
+  document.getElementById('6pl1-9').innerHTML = formatter.format(other_opex[8]);
+  document.getElementById('6pl1-10').innerHTML = formatter.format(other_opex[10]);
+
+  var gross_profit = pl_gross_profit;
+  var net_profit = pl_net_profit;
+
+  document.getElementById('3pl1-2').innerHTML = formatter.format(gross_profit[2]);
+  document.getElementById('3pl1-2').style.fontWeight = 'bold';
+  document.getElementById('3pl1-3').innerHTML = formatter.format(gross_profit[3]);
+  document.getElementById('3pl1-3').style.fontWeight = 'bold';
+  document.getElementById('3pl1-4').innerHTML = formatter.format(gross_profit[5]);
+  document.getElementById('3pl1-4').style.fontWeight = 'bold';
+  document.getElementById('3pl1-5').innerHTML = gross_profit[7] + '%';
+  document.getElementById('3pl1-5').style.fontWeight = 'bold';
+  document.getElementById('3pl1-7').innerHTML = formatter.format(gross_profit[0]);
+  document.getElementById('3pl1-7').style.fontWeight = 'bold';
+  document.getElementById('3pl1-8').innerHTML = formatter.format(gross_profit[1]);
+  document.getElementById('3pl1-8').style.fontWeight = 'bold';
+  document.getElementById('3pl1-9').innerHTML = formatter.format(gross_profit[4]);
+  document.getElementById('3pl1-9').style.fontWeight = 'bold';
+  document.getElementById('3pl1-10').innerHTML = gross_profit[6] + '%';
+  document.getElementById('3pl1-10').style.fontWeight = 'bold';
+
+  document.getElementById('7pl1-2').innerHTML = formatter.format(net_profit[2]);
+  document.getElementById('7pl1-2').style.fontWeight = 'bold';
+  document.getElementById('7pl1-3').innerHTML = formatter.format(net_profit[3]);
+  document.getElementById('7pl1-3').style.fontWeight = 'bold';
+  document.getElementById('7pl1-4').innerHTML = formatter.format(net_profit[5]);
+  document.getElementById('7pl1-4').style.fontWeight = 'bold';
+  document.getElementById('7pl1-5').innerHTML = net_profit[7] + '%';
+  document.getElementById('7pl1-5').style.fontWeight = 'bold';
+  document.getElementById('7pl1-7').innerHTML = formatter.format(net_profit[0]);
+  document.getElementById('7pl1-7').style.fontWeight = 'bold';
+  document.getElementById('7pl1-8').innerHTML = formatter.format(net_profit[1]);
+  document.getElementById('7pl1-8').style.fontWeight = 'bold';
+  document.getElementById('7pl1-9').innerHTML = formatter.format(net_profit[4]);
+  document.getElementById('7pl1-9').style.fontWeight = 'bold';
+  document.getElementById('7pl1-10').innerHTML = net_profit[6] + '%';
+  document.getElementById('7pl1-10').style.fontWeight = 'bold';
+
+
+};
+
+
 
 </script>
 

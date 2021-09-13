@@ -127,6 +127,7 @@ class AccountSortOrder(models.Model):
     subtotal_follow = models.CharField(max_length=100, blank=True, null=True)
     subtotal = models.CharField(max_length=100, blank=True, null=True)
     account_level = models.CharField(max_length=100, blank=True, null=True)
+    account_balance = models.CharField(max_length=100, blank=True, null=True)
 
 
     def __str__(self):

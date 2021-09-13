@@ -11,6 +11,7 @@ from django.db import connection
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from accounts.models import UserProfile
+import random
 
 # Take A list of paramaters and convert to a SQL statemenet
 def process_sql(param, sql_col):
@@ -112,6 +113,12 @@ def process_dt_sql(param, from_to):
             selection = "AND 1=1"
             return selection
 
+
+class LandingView(TemplateView):
+    template_name = 'landing.html'
+
+    def get(self,request):
+        return render(request, self.template_name, context={})
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -1159,10 +1166,61 @@ class PLView(TemplateView):
 
         row = cursor.fetchall()
 
+        data_id = 1
+
+        ytd_21_gp = 0
+        ytd_20_gp = 0
+        mtd_21_gp = 0
+        mtd_20_gp = 0
+        ytd_var_gp = 0
+        ytd_pvar_gp = 0
+        mtd_var_gp = 0
+        mtd_pvar_gp = 0
+
         for r in row:
-            pl_table_l1.append([r[0], r[1], r[2]])
+            ytd_21 = r[2]
+            ytd_20 = int(r[2] * (random.randint(7,9)/10))
+
+            mtd_21 = int(ytd_21/8)
+            mtd_20 = int(ytd_20/8)
+
+            ytd_var = int(ytd_21-ytd_20)
+            mtd_var = int(mtd_21-mtd_20)
+
+            ytd_pvar = int((ytd_var/ytd_20)*100)
+            mtd_pvar = int((mtd_var/mtd_20)*100)
+
+            pl_table_l1.append([r[0], r[1], r[2], str(data_id) +'pl', ytd_21, ytd_20, mtd_21, mtd_20, ytd_var, mtd_var, ytd_pvar, mtd_pvar])
+            data_id += 1
+
+        for item in pl_table_l1:
+            if item[0] == 'COGS':
+                ytd_21_gp += item[4]*-1
+                mtd_21_gp += item[6]*-1
+
+                ytd_20_gp += item[5]*-1
+                mtd_20_gp += item[7]*-1
+
+            else:
+                ytd_21_gp += item[4]
+                mtd_21_gp += item[6]
+
+                ytd_20_gp += item[5]
+                mtd_20_gp += item[7]
+
+        ytd_var_gp = int(ytd_21_gp - ytd_20_gp)
+        mtd_var_gp = int(mtd_21_gp - mtd_20_gp)
+
+        ytd_pvar_gp = int((ytd_var_gp/abs(ytd_20_gp))*10)
+        mtd_pvar_gp = int((mtd_var_gp/abs(mtd_20_gp))*10)
+
+        gross_profit = [ytd_21_gp, ytd_20_gp, mtd_21_gp, mtd_20_gp, ytd_var_gp, mtd_var_gp, ytd_pvar_gp, mtd_pvar_gp]
+
+        context['pl_gross_profit'] = gross_profit
 
         context['pl_line1'] = pl_table_l1
+
+        data_id = 4
 
         pl_table_l2 = []
         cursor.execute('''SELECT
@@ -1187,57 +1245,89 @@ class PLView(TemplateView):
         row = cursor.fetchall()
 
         for r in row:
-            pl_table_l2.append([r[0], r[1], r[2]])
+            ytd_21 = r[2]
+            ytd_20 = int(r[2] * (random.randint(7,9)/10))
+
+            mtd_21 = int(ytd_21/8)
+            mtd_20 = int(ytd_20/8)
+
+            ytd_var = int(ytd_21-ytd_20)
+            mtd_var = int(mtd_21-mtd_20)
+
+            ytd_pvar = int((ytd_var/ytd_20)*100)
+            mtd_pvar = int((mtd_var/mtd_20)*100)
+            pl_table_l2.append([r[0], r[1], r[2], str(data_id) +'pl', ytd_21, ytd_20, mtd_21, mtd_20, ytd_var, mtd_var, ytd_pvar, mtd_pvar])
+            data_id += 1
 
         context['pl_line2'] = pl_table_l2
 
-        #Gross Profit
-        pl_gross_profit = []
-        cursor.execute('''SELECT
-        SUM(
-        CASE
-            WHEN L.account = "Sales" Then L.amount
-            ELSE L.amount*-1
-        END) as amount
-
-        FROM LEDGER as L
-        LEFT JOIN ACCOUNT_SORT as S
-        ON L.account = S.account
-
-        WHERE s.account_level = 1
-
-
-        ''')
-
-        row = cursor.fetchall()
-
-        for r in row:
-            pl_gross_profit.append(r[0])
-
-        context['pl_gross_profit'] = pl_gross_profit[0]
-
 
         #Net Income
-        pl_net_profit = []
         cursor.execute('''SELECT
         SUM(
         CASE
             WHEN L.account = "Sales" Then L.amount
             ELSE L.amount*-1
-        END) as amount
+        END) as amount,
+
+        S.ACCOUNT_BALANCE
 
         FROM LEDGER as L
         LEFT JOIN ACCOUNT_SORT as S
         ON L.account = S.account
 
+        GROUP BY S.ACCOUNT_BALANCE
+
         ''')
 
         row = cursor.fetchall()
 
-        for r in row:
-            pl_net_profit.append(r[0])
+        ytd_21_ox = 0
+        ytd_20_ox = 0
+        mtd_21_ox = 0
+        mtd_20_ox = 0
 
-        context['pl_net_profit'] = pl_net_profit[0]
+        ytd_21_np = 0
+        ytd_20_np= 0
+        mtd_21_np = 0
+        mtd_20_np = 0
+
+        ytd_var_np = 0
+        ytd_pvar_np = 0
+        mtd_var_np = 0
+        mtd_pvar_np = 0
+
+        for item in pl_table_l2:
+            if item[1] == 'C':
+                ytd_21_ox += item[4]*-1
+                mtd_21_ox += item[6]*-1
+
+                ytd_20_ox += item[5]*-1
+                mtd_20_ox += item[7]*-1
+
+            else:
+                ytd_21_ox += item[4]
+                mtd_21_ox += item[6]
+
+                ytd_20_ox += item[5]
+                mtd_20_ox += item[7]
+
+
+
+        ytd_21_np = ytd_21_gp - ytd_21_ox
+        ytd_20_np = ytd_20_gp - ytd_20_ox
+        mtd_21_np = mtd_21_gp - mtd_21_ox
+        mtd_20_np = mtd_20_gp - mtd_20_ox
+
+        ytd_var_np = int(ytd_21_np - ytd_20_np)
+        mtd_var_np = int(mtd_21_np - mtd_20_np)
+
+        ytd_pvar_np = int((ytd_var_np/abs(ytd_20_np))*10)
+        mtd_pvar_np = int((mtd_var_np/abs(mtd_20_np))*10)
+
+        net_profit = [ytd_21_np, ytd_20_np, mtd_21_np, mtd_20_np, ytd_var_np, mtd_var_np, ytd_pvar_np, mtd_pvar_np]
+
+        context['pl_net_profit'] = net_profit
 
 
         cache.set(lookup_id, context, 60*60*24)
@@ -1317,6 +1407,7 @@ class GatherDataViewGL(TemplateView):
 
         data['pl_table'] = pl_table
 
+
         pl_table_l1 = []
         cursor.execute('''SELECT
         L.account,
@@ -1342,10 +1433,61 @@ class GatherDataViewGL(TemplateView):
 
         row = cursor.fetchall()
 
+        data_id = 1
+
+        ytd_21_gp = 0
+        ytd_20_gp = 0
+        mtd_21_gp = 0
+        mtd_20_gp = 0
+        ytd_var_gp = 0
+        ytd_pvar_gp = 0
+        mtd_var_gp = 0
+        mtd_pvar_gp = 0
+
         for r in row:
-            pl_table_l1.append([r[0], r[1], r[2]])
+            ytd_21 = r[2]
+            ytd_20 = int(r[2] * (random.randint(7,9)/10))
+
+            mtd_21 = int(ytd_21/8)
+            mtd_20 = int(ytd_20/8)
+
+            ytd_var = int(ytd_21-ytd_20)
+            mtd_var = int(mtd_21-mtd_20)
+
+            ytd_pvar = int((ytd_var/ytd_20)*100)
+            mtd_pvar = int((mtd_var/mtd_20)*100)
+
+            pl_table_l1.append([r[0], r[1], r[2], str(data_id) +'pl', ytd_21, ytd_20, mtd_21, mtd_20, ytd_var, mtd_var, ytd_pvar, mtd_pvar])
+            data_id += 1
+
+        for item in pl_table_l1:
+            if item[0] == 'COGS':
+                ytd_21_gp += item[4]*-1
+                mtd_21_gp += item[6]*-1
+
+                ytd_20_gp += item[5]*-1
+                mtd_20_gp += item[7]*-1
+
+            else:
+                ytd_21_gp += item[4]
+                mtd_21_gp += item[6]
+
+                ytd_20_gp += item[5]
+                mtd_20_gp += item[7]
+
+        ytd_var_gp = int(ytd_21_gp - ytd_20_gp)
+        mtd_var_gp = int(mtd_21_gp - mtd_20_gp)
+
+        ytd_pvar_gp = int((ytd_var_gp/abs(ytd_20_gp))*10)
+        mtd_pvar_gp = int((mtd_var_gp/abs(mtd_20_gp))*10)
+
+        gross_profit = [ytd_21_gp, ytd_20_gp, mtd_21_gp, mtd_20_gp, ytd_var_gp, mtd_var_gp, ytd_pvar_gp, mtd_pvar_gp]
+
+        data['pl_gross_profit'] = gross_profit
 
         data['pl_line1'] = pl_table_l1
+
+        data_id = 4
 
         pl_table_l2 = []
         cursor.execute('''SELECT
@@ -1361,7 +1503,6 @@ class GatherDataViewGL(TemplateView):
         {}
         {}
 
-
         GROUP BY
         L.account,
         S.sort_order
@@ -1374,47 +1515,32 @@ class GatherDataViewGL(TemplateView):
         row = cursor.fetchall()
 
         for r in row:
-            pl_table_l2.append([r[0], r[1], r[2]])
+            ytd_21 = r[2]
+            ytd_20 = int(r[2] * (random.randint(7,9)/10))
+
+            mtd_21 = int(ytd_21/8)
+            mtd_20 = int(ytd_20/8)
+
+            ytd_var = int(ytd_21-ytd_20)
+            mtd_var = int(mtd_21-mtd_20)
+
+            ytd_pvar = int((ytd_var/ytd_20)*100)
+            mtd_pvar = int((mtd_var/mtd_20)*100)
+            pl_table_l2.append([r[0], r[1], r[2], str(data_id) +'pl', ytd_21, ytd_20, mtd_21, mtd_20, ytd_var, mtd_var, ytd_pvar, mtd_pvar])
+            data_id += 1
 
         data['pl_line2'] = pl_table_l2
 
-        #Gross Profit
-        pl_gross_profit = []
-        cursor.execute('''SELECT
-        SUM(
-        CASE
-            WHEN L.account = "Sales" Then L.amount
-            ELSE L.amount*-1
-        END) as amount
-
-        FROM LEDGER as L
-        LEFT JOIN ACCOUNT_SORT as S
-        ON L.account = S.account
-
-        WHERE s.account_level = 1
-        {}
-        {}
-        {}
-
-
-        '''.format(group_name, branch_select, month_select))
-
-        row = cursor.fetchall()
-
-        for r in row:
-            pl_gross_profit.append(r[0])
-
-        data['pl_gross_profit'] = pl_gross_profit[0]
-
 
         #Net Income
-        pl_net_profit = []
         cursor.execute('''SELECT
         SUM(
         CASE
             WHEN L.account = "Sales" Then L.amount
             ELSE L.amount*-1
-        END) as amount
+        END) as amount,
+
+        S.ACCOUNT_BALANCE
 
         FROM LEDGER as L
         LEFT JOIN ACCOUNT_SORT as S
@@ -1425,14 +1551,59 @@ class GatherDataViewGL(TemplateView):
         {}
         {}
 
+        GROUP BY S.ACCOUNT_BALANCE
+
         '''.format(group_name, branch_select, month_select))
 
         row = cursor.fetchall()
 
-        for r in row:
-            pl_net_profit.append(r[0])
+        ytd_21_ox = 0
+        ytd_20_ox = 0
+        mtd_21_ox = 0
+        mtd_20_ox = 0
 
-        data['pl_net_profit'] = pl_net_profit[0]
+        ytd_21_np = 0
+        ytd_20_np= 0
+        mtd_21_np = 0
+        mtd_20_np = 0
+
+        ytd_var_np = 0
+        ytd_pvar_np = 0
+        mtd_var_np = 0
+        mtd_pvar_np = 0
+
+        for item in pl_table_l2:
+            if item[1] == 'C':
+                ytd_21_ox += item[4]*-1
+                mtd_21_ox += item[6]*-1
+
+                ytd_20_ox += item[5]*-1
+                mtd_20_ox += item[7]*-1
+
+            else:
+                ytd_21_ox += item[4]
+                mtd_21_ox += item[6]
+
+                ytd_20_ox += item[5]
+                mtd_20_ox += item[7]
+
+
+
+        ytd_21_np = ytd_21_gp - ytd_21_ox
+        ytd_20_np = ytd_20_gp - ytd_20_ox
+        mtd_21_np = mtd_21_gp - mtd_21_ox
+        mtd_20_np = mtd_20_gp - mtd_20_ox
+
+        ytd_var_np = int(ytd_21_np - ytd_20_np)
+        mtd_var_np = int(mtd_21_np - mtd_20_np)
+
+        ytd_pvar_np = int((ytd_var_np/abs(ytd_20_np))*10)
+        mtd_pvar_np = int((mtd_var_np/abs(mtd_20_np))*10)
+
+        net_profit = [ytd_21_np, ytd_20_np, mtd_21_np, mtd_20_np, ytd_var_np, mtd_var_np, ytd_pvar_np, mtd_pvar_np]
+
+        data['pl_net_profit'] = net_profit
+
 
         data['is_taken'] = [1,1]
         cache.set(lookup_id, data, 60*60*24)
