@@ -56,36 +56,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.12.0/clusterize.css">
 
     <style>
-    #amLineChart {
+    #waterfall {
       width: 100%;
       height: 450px;
     }
-
-    #amBarChart {
-      width: 100%;
-      height: 450px;
-    }
-
-
-    #amProjChart {
-      width: 100%;
-      height: 450px;
-    }
-
-    #amPieChart{
-      width: 100%;
-      height: 400px;
-    }
-    #spark_601{
-      width: 320px;
-       height: 100px;
-       display: inline-block;
-       vertical-align: middle;
-     }
-     #amDiffChart {
-       width: 100%;
-       height: 450px;
-     }
 
      .context-menu {
        position: absolute;
@@ -158,7 +132,7 @@
 
     </style>
 
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon.png' %}">
 </head>
 
 <body class="layout-light side-menu overlayScroll">
@@ -471,6 +445,44 @@
 
               </div>
 
+              <br><br><br>
+              <div class="row" >
+
+                <div class="col-md-3">
+                  <div class="card border-0" style='background-color:white;'>
+                      <div id = 'spark1'></div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card border-0" style='background-color:white;'>
+                      <div id = 'spark2'></div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card border-0" style='background-color:white;'>
+                      <div id = 'spark3'></div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                      <div id = 'spark4'></div>
+                  </div>
+                </div>
+            <br>
+
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="card border-0">
+                      <div class="card-header">
+                        <h6>P&L Waterfall</h6>
+                      </div>
+                        <div id='waterfall'></div>
+                  </div>
+
+                </div>
+
+              </div>
+
           </div>
 
           </div>
@@ -630,6 +642,12 @@
 
     //Data
     var responseData = null;
+    var waterfallChart = null;
+
+    var spark1 = null;
+    var spark2 = null;
+    var spark3 = null;
+    var spark4 = null;
 
 
     function clearAllSelections(){
@@ -690,10 +708,28 @@
 
                   pl_line1 = data.pl_line1;
                   pl_line2 = data.pl_line2;
+                  waterfall = pl_line1;
+                  waterfall2 = pl_line2;
                   pl_gross_profit = data.pl_gross_profit;
                   pl_net_profit = data.pl_net_profit;
 
                   updateTable();
+                  waterfallChart.data = updateWaterfall();
+
+                  spark1.updateSeries([
+                    {data: generateSparkData(600)}
+                  ]);
+                  spark2.updateSeries([
+                    {data: generateSparkData(500)}
+                  ]);
+                  spark3.updateSeries([
+                    {data: generateSparkData(400)}
+                  ]);
+                  spark4.updateSeries([
+                    {data: generateSparkData(300)}
+                  ]);
+
+                  updateSparkTitles();
 
               }
           }
@@ -904,7 +940,414 @@ function updateTable(){
 
 };
 
+var waterfall = {{pl_line1|safe}};
+var waterfall2 = {{pl_line2|safe}};
 
+am4core.ready(function() {
+am4core.useTheme(am4themes_animated);
+var chart = am4core.create("waterfall", am4charts.XYChart);
+chart.hiddenState.properties.opacity = 0;
+chart.colors.list = [
+am4core.color("#2474a6"),
+am4core.color("#ff0000"),
+am4core.color("#bfbfbf"),
+];
+chart.data = [ {
+  category: "Net revenue",
+  value: waterfall[0][6],
+  open: 0,
+  stepValue: waterfall[0][6],
+  color: chart.colors.getIndex(0),
+  displayValue: waterfall[0][6]
+}, {
+  category: "COGS",
+  value: waterfall[0][6] - waterfall[1][6],
+  open: waterfall[0][6],
+  stepValue: waterfall[0][6]- waterfall[1][6],
+  color: chart.colors.getIndex(1),
+  displayValue: waterfall[1][6]
+},
+{
+  category: "Gross Profit",
+  value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+  open: 0,
+  stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+  color: chart.colors.getIndex(2),
+  displayValue: waterfall2[0][6]
+},
+{
+  category: "Salaries",
+  value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+  open: waterfall[0][6] - waterfall[1][6],
+  stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+  color: chart.colors.getIndex(1),
+  displayValue: waterfall2[0][6]
+}, {
+  category: "Commissions",
+  value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6],
+  open: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+  stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6],
+  color: chart.colors.getIndex(1),
+  displayValue: waterfall2[1][6]
+}, {
+  category: "Other OPEX",
+  value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+  open: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6],
+  stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+  color: chart.colors.getIndex(1),
+  displayValue: waterfall2[2][6]
+}, {
+  category: "Net Income",
+  value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+  open: 0,
+  stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+  color: chart.colors.getIndex(2),
+  displayValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6]
+} ];
+
+var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "category";
+categoryAxis.renderer.minGridDistance = 40;
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+var columnSeries = chart.series.push(new am4charts.ColumnSeries());
+columnSeries.dataFields.categoryX = "category";
+columnSeries.dataFields.valueY = "value";
+columnSeries.dataFields.openValueY = "open";
+columnSeries.fillOpacity = 0.95;
+columnSeries.sequencedInterpolation = true;
+columnSeries.interpolationDuration = 1500;
+var columnTemplate = columnSeries.columns.template;
+columnTemplate.strokeOpacity = 0;
+columnTemplate.propertyFields.fill = "color";
+var label = columnTemplate.createChild(am4core.Label);
+label.text = "{displayValue.formatNumber('$#,## a')}";
+label.align = "center";
+label.valign = "middle";
+var stepSeries = chart.series.push(new am4charts.StepLineSeries());
+stepSeries.dataFields.categoryX = "category";
+stepSeries.dataFields.valueY = "stepValue";
+stepSeries.noRisers = true;
+stepSeries.stroke = new am4core.InterfaceColorSet().getFor("alternativeBackground");
+stepSeries.strokeDasharray = "3,3";
+stepSeries.interpolationDuration = 2000;
+stepSeries.sequencedInterpolation = true;
+stepSeries.startLocation = 0.9;
+stepSeries.endLocation = 1.1;
+chart.cursor = new am4charts.XYCursor();
+waterfallChart = chart;
+});
+
+
+function updateWaterfall(){
+  var chartData = [ {
+    category: "Net revenue",
+    value: waterfall[0][6],
+    open: 0,
+    stepValue: waterfall[0][6],
+    color: waterfallChart.colors.getIndex(0),
+    displayValue: waterfall[0][6]
+  }, {
+    category: "COGS",
+    value: waterfall[0][6] - waterfall[1][6],
+    open: waterfall[0][6],
+    stepValue: waterfall[0][6]- waterfall[1][6],
+    color: waterfallChart.colors.getIndex(1),
+    displayValue: waterfall[1][6]
+  },
+  {
+    category: "Gross Profit",
+    value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+    open: 0,
+    stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+    color: waterfallChart.colors.getIndex(2),
+    displayValue: waterfall2[0][6]
+  },
+  {
+    category: "Salaries",
+    value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+    open: waterfall[0][6] - waterfall[1][6],
+    stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+    color: waterfallChart.colors.getIndex(1),
+    displayValue: waterfall2[0][6]
+  }, {
+    category: "Commissions",
+    value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6],
+    open: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6],
+    stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6],
+    color: waterfallChart.colors.getIndex(1),
+    displayValue: waterfall2[1][6]
+  }, {
+    category: "Other OPEX",
+    value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+    open: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6],
+    stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+    color: waterfallChart.colors.getIndex(1),
+    displayValue: waterfall2[2][6]
+  }, {
+    category: "Net Income",
+    value: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+    open: 0,
+    stepValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6],
+    color: waterfallChart.colors.getIndex(2),
+    displayValue: waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6]
+  }];
+  return chartData;
+}
+
+
+
+// data for the sparklines that appear below header area
+var sparklineData = [47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46];
+
+function randomIntFromInterval(min, max) { // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+function generateSparkData(int){
+  var spark_data = [];
+
+  for (i=0; i < 26; i++){
+    spark_data.push(randomIntFromInterval(int,1000))
+  }
+  return spark_data
+}
+
+// the default colorPalette for this dashboard
+//var colorPalette = ['#01BFD6', '#5564BE', '#F7A600', '#EDCD24', '#F74F58'];
+var colorPalette = ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0']
+
+
+var colors = ['#325082'];
+var dataColors = $("#spark1").data('colors');
+if (dataColors) {
+    colors = dataColors.split(",");
+}
+var spark1 = {
+    chart: {
+        type: 'area',
+        height: 160,
+        sparkline: {
+            enabled: true
+        },
+    },
+    stroke: {
+        width: 2,
+        curve: 'smooth'
+    },
+    fill: {
+        opacity: 0.2,
+    },
+    series: [{
+        name: 'UBold Sales ',
+        data: generateSparkData(700)
+    }],
+    yaxis: {
+        min: 0
+    },
+    colors: colors,
+    title: {
+        text: formatter.format(pl_line1[0][6]),
+        offsetX: 10,
+        style: {
+            fontSize: '22px'
+        }
+    },
+    subtitle: {
+        text: 'Revenue',
+        offsetX: 10,
+        offsetY: 35,
+        style: {
+            fontSize: '13px'
+        }
+    }
+}
+
+spark1 = new ApexCharts(document.querySelector("#spark1"), spark1)
+spark1.render();
+
+var colors = ['#97aebd'];
+var dataColors = $("#spark2").data('colors');
+if (dataColors) {
+    colors = dataColors.split(",");
+}
+var spark2 = {
+    chart: {
+        type: 'area',
+        height: 160,
+        sparkline: {
+            enabled: true
+        },
+    },
+    stroke: {
+        width: 2,
+        curve: 'smooth'
+    },
+    fill: {
+        opacity: 0.2,
+    },
+    series: [{
+        name: 'UBold Expenses ',
+        data: generateSparkData(600)
+    }],
+    yaxis: {
+        min: 0
+    },
+    colors: colors,
+    title: {
+        text: formatter.format(pl_line1[0][6] - pl_line1[1][6]),
+        offsetX: 10,
+        style: {
+            fontSize: '22px'
+        }
+    },
+    subtitle: {
+        text: 'Gross Profit',
+        offsetX: 10,
+        offsetY: 35,
+        style: {
+            fontSize: '13px'
+        }
+    }
+}
+
+spark2 = new ApexCharts(document.querySelector("#spark2"), spark2)
+spark2.render();
+
+// Sparkline 2
+var colors = ['#ff0000'];
+var dataColors = $("#spark3").data('colors');
+if (dataColors) {
+    colors = dataColors.split(",");
+}
+var spark3 = {
+    chart: {
+        type: 'area',
+        height: 160,
+        sparkline: {
+            enabled: true
+        },
+    },
+    stroke: {
+        width: 2,
+        curve: 'smooth'
+    },
+    fill: {
+        opacity: 0.2,
+    },
+    series: [{
+        name: 'Past Due',
+        data: generateSparkData(500)
+    }],
+    xaxis: {
+        crosshairs: {
+            width: 1
+        },
+    },
+    yaxis: {
+        min: 0
+    },
+    colors: colors,
+    title: {
+        text: ((pl_line1[0][6] - pl_line1[1][6])/pl_line1[0][6]).toFixed(2)*100 + '%',
+        offsetX: 10,
+        style: {
+            fontSize: '22px'
+        }
+    },
+    subtitle: {
+        text: 'GP%',
+        offsetX: 10,
+        offsetY: 35,
+        style: {
+            fontSize: '13px'
+        }
+    }
+}
+
+spark3 = new ApexCharts(document.querySelector("#spark3"), spark3)
+spark3.render();
+
+var colors = ['#5c5c5c'];
+var dataColors = $("#spark4").data('colors');
+if (dataColors) {
+    colors = dataColors.split(",");
+}
+var spark4 = {
+    chart: {
+        type: 'area',
+        height: 160,
+        sparkline: {
+            enabled: true
+        },
+    },
+    stroke: {
+        width: 2,
+        curve: 'smooth'
+    },
+    fill: {
+        opacity: 0.2,
+    },
+    series: [{
+        name: 'Days to Pay:',
+        data: generateSparkData(400)
+    }],
+    xaxis: {
+        crosshairs: {
+            width: 1
+        },
+    },
+    yaxis: {
+        min: 0
+    },
+    colors: colors,
+    title: {
+        text: formatter.format(waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6]),
+        offsetX: 10,
+        style: {
+            fontSize: '22px'
+        }
+    },
+    subtitle: {
+        text: 'Net Income',
+        offsetX: 10,
+        offsetY: 35,
+        style: {
+            fontSize: '13px'
+        }
+    }
+}
+
+spark4 = new ApexCharts(document.querySelector("#spark4"), spark4)
+spark4.render();
+
+
+function updateSparkTitles(){
+
+  spark1.updateOptions({
+    title: {
+      text:formatter.format(pl_line1[0][6])
+    }
+  })
+
+  spark2.updateOptions({
+    title: {
+      text:formatter.format(pl_line1[0][6] - pl_line1[1][6])
+    }
+  })
+
+  spark3.updateOptions({
+    title: {
+      text:((pl_line1[0][6] - pl_line1[1][6])/pl_line1[0][6]).toFixed(2)*100 + '%'
+    }
+  })
+
+  spark4.updateOptions({
+    title: {
+      text:formatter.format(waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6])
+    }
+  })
+
+}
 
 </script>
 

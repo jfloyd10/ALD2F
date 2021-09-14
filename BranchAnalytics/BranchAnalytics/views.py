@@ -788,7 +788,7 @@ class GatherDataViewAR(TemplateView):
 
 
 class ReportView(TemplateView):
-    template_name = 'ReportView.html'
+    template_name = 'reportview.html'
 
     def get(self,request):
         context = {}
