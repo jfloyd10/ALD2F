@@ -25,8 +25,8 @@ admin.site.site_title = "Analytics"
 admin.site.index_title = "Analytics"
 
 urlpatterns = [
-    path('', views.LandingView.as_view(), name='index'),
-    path('landing', views.IndexView.as_view(), name='landing'),
+    path('', views.LandingView.as_view(), name='landing'),
+    path('landing', views.IndexView.as_view(), name='index'),
     #Dashboards
     path('bidash/', views.BIDash.as_view(), name='bidash'),
     path('ardash/', views.ARDash.as_view(), name='ardash'),

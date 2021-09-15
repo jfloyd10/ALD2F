@@ -10,7 +10,6 @@ from db.models import MainData, UserBookmarks
 from django.db import connection
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
-from accounts.models import UserProfile
 import random
 
 # Take A list of paramaters and convert to a SQL statemenet
@@ -554,13 +553,6 @@ class ARDash(TemplateView):
         context['main_data'] = main_data
 
         cache.set(lookup_id, context, 60*60*24)
-
-        user_obj = UserProfile.objects.filter(user=request.user).first()
-        user_perm = user_obj.ardash_piechart
-        if user_perm != 'Spin':
-            user_perm = 'Pie'
-
-        context['user_perm'] = user_perm
 
 
         return render(request, self.template_name, context)
