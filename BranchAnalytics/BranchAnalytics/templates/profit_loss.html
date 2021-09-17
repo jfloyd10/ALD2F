@@ -58,7 +58,7 @@
     <style>
     #waterfall {
       width: 100%;
-      height: 450px;
+      height: 700px;
     }
 
      .context-menu {
@@ -142,11 +142,11 @@
      .hasTooltip:hover div {
          display: block;
          position: absolute;
+         left: 50px;
+         background-color: #ffffff;
 
-         margin-right: 50px;
-         background-color: #FFF;
-         padding: 10px;
      }
+
 
     </style>
 
@@ -227,19 +227,18 @@
 
                       <div class="card border-0">
                           <div class="card-header">
-                              <h6>Sales Report</h6>
+                              <h6>P&L</h6>
                               <div class="card-extra">
                                   <div class="card-tab btn-group atbd-button-group mr-3 nav nav-tabs">
-                                      <a class="btn btn-xs btn-white active border" id="f_today-tab" data-toggle="tab" href="#st_matrics-today" role="tab" area-controls="st_matrics" aria-selected="true">Group</a>
-                                      <a class="btn btn-xs btn-white border" id="f_year-tab" data-toggle="tab" href="#st_matrics-year" role="tab" area-controls="st_matrics" aria-selected="false">Region</a>
-                                      <a class="btn btn-xs btn-white border" id="f_year-tab" data-toggle="tab" href="#st_matrics-year" role="tab" area-controls="st_matrics" aria-selected="false">Branch</a>
+                                      <a class="btn btn-xs btn-white active border" id="f_today-tab" data-toggle="tab" href="#st_matrics-today" role="tab" area-controls="st_matrics" aria-selected="true">Actuals</a>
+                                      <a class="btn btn-xs btn-white border" id="f_year-tab" data-toggle="tab" href="#st_matrics-year" role="tab" area-controls="st_matrics" aria-selected="false">Rolling-Avg</a>
                                   </div>
                                   <div class="dropdown dropleft">
                                       <a href="#" role="button" id="Today" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span data-feather="more-horizontal"></span>
                                       </a>
                                       <div class="dropdown-menu" aria-labelledby="Today">
-                                          <a class="dropdown-item" href="#">Action</a>
+                                          <a class="dropdown-item" href="javascript:exportTableToExcel();">Export</a>
                                           <div class="dropdown-divider"></div>
                                           <a class="dropdown-item" href="{% url 'report_view' %}">View Full Report</a>
                                       </div>
@@ -250,7 +249,7 @@
                               <div class="tab-content">
                                   <div class="tab-pane fade active show" id="st_matrics-today" role="" aria-labelledby="st_matrics-tab">
                                       <div class="table-responsive">
-                                          <table class="table table-bordered table-social">
+                                          <table class="table table-bordered table-social" id ='main_pl_table'>
                                               <thead>
                                                   <tr>
                                                       <th scope="col"></th>
@@ -277,7 +276,8 @@
                                                   <tr id = "{{t.3}}">
 
                                                       <td id = "{{t.3}}1-1" class="hasTooltip">{{t.0}}
-                                                        {% if t.0 == 'Sales' %}<div id = 'spark1' style='width:400px;'></div>{% endif %}
+                                                        {% if t.0 == 'Sales' %}<div id = 'spark1' style='width: 400px;'></div>{% endif %}
+                                                        {% if t.0 == 'COGS' %}<div id = 'spark2' style='width: 400px;'></div>{% endif %}
                                                       </td>
 
                                                       <td id = "{{t.3}}1-2">${{t.6|intcomma}}</td>
@@ -351,108 +351,6 @@
 
                                               </tbody>
                                           </table>
-                                      </div>
-                                  </div>
-
-                                  <div class="tab-pane fade" id="st_matrics-year" role="tabpanel" aria-labelledby="st_matrics-tab">
-                                      <div class="table-responsive">
-                                        <table class="table table-bordered table-social">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col"></th>
-                                                    <th scope="col" colspan="3" style='align-center; text-align:center'>2021</th>
-                                                    <th scope="col" colspan="3" style='align-center; text-align:center'>2020</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Line</td>
-                                                    <td>Actuals</td>
-                                                    <td>$ Var</td>
-                                                    <td>% Var</td>
-                                                    <td>Actuals</td>
-                                                    <td>$ Var</td>
-                                                    <td>% Var</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        Sales
-                                                    </td>
-                                                    <td>311,458</td>
-                                                    <td>4,552</td>
-                                                    <td>21.4%</td>
-                                                    <td>2,458</td>
-                                                    <td>$3,584</td>
-                                                    <td>18.5%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        COGS
-                                                    </td>
-                                                    <td>311,458</td>
-                                                    <td>4,552</td>
-                                                    <td>21.4%</td>
-                                                    <td>2,458</td>
-                                                    <td>$3,584</td>
-                                                    <td>18.5%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href=""><b>Gross Profit</b></a>
-                                                    </td>
-                                                    <td>311,458</td>
-                                                    <td>4,552</td>
-                                                    <td>21.4%</td>
-                                                    <td>2,458</td>
-                                                    <td>$3,584</td>
-                                                    <td>18.5%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        Salaries
-                                                    </td>
-                                                    <td>311,458</td>
-                                                    <td>4,552</td>
-                                                    <td>21.4%</td>
-                                                    <td>2,458</td>
-                                                    <td>$3,584</td>
-                                                    <td>18.5%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        Commissions
-                                                    </td>
-                                                    <td>311,458</td>
-                                                    <td>4,552</td>
-                                                    <td>21.4%</td>
-                                                    <td>2,458</td>
-                                                    <td>$3,584</td>
-                                                    <td>18.5%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        Other OPEX
-                                                    </td>
-                                                    <td>311,458</td>
-                                                    <td>4,552</td>
-                                                    <td>21.4%</td>
-                                                    <td>2,458</td>
-                                                    <td>$3,584</td>
-                                                    <td>18.5%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href=""><b>Net Income</b></a>
-                                                    </td>
-                                                    <td><b>311,458</b></td>
-                                                    <td><b>4,552</b></td>
-                                                    <td><b>21.4%</b></td>
-                                                    <td><b>2,458</b></td>
-                                                    <td><b>$3,584</b></td>
-                                                    <td><b>18.5%</b></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
                                       </div>
                                   </div>
                               </div>
@@ -619,6 +517,7 @@
 
 
 
+
 <script type="text/javascript">
 
     //Table Data
@@ -712,20 +611,7 @@
                   updateTable();
                   waterfallChart.data = updateWaterfall();
 
-                  spark1.updateSeries([
-                    {data: generateSparkData(600)}
-                  ]);
-                  spark2.updateSeries([
-                    {data: generateSparkData(500)}
-                  ]);
-                  spark3.updateSeries([
-                    {data: generateSparkData(400)}
-                  ]);
-                  spark4.updateSeries([
-                    {data: generateSparkData(300)}
-                  ]);
-
-                  updateSparkTitles();
+                  colorCells();
 
               }
           }
@@ -1109,250 +995,167 @@ function generateSparkData(int){
   return spark_data
 }
 
-// the default colorPalette for this dashboard
-//var colorPalette = ['#01BFD6', '#5564BE', '#F7A600', '#EDCD24', '#F74F58'];
-var colorPalette = ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0']
 
 
-var colors = ['#325082'];
-var dataColors = $("#spark1").data('colors');
-if (dataColors) {
-    colors = dataColors.split(",");
+$( document ).ready(function() {
+  var colorPalette = ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0']
+
+
+  var colors = ['#325082'];
+  var dataColors = $("#spark1").data('colors');
+  if (dataColors) {
+      colors = dataColors.split(",");
+  }
+  var spark1 = {
+      chart: {
+          type: 'area',
+          height: 100,
+          sparkline: {
+              enabled: true
+          },
+      },
+      stroke: {
+          width: 2,
+          curve: 'smooth'
+      },
+      fill: {
+          opacity: 0.5,
+      },
+      series: [{
+          name: 'Sales',
+          data: generateSparkData(700)
+      }],
+      yaxis: {
+          min: 600
+      },
+      tooltip: {
+          enabled: false,
+      },
+      colors: colors,
+      title: {
+          text: 'Sales',
+          offsetX: 10,
+          offsetY: 0,
+          style: {
+            fontSize:  '12px',
+            fontFamily:  'Sans-serif',
+            color:  '#525252'
+          }
+      }
+
+  }
+
+  spark1 = new ApexCharts(document.querySelector("#spark1"), spark1)
+  spark1.render();
+
+  var colors = ['#97aebd'];
+  var dataColors = $("#spark2").data('colors');
+  if (dataColors) {
+      colors = dataColors.split(",");
+  }
+  var spark2 = {
+      chart: {
+          type: 'area',
+          height: 100,
+          sparkline: {
+              enabled: true
+          },
+      },
+      stroke: {
+          width: 2,
+          curve: 'smooth'
+      },
+      fill: {
+          opacity: 0.2,
+      },
+      series: [{
+          name: 'COGS',
+          data: generateSparkData(600)
+      }],
+      yaxis: {
+          min: 200
+      },
+      colors: colors,
+      title: {
+          text: 'COGS',
+          offsetX: 10,
+          style: {
+            fontSize:  '12px',
+            fontFamily:  'Sans-serif',
+            color:  '#525252'
+          },
+      },
+      tooltip: {
+          enabled: false,
+      },
+
+  }
+
+  spark2 = new ApexCharts(document.querySelector("#spark2"), spark2)
+  spark2.render();
+
+});
+
+
+function formatPercentSales(element, percentage){
+    var col1="rgba(0, 224, 67, .15)";
+    var col2="#ffF";
+    var els = document.getElementById(element);
+    var percentage = percentage;
+    els.style.background="-webkit-gradient(linear, left top,right top, color-stop("+percentage+"%,"+col1+"), color-stop("+percentage+"%,"+col2+"))";
+    els.style.background="-moz-linear-gradient(left center,"+col1+" "+percentage+"%, "+col2+" "+percentage+"%)" ;
+    els.style.background="-o-linear-gradient(left,"+col1+" "+percentage+"%, "+col2+" "+percentage+"%)";
+    els.style.background= "linear-gradient(to right,"+col1+" "+percentage+"%, "+col2+" "+percentage+"%)" ;
 }
-var spark1 = {
-    chart: {
-        type: 'area',
-        height: 160,
-        sparkline: {
-            enabled: true
-        },
-    },
-    stroke: {
-        width: 2,
-        curve: 'smooth'
-    },
-    fill: {
-        opacity: 0.2,
-    },
-    series: [{
-        name: 'Sales',
-        data: generateSparkData(700)
-    }],
-    yaxis: {
-        min: 100
-    },
-    colors: colors,
-    title: {
-        text: 'Sales',
-        offsetX: 10,
-        style: {
-          fontSize:  '16px',
-          fontFamily:  'Sans-serif',
-          color:  '#525252'
-        },
-    },
-    subtitle: {
-        text: 'Last 12 Months',
-        offsetX: 10,
-        offsetY: 35,
-        style: {
-          fontSize:  '12px',
-          fontFamily:  'Sans-serif',
-          color:  '#525252'
-        },
+
+function colorCells(){
+    //Format %Sales
+
+    //MTD
+    formatPercentSales('2pl1-2', (pl_line1[1][6] / pl_line1[0][6])*100);
+    formatPercentSales('4pl1-2', (pl_line2[0][6] / pl_line1[0][6])*100);
+    formatPercentSales('5pl1-2', (pl_line2[1][6] / pl_line1[0][6])*100);
+    formatPercentSales('6pl1-2', (pl_line2[2][6] / pl_line1[0][6])*100);
+
+    //YTD
+    formatPercentSales('2pl1-7', (pl_line1[1][4] / pl_line1[0][4])*100);
+    formatPercentSales('4pl1-7', (pl_line2[0][4] / pl_line1[0][4])*100);
+    formatPercentSales('5pl1-7', (pl_line2[1][4] / pl_line1[0][4])*100);
+    formatPercentSales('6pl1-7', (pl_line2[2][4] / pl_line1[0][4])*100);
+
+    //formatPercentSales('3pl1-2', ((pl_line1[0][6] - pl_line1[1][6])/pl_line1[0][6])*100);
+    //formatPercentSales('7pl1-2', ((pl_line1[0][6] - pl_line1[1][6] - pl_line2[0][6] - pl_line2[1][6] - pl_line2[2][6])/pl_line1[0][6])*100);
+
+}
+
+function exportTableToExcel(){
+    filename = 'dataexport'
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById('main_pl_table');
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    filename = filename?filename+'.xls':'excel_data.xlsx';
+    downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+        downloadLink.download = filename;
+        downloadLink.click();
     }
 }
 
-spark1 = new ApexCharts(document.querySelector("#spark1"), spark1)
-spark1.render();
-
-var colors = ['#97aebd'];
-var dataColors = $("#spark2").data('colors');
-if (dataColors) {
-    colors = dataColors.split(",");
-}
-var spark2 = {
-    chart: {
-        type: 'area',
-        height: 160,
-        sparkline: {
-            enabled: true
-        },
-    },
-    stroke: {
-        width: 2,
-        curve: 'smooth'
-    },
-    fill: {
-        opacity: 0.2,
-    },
-    series: [{
-        name: 'Gross Profit',
-        data: generateSparkData(600)
-    }],
-    yaxis: {
-        min: 0
-    },
-    colors: colors,
-    title: {
-        text: 'Gross Profit',
-        offsetX: 10,
-        style: {
-          fontSize:  '16px',
-          fontFamily:  'Sans-serif',
-          color:  '#525252'
-        },
-    },
-    subtitle: {
-        text: 'Last 12 Months',
-        offsetX: 10,
-        offsetY: 35,
-        style: {
-          fontSize:  '12px',
-          fontFamily:  'Sans-serif',
-          color:  '#525252'
-        },
-    }
-}
-
-spark2 = new ApexCharts(document.querySelector("#spark2"), spark2)
-spark2.render();
-
-// Sparkline 2
-var colors = ['#ff0000'];
-var dataColors = $("#spark3").data('colors');
-if (dataColors) {
-    colors = dataColors.split(",");
-}
-var spark3 = {
-    chart: {
-        type: 'area',
-        height: 160,
-        sparkline: {
-            enabled: true
-        },
-    },
-    stroke: {
-        width: 2,
-        curve: 'smooth'
-    },
-    fill: {
-        opacity: 0.2,
-    },
-    series: [{
-        name: 'Past Due',
-        data: generateSparkData(500)
-    }],
-    xaxis: {
-        crosshairs: {
-            width: 1
-        },
-    },
-    yaxis: {
-        min: 0
-    },
-    colors: colors,
-    title: {
-        text: ((pl_line1[0][6] - pl_line1[1][6])/pl_line1[0][6]).toFixed(2)*100 + '%',
-        offsetX: 10,
-        style: {
-            fontSize: '22px'
-        }
-    },
-    subtitle: {
-        text: 'GP%',
-        offsetX: 10,
-        offsetY: 35,
-        style: {
-            fontSize: '13px'
-        }
-    }
-}
-
-spark3 = new ApexCharts(document.querySelector("#spark3"), spark3)
-spark3.render();
-
-var colors = ['#5c5c5c'];
-var dataColors = $("#spark4").data('colors');
-if (dataColors) {
-    colors = dataColors.split(",");
-}
-var spark4 = {
-    chart: {
-        type: 'area',
-        height: 160,
-        sparkline: {
-            enabled: true
-        },
-    },
-    stroke: {
-        width: 2,
-        curve: 'smooth'
-    },
-    fill: {
-        opacity: 0.2,
-    },
-    series: [{
-        name: 'Days to Pay:',
-        data: generateSparkData(400)
-    }],
-    xaxis: {
-        crosshairs: {
-            width: 1
-        },
-    },
-    yaxis: {
-        min: 0
-    },
-    colors: colors,
-    title: {
-        text: formatter.format(waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6]),
-        offsetX: 10,
-        style: {
-            fontSize: '22px'
-        }
-    },
-    subtitle: {
-        text: 'Net Income',
-        offsetX: 10,
-        offsetY: 35,
-        style: {
-            fontSize: '13px'
-        }
-    }
-}
-
-spark4 = new ApexCharts(document.querySelector("#spark4"), spark4)
-spark4.render();
 
 
-function updateSparkTitles(){
+$( document ).ready(function() {
+    colorCells();
+});
 
-  spark1.updateOptions({
-    title: {
-      text:formatter.format(pl_line1[0][6])
-    }
-  })
 
-  spark2.updateOptions({
-    title: {
-      text:formatter.format(pl_line1[0][6] - pl_line1[1][6])
-    }
-  })
-
-  spark3.updateOptions({
-    title: {
-      text:((pl_line1[0][6] - pl_line1[1][6])/pl_line1[0][6]).toFixed(2)*100 + '%'
-    }
-  })
-
-  spark4.updateOptions({
-    title: {
-      text:formatter.format(waterfall[0][6] - waterfall[1][6] - waterfall2[0][6] - waterfall2[1][6] - waterfall2[2][6])
-    }
-  })
-
-}
 
 </script>
 
