@@ -31,11 +31,12 @@ urlpatterns = [
     path('bidash/', views.BIDash.as_view(), name='bidash'),
     path('ardash/', views.ARDash.as_view(), name='ardash'),
     path('scatter/', views.ScatterView.as_view(), name='scatter'),
+    path('reccomender/', views.ReccomenderView.as_view(), name='reccomender'),
 
     #Reports
     path('report/', views.ReportView.as_view(), name='report_view'),
-    path('financials/', views.FinancialReports.as_view(), name='financial_reports'),
     path('p&l/', views.PLView.as_view(), name='profit_loss'),
+
 
     #Apis
     path('api/data', views.GatherDataView.as_view(), name='gather_data'),

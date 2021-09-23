@@ -10,7 +10,7 @@
           <div class="strikingDash-top-menu position-relative">
               <ul>
                   <li class="has-subMenu">
-                      <a href="#" class="{% if request.resolver_match.view_name != 'report_view' and request.resolver_match.view_name != 'financial_reports' and request.resolver_match.view_name != 'profit_loss' %}active{% endif %}">Dashboards</a>
+                      <a href="#" class="{% if request.resolver_match.view_name != 'report_view' and request.resolver_match.view_name != 'reccomender' %}active{% endif %}">BI Dashboards</a>
                       <ul class="subMenu">
                         <li>
                             <a class="{% if request.resolver_match.view_name == 'index' %}active{% endif %}" href="{% url 'index' %}">Static - Overview</a>
@@ -21,19 +21,25 @@
 
                           <li>
                               <a class="{% if request.resolver_match.view_name == 'ardash' %}active{% endif %}" href="{% url 'ardash' %}">Interactive - A/R</a>
+                          </li>
+                          <li class="l_sidebar">
+                              <a href="{% url 'profit_loss' %}" class="{% if request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Interactive - P&L</a>
+                          </li>
                       </ul>
                   </li>
                   <li class="has-subMenu">
-                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view' or request.resolver_match.view_name == 'financial_reports' or request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Reports</a>
+                      <a href="#" class="{% if request.resolver_match.view_name == 'reccomender' %}active{% endif %}">Data Science</a>
                       <ul class="subMenu">
                           <li class="l_sidebar">
-                              <a href="{% url 'report_view' %}" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Interactive - Table</a>
+                              <a href="{% url 'reccomender' %}" class="{% if request.resolver_match.view_name == 'reccomender' %}active{% endif %}">Recommender System</a>
                           </li>
+                      </ul>
+                  </li>
+                  <li class="has-subMenu">
+                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Features</a>
+                      <ul class="subMenu">
                           <li class="l_sidebar">
-                              <a href="{% url 'financial_reports' %}" class="{% if request.resolver_match.view_name == 'financial_reports' %}active{% endif %}">Sales Report</a>
-                          </li>
-                          <li class="l_sidebar">
-                              <a href="{% url 'profit_loss' %}" class="{% if request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Income Statement</a>
+                              <a href="{% url 'report_view' %}" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Interactive DataTables</a>
                           </li>
                       </ul>
                   </li>
@@ -48,7 +54,7 @@
               <ul>
 
                   <li class="has-subMenu">
-                      <a href="#" class="active">Dashboards</a>
+                      <a href="#" class="{% if request.resolver_match.view_name != 'report_view' %}active{% endif %}">BI Dashboards</a>
                       <ul class="subMenu">
                         <li>
                             <a class="{% if request.resolver_match.view_name == 'index' %}active{% endif %}" href="{% url 'index' %}">Static - Overview</a>
@@ -56,25 +62,31 @@
                           <li>
                               <a class="{% if request.resolver_match.view_name == 'bidash' %}active{% endif %}" href="{% url 'bidash' %}">Interactive - Sales</a>
                           </li>
-
                           <li>
                               <a class="{% if request.resolver_match.view_name == 'ardash' %}active{% endif %}" href="{% url 'ardash' %}">Interactive - A/R</a>
+                           </li>
+                          <li class="l_sidebar">
+                              <a href="{% url 'profit_loss' %}" class="{% if request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Interactive - P&L</a>
+                          </li>
                       </ul>
                   </li>
                   <li class="has-subMenu">
-                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view' or request.resolver_match.view_name == 'financial_reports' or request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Reports</a>
+                      <a href="#" class="">Data Science</a>
                       <ul class="subMenu">
                           <li class="l_sidebar">
-                              <a href="{% url 'report_view' %}" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Interactive - Table</a>
-                          </li>
-                          <li class="l_sidebar">
-                              <a href="{% url 'financial_reports' %}" class="{% if request.resolver_match.view_name == 'financial_reports' %}active{% endif %}">Sales Report</a>
-                          </li>
-                          <li class="l_sidebar">
-                              <a href="{% url 'profit_loss' %}" class="{% if request.resolver_match.view_name == 'profit_loss' %}active{% endif %}">Income Statement</a>
+                              <a href="{% url 'reccomender' %}">Recommender System</a>
                           </li>
                       </ul>
                   </li>
+                  <li class="has-subMenu">
+                      <a href="#" class="{% if request.resolver_match.view_name == 'report_view'%}active{% endif %}">Features</a>
+                      <ul class="subMenu">
+                          <li class="l_sidebar">
+                              <a href="{% url 'report_view' %}" class="{% if request.resolver_match.view_name == 'report_view' %}active{% endif %}">Interactive DataTables</a>
+                          </li>
+                      </ul>
+                  </li>
+
               </ul>
 
             </div>

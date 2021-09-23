@@ -1,0 +1,512 @@
+<!doctype html>
+{% load static %}
+{% load humanize %}
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reccomender</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- inject:css-->
+
+	  <link rel="stylesheet" type="text/css" href="{% static 'assets/d3site/dc.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/bootstrap/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/daterangepicker.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/fontawesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/footable.standalone.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/fullcalendar@5.2.0.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/jquery-jvectormap-2.0.5.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/jquery.mCustomScrollbar.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/leaflet.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/line-awesome.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/magnific-popup.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/MarkerCluster.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/MarkerCluster.Default.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/select2.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/slick.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/star-rating-svg.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/trumbowyg.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/vendor_assets/css/wickedpicker.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/style.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.12.0/clusterize.css">
+
+    <style>
+    #waterfall {
+      width: 100%;
+      height: 600px;
+    }
+
+     .context-menu {
+       position: absolute;
+     }
+     .menu {
+       display: flex;
+       flex-direction: column;
+       background-color: #fff;
+       border-radius: 10px;
+       box-shadow: 0 10px 20px rgb(64 64 64 / 5%);
+       padding: 10px 0;
+     }
+     .menu > li > a {
+       font: inherit;
+       border: 0;
+       padding: 10px 30px 10px 15px;
+       width: 100%;
+       display: flex;
+       align-items: center;
+       position: relative;
+       text-decoration: unset;
+       color: #616161;
+       font-weight: normal;
+       transition: 0.3s linear;
+       -webkit-transition: 0.3s linear;
+       -moz-transition: 0.3s linear;
+       -ms-transition: 0.3s linear;
+       -o-transition: 0.3s linear;
+     }
+     .menu > li > a:hover {
+       background:#f1f3f7;
+       color: #ff0000;
+     }
+     .menu > li > a > i {
+       padding-right: 10px;
+     }
+     .menu > li.trash > a:hover {
+       color: red;
+     }
+
+     .centerrow {
+       text-align: center;
+       vertical-align: middle;
+     }
+
+     .tablesize th {
+         position: relative;
+     }
+
+     #resizeMe.hide2 tr > *:nth-child(7) {
+         display: none;
+     }
+
+
+     .resizer {
+         /* Displayed at the right side of column */
+         position: absolute;
+         top: 0;
+         right: 0;
+         width: 5px;
+         cursor: col-resize;
+         user-select: none;
+     }
+
+     .negval{
+       color: red;
+     }
+
+     tr:hover {background-color: rgba(91, 108, 133, .1);}
+
+    </style>
+
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon.png' %}">
+</head>
+
+<body class="layout-light side-menu overlayScroll">
+
+
+
+    <div class="Branch STK-search"></div>
+
+    <div class="Branch STK-author-actions"></div>
+    <header class="header-top">
+        {% include 'navbar.html' %}
+    </header>
+    <main class="main-content" id ='main_fade'>
+      <aside class="sidebar" id='main_sidebar_id' style='margin-top:15px;'>
+          <div class="sidebar__menu-group">
+              <ul class="sidebar_nav">
+                <li class="menu-title">
+                    <span>Users</span>
+                </li>
+                <li class="has-child open">
+                    <a href="#" class="active">
+                      <select id='user_filter'>
+                        <option value='starter' id='customer_filter_default'>Select a User Id</option>
+                        {% for u in users %}
+                        <option value='{{u}}'>{{u}}</option>
+                        {% endfor %}
+                      </select>
+                    </a>
+                </li>
+
+                <br>
+
+                <li class="menu-title">
+                    <span>Exclude Previous Watched?</span>
+                </li>
+                <li class="has-child open">
+                    <a href="#" class="active">
+                      <select id='prev_watched_filter'>
+                        <option value='0'>No</option>
+                        <option value='1'>Yes</option>
+                      </select>
+                    </a>
+                </li>
+
+                  <br>
+
+              </ul>
+
+
+          </div>
+      </aside>
+
+      <div class="contents">
+
+        <div class="container-fluid"><br>
+
+          <div class="row">
+            <div class="col-1"></div>
+
+            <div class="col-5">
+              <div class="card border-0">
+              <div class="card-header">
+                  <h6>User Watch History</h6>
+                  <div class="card-extra">
+                      <div class="card-tab btn-group atbd-button-group mr-3 nav nav-tabs">
+                      </div>
+                      <div class="dropdown dropleft">
+                          <a href="#" role="button" id="Today" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span data-feather="more-horizontal"></span>
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="Today">
+                              <a class="dropdown-item" href="javascript:exportTableToExcel();">Export</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{% url 'report_view' %}">View Full Report</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+              <table id ='main_table1' class="table table-bordered table-social">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Rating</th>
+                    </tr>
+                  </thead>
+              <tbody id = 'main_tbody1'>
+                <tr>
+                    <td>Select a User to view watch history</td>
+                </tr>
+
+              </tbody>
+              </table>
+            </div>
+            </div>
+          </div>
+          </div>
+
+
+            <div class="col-5">
+              <div class="card border-0">
+              <div class="card-header">
+                  <h6>User Suggestions</h6>
+                  <div class="card-extra">
+                      <div class="card-tab btn-group atbd-button-group mr-3 nav nav-tabs">
+                      </div>
+                      <div class="dropdown dropleft">
+                          <a href="#" role="button" id="Today" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span data-feather="more-horizontal"></span>
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="Today">
+                              <a class="dropdown-item" href="javascript:exportTableToExcel();">Export</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{% url 'report_view' %}">View Full Report</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+              <table id ='main_table' class="table table-bordered table-social">
+                  <thead>
+                    <tr>
+                      <th>Recommendations</th>
+                    </tr>
+                  </thead>
+              <tbody id = 'main_tbody'>
+                <tr>
+                    <td>Select a User to view recommendations</td>
+                </tr>
+
+              </tbody>
+              </table>
+            </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="col-1"></div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+  <footer class="footer-wrapper">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="footer-copyright">
+                      <p><a href="#">Created by Josh Floyd</a>
+                      </p>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="footer-menu text-right">
+                      <ul>
+                          <li>
+                              <a href="#">About</a>
+                          </li>
+                          <li>
+                              <a href="#">Contact</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <!-- ends: .Footer Menu -->
+              </div>
+          </div>
+      </div>
+  </footer>
+    </main>
+
+    <div id="contextMenu" class="context-menu" style="display: none">
+        <ul class="menu" >
+            <li class="share"><a href="javascript:userSaveBookmark();"><i class="fa fa-share" aria-hidden="true"></i> Save Bookmark</a></li>
+            <li class="link"><a href="#"><i class="fa fa-link" aria-hidden="true"></i> View Bookmarks</a></li>
+            <li class="copy"><a href="#"><i class="fa fa-copy" aria-hidden="true"></i> Add Comment</a></li>
+            <li class="paste"><a href="#"><i class="fa fa-paste" aria-hidden="true"></i> View Comments</a></li>
+            <li class="download"><a href="#"><i class="fa fa-download" aria-hidden="true"></i> Screenshot</a></li>
+        </ul>
+    </div>
+
+
+    <div id="overlayer">
+        <span class="loader-overlay">
+            <div class="atbd-spin-dots spin-lg">
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+            </div>
+        </span>
+    </div>
+
+
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
+    <!-- inject:js-->
+    <script src="{% static 'assets/vendor_assets/js/jquery/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery/jquery-ui.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/bootstrap/popper.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/moment/moment.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/accordion.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/autoComplete.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/Chart.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/charts.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/daterangepicker.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/drawer.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/dynamicBadge.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/dynamicCheckbox.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/feather.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/footable.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/fullcalendar@5.2.0.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/google-chart.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.filterizr.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.mCustomScrollbar.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.peity.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/jquery.star-rating-svg.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/leaflet.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/leaflet.markercluster.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/loader.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/message.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/moment.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/muuri.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/notification.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/popover.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/slick.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/trumbowyg.base64.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/trumbowyg.min.js' %}"></script>
+    <script src="{% static 'assets/vendor_assets/js/wickedpicker.min.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/drag-drop.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/footable.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/full-calendar.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/googlemap-init.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/icon-loader.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/jvectormap-init.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/leaflet-init.js' %}"></script>
+    <script src="{% static 'assets/theme_assets/js/main.js' %}"></script>
+
+
+    <script type="text/javascript" src="{% static 'assets/d3site/d3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/crossfilter.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/dc.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/axis.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/margin-mixin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/cap-mixin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/d3site/dc.datatables.js' %}"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+<script type="text/javascript">
+
+var table_data = null;
+var users = {{users|safe}};
+
+var user_id = null;
+var user_history = null;
+
+var prev_watched = 0;
+
+function getPreds(){
+    console.log(prev_watched);
+    $.ajax({
+        url: '{% url "db:get_predictions" %}',
+        data: {
+          'user_name': user_id,
+          'previously_watched': prev_watched,
+        },
+        dataType: 'json',
+          success: function (data) {
+              if (data.is_taken) {
+                table_data = data.suggestions;
+                updateTable();
+              }
+          }
+    });
+};
+
+function getActivity(){
+
+    $.ajax({
+        url: '{% url "db:get_user_activity" %}',
+        data: {
+          'user_name': user_id,
+        },
+        dataType: 'json',
+          success: function (data) {
+              if (data.is_taken) {
+                user_history = data.user_activity;
+                updateTableHistory();
+              }
+          }
+    });
+};
+
+function updateTable(){
+  var new_tbody = document.createElement('tbody');
+  new_tbody.id = 'main_tbody';
+  var old_tbody = document.getElementById('main_tbody');
+  var mtable = document.getElementById('main_table');
+
+  for (element of table_data){
+    var ntr = document.createElement('tr');
+    var ntd = document.createElement('td');
+    ntd.innerHTML = element;
+
+    ntr.appendChild(ntd)
+    new_tbody.appendChild(ntr)
+  }
+  old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
+}
+
+function updateTableHistory(){
+  var new_tbody = document.createElement('tbody');
+  new_tbody.id = 'main_tbody1';
+  var old_tbody = document.getElementById('main_tbody1');
+  var mtable = document.getElementById('main_table1');
+
+  for (element of user_history){
+    var ntr = document.createElement('tr');
+    for (e of element){
+      var ntd = document.createElement('td');
+      ntd.innerHTML = e;
+      ntr.appendChild(ntd)
+    }
+
+    new_tbody.appendChild(ntr)
+  }
+  old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
+}
+
+$(document).ready(function(){
+  // Initialize select2
+  $("#user_filter").select2();
+  $("#prev_watched_filter").select2();
+
+
+  //Listeners
+  $("#user_filter").change(function () {
+    user_id = $("#user_filter").val();
+    getPreds();
+    getActivity();
+  });
+
+  //Listeners
+  $("#prev_watched_filter").change(function () {
+    prev_watched = $("#prev_watched_filter").val();
+  });
+
+
+});
+
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

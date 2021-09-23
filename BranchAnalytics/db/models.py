@@ -137,3 +137,35 @@ class AccountSortOrder(models.Model):
         db_table = "ACCOUNT_SORT"
         verbose_name = 'ACCOUNT_SORT'
         verbose_name_plural = 'ACCOUNT_SORT'
+
+
+
+
+class Ratings(models.Model):
+    watch_id = models.AutoField(primary_key=True)
+    userId = models.CharField(max_length=100, blank=True, null=True)
+    movieId = models.CharField(max_length=100, blank=True, null=True)
+    rating = models.CharField(max_length=100, blank=True, null=True)
+    timestamp = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return ('{} - {}'.format(self.watch_id, self.userId))
+
+    class Meta:
+        db_table = "RATINGS_MODEL"
+        verbose_name = 'RATINGS_MODEL'
+        verbose_name_plural = 'RATINGS_MODEL'
+
+class Movies(models.Model):
+    movie_trans_id = models.AutoField(primary_key=True)
+    movieId = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    genre = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return ('{} - {}'.format(self.movie_trans_id, self.movieId))
+
+    class Meta:
+        db_table = "MOVIES_MODEL"
+        verbose_name = 'MOVIES_MODEL'
+        verbose_name_plural = 'MOVIES_MODEL'

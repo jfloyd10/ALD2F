@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Count
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
-from db.models import MainData, UserBookmarks
+from db.models import MainData, UserBookmarks, Ratings, Movies
 from django.db import connection
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
@@ -93,31 +93,12 @@ def process_sql(param, sql_col):
         return selection
 
 
-def process_dt_sql(param, from_to):
-    selection = param
-
-    if selection == 'starter':
-        selection = "AND 1=1"
-        return selection
-    else:
-        if from_to == 1:
-            quotes = '''"'''
-            selection = "AND date >= " + quotes + selection + quotes
-            selection = "AND 1=1"
-            return selection
-
-        else:
-            quotes = '''"'''
-            selection = "AND date <= " + quotes + selection + quotes
-            selection = "AND 1=1"
-            return selection
-
-
 class LandingView(TemplateView):
     template_name = 'landing.html'
 
     def get(self,request):
         return render(request, self.template_name, context={})
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -127,7 +108,6 @@ class IndexView(TemplateView):
         pl_table = []
         #Get Industry Options for Select Menu
         cursor = connection.cursor()
-        
         cursor.execute('''SELECT
         L.account,
         S.sort_order,
@@ -1160,90 +1140,6 @@ class ScatterView(TemplateView):
         return render(request, self.template_name, context)
 
 
-class FinancialReports(TemplateView):
-    template_name = 'financialreports.html'
-
-    def get(self,request):
-        context = {}
-        lookup_id = 'base_main_data_financials'
-        cache_get = cache.get(lookup_id)
-
-
-        if cache_get:
-            print('Cache Found, loading')
-            context = cache_get
-            return render(request, self.template_name, context)
-        else:
-            print('Cache not found, quering context')
-
-        context['pre_filter'] = [{'has_prefilters': 0}]
-
-        #Get Industry Options for Select Menu
-        cursor = connection.cursor()
-        cursor.execute('''SELECT aging, SUM(Amount) FROM MAIN_DATA_AR GROUP BY aging ''')
-        row = cursor.fetchall()
-        industry_labels = []
-        for r in row:
-            industry_labels.append(r[0])
-        context['industry_labels'] = industry_labels
-
-        #Get Group Options for Select Menu
-        cursor.execute('''SELECT group_name, SUM(1) FROM MAIN_DATA GROUP BY group_name''')
-        row = cursor.fetchall()
-        group_labels = []
-        for r in row:
-            group_labels.append(r[0])
-        context['group_labels'] = group_labels
-
-        #Get Sales Rep Labels
-        cursor.execute('''SELECT salesrep, SUM(1) FROM MAIN_DATA GROUP BY salesrep''')
-        row = cursor.fetchall()
-        salesrep_labels = []
-        for r in row:
-            salesrep_labels.append(r[0])
-        context['salesrep_labels'] = salesrep_labels
-
-        #Get Branch Options for Select Menu
-        cursor.execute('''SELECT branch, SUM(PRICE) FROM MAIN_DATA GROUP BY branch ''')
-        row = cursor.fetchall()
-        branch_labels = []
-        for r in row:
-            branch_labels.append(r[0])
-        context['branch_labels'] = branch_labels
-
-        #Get Product Options for Select Menu
-        cursor.execute('''SELECT products, SUM(PRICE) FROM MAIN_DATA GROUP BY products ''')
-        row = cursor.fetchall()
-        product_labels = []
-        for r in row:
-            product_labels.append(r[0])
-        context['product_labels'] = product_labels
-
-        #Get Month Options for Select Menu
-        cursor.execute('''SELECT DISTINCT month FROM MAIN_DATA ORDER BY CAST(month as INTEGER)''')
-        row = cursor.fetchall()
-        month_labels = []
-        for r in row:
-            month_labels.append(r[0])
-        context['month_labels'] = month_labels
-
-
-
-        main_data = []
-        cursor.execute('''SELECT branch, customer, date, item, type, aging, SUM(amount) as PRICE FROM MAIN_DATA_AR GROUP BY branch, customer, date, item, type, aging''')
-        row = cursor.fetchall()
-
-        for r in row:
-            main_data.append([r[0], r[1], r[2].strftime('%m/%d/%Y'), r[3], r[4], r[5], r[6]])
-
-        context['main_data'] = main_data
-
-        cache.set(lookup_id, context, 60*60*24)
-
-
-        return render(request, self.template_name, context)
-
-
 class PLView(TemplateView):
     template_name = 'profit_loss.html'
 
@@ -1814,3 +1710,30 @@ class GatherDataViewGL(TemplateView):
         cache.set(lookup_id, data, 60*60*24)
 
         return JsonResponse(data)
+
+
+class ReccomenderView(TemplateView):
+    template_name = 'reccomender.html'
+
+    def get(self,request):
+        context = {}
+        cursor = connection.cursor()
+        cursor.execute("""
+        SELECT
+            userId,
+            SUM(1) as AGGR
+
+        FROM RATINGS_MODEL
+        GROUP BY userId
+        ORDER BY CAST(userId as Integer)
+        """)
+
+        row = cursor.fetchall()
+        user_watches = []
+
+        for r in row:
+            user_watches.append(r[0])
+
+        context['users'] = user_watches
+
+        return render(request, self.template_name, context)
