@@ -188,7 +188,7 @@
       <div class="contents">
 
         <div class="container-fluid"><br>
-
+          {% csrf_token %}
           <div class="row">
             <div class="col-1"></div>
 
@@ -408,10 +408,12 @@ var user_history = null;
 
 var prev_watched = 0;
 
+
+
 function getPreds(){
-    console.log(prev_watched);
     $.ajax({
         url: '{% url "db:get_predictions" %}',
+        type: "POST",
         data: {
           'user_name': user_id,
           'previously_watched': prev_watched,
@@ -473,7 +475,6 @@ function updateTableHistory(){
       ntd.innerHTML = e;
       ntr.appendChild(ntd)
     }
-
     new_tbody.appendChild(ntr)
   }
   old_tbody.parentNode.replaceChild(new_tbody, old_tbody);

@@ -9,22 +9,24 @@ from django.http import HttpResponse, JsonResponse
 from .models import MainData,MainDataAR, LedgerData, Ratings, Movies
 import csv
 from datetime import datetime
-import tensorflow as tf
-import tensorflow_recommenders as tfrs
+#import tensorflow as tf
+#import tensorflow_recommenders as tfrs
 import os
 from django.conf import settings
 from django.db import connection
 import numpy as np
 import pandas as pd
+from django.views.decorators.csrf import csrf_exempt
 
 
 #Load Retrieval & Ranking Model
 retrieval_path = os.path.join(settings.BASE_DIR, 'retrieval')
-retrieval_model = tf.saved_model.load(retrieval_path)
+#retrieval_model = tf.saved_model.load(retrieval_path)
 
 ranking_path = os.path.join(settings.BASE_DIR, 'ranking')
-ranking_model = tf.saved_model.load(ranking_path)
-
+#ranking_model = tf.saved_model.load(ranking_path)
+retrieval_model = ''
+ranking_model = ''
 
 class DBLoad(TemplateView):
 
@@ -143,9 +145,11 @@ class DBClearRatings(TemplateView):
         return render(request, self.template_name, context)
 
 
+
 class GetPredictions(TemplateView):
 
-    def get(self,request, **kwargs):
+    @csrf_exempt
+    def post(self,request, **kwargs):
         data = {}
         user_name = request.GET.get('user_name', None)
         prev_watched = request.GET.get('previously_watched', 0)

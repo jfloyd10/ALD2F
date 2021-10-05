@@ -35,7 +35,8 @@ urlpatterns = [
 
     #Reports
     path('report/', views.ReportView.as_view(), name='report_view'),
-    path('p&l/', views.PLView.as_view(), name='profit_loss'),
+    path('p&l/', views.JSPivotView.as_view(), name='profit_loss'),
+    #path('pivot/', views.JSPivotView.as_view(), name='js_pivot'),
 
 
     #Apis

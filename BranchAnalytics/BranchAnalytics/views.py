@@ -1737,3 +1737,37 @@ class ReccomenderView(TemplateView):
         context['users'] = user_watches
 
         return render(request, self.template_name, context)
+
+
+class JSPivotView(TemplateView):
+    template_name = 'js_pivot.html'
+
+    def get(self,request):
+        context = {}
+        cursor = connection.cursor()
+        
+        #Get Group Options for Select Menu
+        cursor.execute('''SELECT group_name, SUM(1) FROM LEDGER GROUP BY group_name''')
+        row = cursor.fetchall()
+        group_labels = []
+        for r in row:
+            group_labels.append(r[0])
+        context['group_labels'] = group_labels
+
+        #Get Branch Options for Select Menu
+        cursor.execute('''SELECT branch, SUM(Amount) FROM LEDGER GROUP BY branch ''')
+        row = cursor.fetchall()
+        branch_labels = []
+        for r in row:
+            branch_labels.append(r[0])
+        context['branch_labels'] = branch_labels
+
+        #Get Month Options for Select Menu
+        cursor.execute('''SELECT DISTINCT period FROM LEDGER ORDER BY CAST(period as INTEGER)''')
+        row = cursor.fetchall()
+        month_labels = []
+        for r in row:
+            month_labels.append(r[0])
+        context['month_labels'] = month_labels
+
+        return render(request, self.template_name, context)
